@@ -20,6 +20,7 @@ public class Main {
                 matrix[i][j] = scanner.nextInt();
             }
         }
+        int test = 0;
 
         scanner.close();
 
