@@ -13,7 +13,11 @@ public class Main {
         // Initialize matrix
         int[][] matrix = new int[numRows][numCols];
 
+<<<<<<< Updated upstream
         
+=======
+        System.out.println("(TEST) Enter the elements of the matrix:");
+>>>>>>> Stashed changes
         for (int i = 0; i < numRows; i++) {
             for (int j = 0; j < numCols; j++) {
                 System.out.print("Enter element at position (" + i + ", " + j + "): ");
