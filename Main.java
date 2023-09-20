@@ -1,6 +1,35 @@
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world");
+        Scanner scanner = new Scanner(System.in);
+
+        //Get nRow + nCol
+        System.out.print("Enter the number of rows: ");
+        int numRows = scanner.nextInt();
+        System.out.print("Enter the number of columns: ");
+        int numCols = scanner.nextInt();
+
+        // Initialize matrix
+        int[][] matrix = new int[numRows][numCols];
+
+        System.out.println("Enter the elements of the matrix:");
+        for (int i = 0; i < numRows; i++) {
+            for (int j = 0; j < numCols; j++) {
+                System.out.print("Enter element at position (" + i + ", " + j + "): ");
+                matrix[i][j] = scanner.nextInt();
+            }
+        }
+
+        scanner.close();
+
+        //Output Matrix
+        System.out.println("Input Matrix:");
+        for (int i = 0; i < numRows; i++) {
+            for (int j = 0; j < numCols; j++) {
+                System.out.print(matrix[i][j] + " ");
+            }
+            System.out.println();
+        }
     }
 }
-
