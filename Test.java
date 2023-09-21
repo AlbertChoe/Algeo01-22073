@@ -2,7 +2,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-public class Matrix {
+class Matrix {
     private int n_row;
     private int n_col;
     private float[][] data;
@@ -19,10 +19,6 @@ public class Matrix {
 
     public int get_col() {
         return this.n_col;
-    }
-
-    public float get_elmt(int row, int col) {
-        return this.data[row][col];
     }
 
     public float get_elmt(int row, int col) {
@@ -84,5 +80,13 @@ public class Matrix {
             }
             System.out.println();
         }
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+        Matrix test_matrix = new Matrix(3, 3);
+        test_matrix.read_matrix_from_file("test.txt");
+        test_matrix.print_matrix();
     }
 }
