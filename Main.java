@@ -1,7 +1,24 @@
 import java.util.Scanner;
+import java.io.IOException;
 import java.util.InputMismatchException;
 
 public class Main {
+
+    public static void clear_terminal() {
+        String os = System.getProperty("os.name").toLowerCase();
+
+        try {
+            if (os.contains("win")) {
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } else if (os.contains("mac") || os.contains("nix") || os.contains("nux") || os.contains("bsd")) {
+                new ProcessBuilder("clear").inheritIO().start().waitFor();
+            } else {
+                System.out.println();
+            }
+        } catch (IOException | InterruptedException e) {
+            System.out.println();
+        }
+    }
 
     public static void display_menu() {
         System.out.println("MENU");
@@ -38,7 +55,7 @@ public class Main {
     }
 
     public static int valid_input_choice(Scanner scanner, int range_from, int range_to) {
-        String err_msg = String.format("!! Input tidak valid. Hanya input angka dari %d hingga %d !!", range_from, range_to);
+        String err_msg = String.format(">> Tidak valid. Hanya menerima input angka dari %d hingga %d!", range_from, range_to);
 
         while (true) {
             try {
@@ -59,8 +76,10 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         boolean program_on = true;
         while (program_on == true) {
+            clear_terminal();
             display_menu();
             int choice = valid_input_choice(scanner, 1, 7);
+            clear_terminal();
             if (choice == 1) {
                 display_submenu_1();
                 int sub_choice = valid_input_choice(scanner, 1, 5);
