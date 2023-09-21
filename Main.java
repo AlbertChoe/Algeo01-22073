@@ -3,7 +3,6 @@ import java.io.IOException;
 import java.util.InputMismatchException;
 
 public class Main {
-
     public static void clear_terminal() {
         String os = System.getProperty("os.name").toLowerCase();
 
@@ -130,34 +129,5 @@ public class Main {
             }
         }
         scanner.close();
-        
-        
-        // //Get nRow + nCol
-        // System.out.print("Enter the number of rows: ");
-        // int numRows = scanner.nextInt();
-        // System.out.print("Enter the number of columns: ");
-        // int numCols = scanner.nextInt();
-
-        // // Initialize matrix
-        // float[][] matrix = new float[numRows][numCols];
-
-
-        // System.out.println("(TEST) Enter the elements of the matrix:");
-        // for (int i = 0; i < numRows; i++) {
-        //     for (int j = 0; j < numCols; j++) {
-        //         matrix[i][j] = scanner.nextFloat();
-        //     }
-        // }
-
-        // scanner.close();
-
-        // //Output Matrix
-        // System.out.println("Input Matrix:");
-        // for (int i = 0; i < numRows; i++) {
-        //     for (int j = 0; j < numCols; j++) {
-        //         System.out.print(matrix[i][j] + " ");
-        //     }
-        //     System.out.println();
-        // }
     }
 }
