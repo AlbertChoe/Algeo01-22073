@@ -37,8 +37,7 @@ public class Main {
         System.out.println("3. Balik ke Menu Utama");
     }
 
-    public static int valid_input_choice(int range_from, int range_to) {
-        Scanner scanner = new Scanner(System.in);
+    public static int valid_input_choice(Scanner scanner, int range_from, int range_to) {
         String err_msg = String.format("!! Input tidak valid. Hanya input angka dari %d hingga %d !!", range_from, range_to);
 
         while (true) {
@@ -46,7 +45,6 @@ public class Main {
                 System.out.print("Ketik Pilihan : ");
                 int num = scanner.nextInt();
                 if (num >= range_from && num <= range_to) {
-                    scanner.close();
                     return num;
                 }
                 System.out.println(err_msg);
@@ -59,16 +57,60 @@ public class Main {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-
         boolean program_on = true;
         while (program_on == true) {
             display_menu();
-            int choice = valid_input_choice(1, 7);
-            System.out.println(choice);
-            program_on = false;
+            int choice = valid_input_choice(scanner, 1, 7);
+            if (choice == 1) {
+                display_submenu_1();
+                int sub_choice = valid_input_choice(scanner, 1, 5);
+                if (sub_choice == 1) {
+
+                } else if (sub_choice == 2) {
+
+                } else if (sub_choice == 3) {
+
+                } else if (sub_choice == 4) {
+
+                } else {
+                    System.out.println("===============================");
+                    continue;
+                }
+
+            } else if (choice == 2) {
+                display_submenu_2();
+                int sub_choice = valid_input_choice(scanner, 1, 3);
+                if (sub_choice == 1) {
+
+                } else if (sub_choice == 2) {
+
+                } else {
+                    System.out.println("===============================");
+                    continue;
+                }
+
+            } else if (choice == 3) {
+                display_submenu_3();
+                int sub_choice = valid_input_choice(scanner, 1, 3);
+                if (sub_choice == 1) {
+
+                } else if (sub_choice == 2) {
+
+                } else {
+                    System.out.println("===============================");
+                    continue;
+                }
+            } else if (choice == 4) {
+
+            } else if (choice == 5) {
+
+            } else if (choice == 6) {
+
+            } else {
+                program_on = false;
+            }
         }
         scanner.close();
-
         
         
         // //Get nRow + nCol
