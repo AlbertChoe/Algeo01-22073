@@ -20,14 +20,14 @@ public class Main {
     }
 
     public static void display_menu() {
-        System.out.println("MENU");
+        System.out.println("=========== MENU ===========");
         System.out.println("1. Sistem Persamaaan Linier");
         System.out.println("2. Determinan");
         System.out.println("3. Matriks Balikan");
         System.out.println("4. Interpolasi Polinom");
         System.out.println("5. Interpolasi Bicubic Spline");
         System.out.println("6. Regresi Linier Berganda");
-        System.out.println("7. Keluar");
+        System.out.println("7. Keluar Program");
     }
 
     public static void display_submenu_1() {
@@ -53,6 +53,12 @@ public class Main {
         System.out.println("3. Balik ke Menu Utama");
     }
 
+    public static void display_input_options() {
+        System.out.println("Opsi memasukkan matriks :");
+        System.out.println("1. Dari Command Line");
+        System.out.println("2. Dari File .txt");
+    }
+
     public static int valid_input_choice(Scanner scanner, int range_from, int range_to) {
         String err_msg = String.format(">> Tidak valid. Hanya menerima input angka dari %d hingga %d!", range_from, range_to);
 
@@ -66,38 +72,52 @@ public class Main {
                 System.out.println(err_msg);
             } catch (InputMismatchException e) {
                 System.out.println(err_msg);
-                scanner.next();
+                scanner.nextLine();
             }
         }
     }
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+        clear_terminal();
+        Scanner scanner1 = new Scanner(System.in);
+        Scanner scanner2 = new Scanner(System.in);
+        Scanner scanner3 = new Scanner(System.in);
         boolean program_on = true;
         while (program_on == true) {
-            clear_terminal();
             display_menu();
-            int choice = valid_input_choice(scanner, 1, 7);
+            int choice = valid_input_choice(scanner1, 1, 7);
             clear_terminal();
             if (choice == 1) {
                 display_submenu_1();
-                int sub_choice = valid_input_choice(scanner, 1, 5);
-                if (sub_choice == 1) {
+                int sub_choice = valid_input_choice(scanner2, 1, 5);
+                if (sub_choice >= 1 && sub_choice <= 4) {
+                    clear_terminal();
+                    Matrix matrix = new Matrix();
+                    display_input_options();
+                    int input_option = valid_input_choice(scanner3, 1, 2);
+                    if (input_option == 1) {
+                        matrix.read_matrix_scan();
+                    } else {
+                        matrix.read_matrix_from_file();
+                    }
+                    if (sub_choice == 1) {
 
-                } else if (sub_choice == 2) {
+                    } else if (sub_choice == 2) {
 
-                } else if (sub_choice == 3) {
+                    } else if (sub_choice == 3) {
 
-                } else if (sub_choice == 4) {
+                    } else {
 
+                    }
+                    matrix.print_matrix();
+                    break;
                 } else {
                     System.out.println("===============================");
                     continue;
                 }
-
             } else if (choice == 2) {
                 display_submenu_2();
-                int sub_choice = valid_input_choice(scanner, 1, 3);
+                int sub_choice = valid_input_choice(scanner2, 1, 3);
                 if (sub_choice == 1) {
 
                 } else if (sub_choice == 2) {
@@ -109,7 +129,7 @@ public class Main {
 
             } else if (choice == 3) {
                 display_submenu_3();
-                int sub_choice = valid_input_choice(scanner, 1, 3);
+                int sub_choice = valid_input_choice(scanner2, 1, 3);
                 if (sub_choice == 1) {
 
                 } else if (sub_choice == 2) {
@@ -128,6 +148,8 @@ public class Main {
                 program_on = false;
             }
         }
-        scanner.close();
+        scanner1.close();
+        scanner2.close();
+        scanner3.close();
     }
 }
