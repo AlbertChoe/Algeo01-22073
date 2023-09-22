@@ -77,6 +77,9 @@ public class Matrix {
         }
     }
 
+    /* Scanner standard untuk semua case (bebas baris dan kolom) bisa untuk apa aja,
+    Scanner khusus untuk SPL atau untuk matriks persegi buat determinan + invers mungkin dibuat tapi
+    setelah semua soal selesai */
     public void read_matrix_scan(Scanner scanner) {  
         int row = valid_int_input(scanner, "Masukkan jumlah baris matriks : ");
         int col = valid_int_input(scanner, "Masukkan jumlah kolom matriks : ");
@@ -134,18 +137,71 @@ public class Matrix {
     public void print_matrix() {
         for (int i = 0; i < this.get_row(); i++) {
             for (int j = 0; j < this.get_col(); j++) {
-                System.out.print(this.get_elmt(i, j) + " ");
+                System.out.print(String.format("%.1f ", this.get_elmt(i, j)));
             }
             System.out.println();
         }
+        System.out.println();
     }
 
-    public void op_to_triangle(boolean instruction) {
-        
-    }
+    private void el_row_op(int row_operated, int row_operator, double factor) {
+        for (int j = 0; j < this.get_col(); j++) {
+            this.data[row_operated][j] += factor * this.get_elmt(row_operator, j);
+        }
+    };
 
-    public int op_to_triangle_return_swap(boolean instruction) {
-        return 0;
+    //TODO: wrong calc
+    public void determinant_row_reduction() {
+        int swap = 0;
+        for (int j = 0; j < this.get_col() - 1; j++) {
+
+
+            int row_to_swap = -1;
+            if (this.get_elmt(j, j) == 0) {
+                for (int i = 0; i < this.get_row(); i++) {
+                    if (this.get_elmt(i, j) != 0) {
+                        row_to_swap = i;
+                        break;
+                    }
+                }                
+            }
+            
+            if (row_to_swap != -1) {
+                double[] temp = this.data[j];
+                this.data[j] = this.data[row_to_swap];
+                this.data[row_to_swap] = temp;
+                swap += 1;
+                System.out.println(String.format("Baris %d ditukar dengan baris %d", j + 1, row_to_swap + 1));
+                this.print_matrix();
+            }
+            
+            //SALAH DISINI
+            for (int row = j + 1; row < this.get_row(); row++) {
+                if (row != row_to_swap || this.get_elmt(row, j) != 0) {
+                    double x = this.get_elmt(row, j);
+                    double y = this.get_elmt(j, j);
+                    double factor = x/y;
+
+                    if (factor < 0) {
+                        this.el_row_op(row, j, -1 * factor);
+                        if (factor != 1) {
+                            System.out.println(String.format("Baris %d - %.1f/%.1f Baris %d", row + 1, x, y, j + 1));
+                        } else {
+                            System.out.println(String.format("Baris %d - Baris %d", row + 1, j + 1));
+                        }
+                        this.print_matrix();
+                    } else {
+                        this.el_row_op(row, j, factor);
+                        if (factor != 1) {
+                            System.out.println(String.format("Baris %d + %.1f/%.1f Baris %d", row + 1, x, y, j + 1));
+                        } else {
+                            System.out.println(String.format("Baris %d + Baris %d", row + 1, j + 1));
+                        }
+                        this.print_matrix();
+                    }
+                }
+            }
+        }
     }
 
     public boolean is_matrix_upper_triangle() {
