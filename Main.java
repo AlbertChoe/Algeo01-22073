@@ -122,14 +122,34 @@ public class Main {
                     //PRINT MATRIX FOR TESTING!
                     System.out.println("(TEST) inputted matrix : ");
                     matrix.print_matrix();
-                    break;
+
+                    press_to_menu(scanner);
                 } else {
                     continue;
                 }
             } else if (choice == 2) {
                 display_submenu_2();
-                int sub_choice = valid_input_choice(scanner2, 1, 3);
-                if (sub_choice == 1) {
+                int sub_choice = valid_input_choice(scanner, 1, 3);
+                if (sub_choice == 1 || sub_choice == 2) {
+                    clear_terminal();
+
+                    //input matrix
+                    Matrix matrix = new Matrix();
+                    display_input_options();
+                    int input_option = valid_input_choice(scanner, 1, 2);
+                    if (input_option == 1) {
+                        matrix.read_matrix_scan(scanner);
+                    } else {
+                        matrix.read_matrix_from_file(scanner);
+                    }
+
+                    if (matrix.is_not_empty()) {
+                        if (sub_choice == 1) {
+                            //Determinan reduksi baris
+                        } else {
+                            //Determinan ekspansi kofaktor
+                        }
+                    }
 
                     press_to_menu(scanner);
                 } else {
@@ -138,8 +158,27 @@ public class Main {
 
             } else if (choice == 3) {
                 display_submenu_3();
-                int sub_choice = valid_input_choice(scanner2, 1, 3);
-                if (sub_choice == 1) {
+                int sub_choice = valid_input_choice(scanner, 1, 3);
+                if (sub_choice == 1 || sub_choice == 2) {
+                    clear_terminal();
+
+                    //input matrix
+                    Matrix matrix = new Matrix();
+                    display_input_options();
+                    int input_option = valid_input_choice(scanner, 1, 2);
+                    if (input_option == 1) {
+                        matrix.read_matrix_scan(scanner);
+                    } else {
+                        matrix.read_matrix_from_file(scanner);
+                    }
+
+                    if (matrix.is_not_empty()) {
+                        if (sub_choice == 1) {
+                            //Matriks balikan metode matriks adjoin
+                        } else {
+                            //Matriks balikan metode transformasi baris el.
+                        }
+                    }
 
                     press_to_menu(scanner);
                 } else {

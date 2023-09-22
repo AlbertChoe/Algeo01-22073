@@ -69,7 +69,6 @@ public class Matrix {
                 System.out.println(err_msg);
             } catch (NumberFormatException e) {
                 System.out.println(err_msg);
-                scanner.next();
             }
         }
     }
@@ -111,8 +110,7 @@ public class Matrix {
 
     public void read_matrix_from_file(Scanner scanner) {
         System.out.print("Masukkan nama file beserta extension (.txt) : ");
-        String file_name = file_scanner.nextLine();
-        file_scanner.close();
+        String file_name = scanner.nextLine();
         try {
             determine_matrix_size_from_file(file_name);
             File file = new File(file_name);
@@ -122,7 +120,8 @@ public class Matrix {
                     this.set_elmt(i, j, file_scanner.nextFloat());
                 }
             }
-            scanner.close();
+            file_scanner.close();
+            System.out.println("Matrix berhasil terbaca.");
         } catch (FileNotFoundException e) {
             return;
         }
