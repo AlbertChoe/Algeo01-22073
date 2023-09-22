@@ -60,13 +60,12 @@ public class Matrix {
                 System.out.println(err_msg);
             } catch (InputMismatchException e) {
                 System.out.println(err_msg);
-                scanner.next();
+                scanner.nextLine();
             }
         }
     }
 
-    public void read_matrix_scan() {  
-        Scanner scanner = new Scanner(System.in);
+    public void read_matrix_scan(Scanner scanner) {  
         int row = valid_int_input(scanner, "Masukkan jumlah baris matriks : ");
         int col = valid_int_input(scanner, "Masukkan jumlah kolom matriks : ");
         this.set_new_size(row, col);
@@ -76,7 +75,7 @@ public class Matrix {
                 this.data[i][j] = scanner.nextFloat();
             }
         }
-        scanner.close();
+        scanner.nextLine();
     }
 
     private void determine_matrix_size_from_file(String file_name) {
@@ -101,21 +100,19 @@ public class Matrix {
         }
     }
 
-    public void read_matrix_from_file() {
-        Scanner file_scanner = new Scanner(System.in);
+    public void read_matrix_from_file(Scanner scanner) {
         System.out.print("Masukkan nama file beserta extension (.txt) : ");
-        String file_name = file_scanner.nextLine();
-        file_scanner.close();
+        String file_name = scanner.nextLine();;
         try {
             determine_matrix_size_from_file(file_name);
             File file = new File(file_name);
-            Scanner scanner = new Scanner(file);
+            Scanner file_scanner = new Scanner(file);
             for (int i = 0; i < this.get_row(); i++) {
                 for (int j = 0; j < this.get_col(); j++) {
-                    this.set_elmt(i, j, scanner.nextFloat());
+                    this.set_elmt(i, j, file_scanner.nextFloat());
                 }
             }
-            scanner.close();
+            file_scanner.close();
         } catch (FileNotFoundException e) {
             return;
         }

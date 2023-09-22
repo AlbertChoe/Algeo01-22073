@@ -78,27 +78,25 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        clear_terminal();
-        Scanner scanner1 = new Scanner(System.in);
-        Scanner scanner2 = new Scanner(System.in);
-        Scanner scanner3 = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
         boolean program_on = true;
         while (program_on == true) {
+            clear_terminal();
             display_menu();
-            int choice = valid_input_choice(scanner1, 1, 7);
+            int choice = valid_input_choice(scanner, 1, 7);
             clear_terminal();
             if (choice == 1) {
                 display_submenu_1();
-                int sub_choice = valid_input_choice(scanner2, 1, 5);
+                int sub_choice = valid_input_choice(scanner, 1, 5);
                 if (sub_choice >= 1 && sub_choice <= 4) {
                     clear_terminal();
                     Matrix matrix = new Matrix();
                     display_input_options();
-                    int input_option = valid_input_choice(scanner3, 1, 2);
+                    int input_option = valid_input_choice(scanner, 1, 2);
                     if (input_option == 1) {
-                        matrix.read_matrix_scan();
+                        matrix.read_matrix_scan(scanner);
                     } else {
-                        matrix.read_matrix_from_file();
+                        matrix.read_matrix_from_file(scanner);
                     }
                     if (sub_choice == 1) {
 
@@ -110,14 +108,16 @@ public class Main {
 
                     }
                     matrix.print_matrix();
-                    break;
+                    System.out.println();
+                    System.out.print("Tekan enter untuk kembali ke menu utama.");
+                    scanner.nextLine();
                 } else {
                     System.out.println("===============================");
                     continue;
                 }
             } else if (choice == 2) {
                 display_submenu_2();
-                int sub_choice = valid_input_choice(scanner2, 1, 3);
+                int sub_choice = valid_input_choice(scanner, 1, 3);
                 if (sub_choice == 1) {
 
                 } else if (sub_choice == 2) {
@@ -129,7 +129,7 @@ public class Main {
 
             } else if (choice == 3) {
                 display_submenu_3();
-                int sub_choice = valid_input_choice(scanner2, 1, 3);
+                int sub_choice = valid_input_choice(scanner, 1, 3);
                 if (sub_choice == 1) {
 
                 } else if (sub_choice == 2) {
@@ -148,8 +148,6 @@ public class Main {
                 program_on = false;
             }
         }
-        scanner1.close();
-        scanner2.close();
-        scanner3.close();
+        scanner.close();
     }
 }
