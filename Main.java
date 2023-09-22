@@ -1,6 +1,5 @@
 import java.util.Scanner;
 import java.io.IOException;
-import java.util.InputMismatchException;
 
 public class Main {
     public static void clear_terminal() {
@@ -17,6 +16,12 @@ public class Main {
         } catch (IOException | InterruptedException e) {
             System.out.println();
         }
+    }
+
+    public static void press_to_menu(Scanner scanner) {
+        System.out.println();
+        System.out.print("Tekan Enter untuk balik ke menu utama!");
+        scanner.nextLine();
     }
 
     public static void display_menu() {
@@ -54,7 +59,7 @@ public class Main {
     }
 
     public static void display_input_options() {
-        System.out.println("Opsi memasukkan matriks :");
+        System.out.println("Opsi Memasukkan Matriks :");
         System.out.println("1. Dari Command Line");
         System.out.println("2. Dari File .txt");
     }
@@ -63,93 +68,132 @@ public class Main {
         String err_msg = String.format(">> Tidak valid. Hanya menerima input angka dari %d hingga %d!", range_from, range_to);
 
         while (true) {
+            System.out.print("Ketik Pilihan : ");
+            String input = scanner.nextLine();
+
             try {
-                System.out.print("Ketik Pilihan : ");
-                int num = scanner.nextInt();
+                int num = Integer.parseInt(input);
                 if (num >= range_from && num <= range_to) {
                     return num;
                 }
                 System.out.println(err_msg);
-            } catch (InputMismatchException e) {
+            } catch (NumberFormatException e) {
                 System.out.println(err_msg);
-                scanner.nextLine();
             }
         }
     }
-
+    
     public static void main(String[] args) {
-        clear_terminal();
-        Scanner scanner1 = new Scanner(System.in);
-        Scanner scanner2 = new Scanner(System.in);
-        Scanner scanner3 = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
         boolean program_on = true;
         while (program_on == true) {
+            clear_terminal();
             display_menu();
-            int choice = valid_input_choice(scanner1, 1, 7);
+            int choice = valid_input_choice(scanner, 1, 7);
             clear_terminal();
             if (choice == 1) {
                 display_submenu_1();
-                int sub_choice = valid_input_choice(scanner2, 1, 5);
+                int sub_choice = valid_input_choice(scanner, 1, 5);
                 if (sub_choice >= 1 && sub_choice <= 4) {
                     clear_terminal();
+
+                    //input Matrix
                     Matrix matrix = new Matrix();
                     display_input_options();
-                    int input_option = valid_input_choice(scanner3, 1, 2);
+                    int input_option = valid_input_choice(scanner, 1, 2);
                     if (input_option == 1) {
-                        matrix.read_matrix_scan();
+                        matrix.read_matrix_scan(scanner);
                     } else {
-                        matrix.read_matrix_from_file();
+                        matrix.read_matrix_from_file(scanner);
                     }
-                    if (sub_choice == 1) {
 
-                    } else if (sub_choice == 2) {
-
-                    } else if (sub_choice == 3) {
-
-                    } else {
-
+                    if (matrix.is_not_empty()) {
+                        if (sub_choice == 1) {
+                            //SPL elim. gauss
+                        } else if (sub_choice == 2) {
+                            //SPL elim. gauss-jordan
+                        } else if (sub_choice == 3) {
+                            //SPL matriks balikan
+                        } else {
+                            //SPL kaidah cramer
+                        }
                     }
+
+                    //PRINT MATRIX FOR TESTING!
+                    System.out.println("(TEST) inputted matrix : ");
                     matrix.print_matrix();
-                    break;
+
+                    press_to_menu(scanner);
                 } else {
-                    System.out.println("===============================");
                     continue;
                 }
             } else if (choice == 2) {
                 display_submenu_2();
-                int sub_choice = valid_input_choice(scanner2, 1, 3);
-                if (sub_choice == 1) {
+                int sub_choice = valid_input_choice(scanner, 1, 3);
+                if (sub_choice == 1 || sub_choice == 2) {
+                    clear_terminal();
 
-                } else if (sub_choice == 2) {
+                    //input matrix
+                    Matrix matrix = new Matrix();
+                    display_input_options();
+                    int input_option = valid_input_choice(scanner, 1, 2);
+                    if (input_option == 1) {
+                        matrix.read_matrix_scan(scanner);
+                    } else {
+                        matrix.read_matrix_from_file(scanner);
+                    }
 
+                    if (matrix.is_not_empty()) {
+                        if (sub_choice == 1) {
+                            //Determinan reduksi baris
+                        } else {
+                            //Determinan ekspansi kofaktor
+                        }
+                    }
+
+                    press_to_menu(scanner);
                 } else {
-                    System.out.println("===============================");
                     continue;
                 }
 
             } else if (choice == 3) {
                 display_submenu_3();
-                int sub_choice = valid_input_choice(scanner2, 1, 3);
-                if (sub_choice == 1) {
+                int sub_choice = valid_input_choice(scanner, 1, 3);
+                if (sub_choice == 1 || sub_choice == 2) {
+                    clear_terminal();
 
-                } else if (sub_choice == 2) {
+                    //input matrix
+                    Matrix matrix = new Matrix();
+                    display_input_options();
+                    int input_option = valid_input_choice(scanner, 1, 2);
+                    if (input_option == 1) {
+                        matrix.read_matrix_scan(scanner);
+                    } else {
+                        matrix.read_matrix_from_file(scanner);
+                    }
 
+                    if (matrix.is_not_empty()) {
+                        if (sub_choice == 1) {
+                            //Matriks balikan metode matriks adjoin
+                        } else {
+                            //Matriks balikan metode transformasi baris el.
+                        }
+                    }
+
+                    press_to_menu(scanner);
                 } else {
-                    System.out.println("===============================");
                     continue;
                 }
             } else if (choice == 4) {
-
+                //Interpolasi polinom
             } else if (choice == 5) {
-
+                //Interpolasi bicubic
             } else if (choice == 6) {
-
+                //Regresi lsinier
             } else {
                 program_on = false;
             }
         }
-        scanner1.close();
-        scanner2.close();
-        scanner3.close();
+        scanner.close();
     }
 }

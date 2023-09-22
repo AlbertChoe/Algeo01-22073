@@ -1,6 +1,5 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Matrix {
@@ -47,26 +46,34 @@ public class Matrix {
         }
     }
 
+    public boolean is_empty() {
+        return (this.n_row == 0) && (this.n_col == 0);
+    }
+
+    public boolean is_not_empty() {
+        return !this.is_empty();
+    }
+
     public static int valid_int_input(Scanner scanner, String message) {
         String err_msg = String.format(">> Tidak valid. Hanya menerima input bilangan bulat positif!");
 
         while (true) {
+            System.out.print(message);
+            String input = scanner.nextLine();
+
             try {
-                System.out.print(message);
-                int num = scanner.nextInt();
+                int num = Integer.parseInt(input);
                 if (num > 0) {
                     return num;
                 }
                 System.out.println(err_msg);
-            } catch (InputMismatchException e) {
+            } catch (NumberFormatException e) {
                 System.out.println(err_msg);
-                scanner.next();
             }
         }
     }
 
-    public void read_matrix_scan() {  
-        Scanner scanner = new Scanner(System.in);
+    public void read_matrix_scan(Scanner scanner) {  
         int row = valid_int_input(scanner, "Masukkan jumlah baris matriks : ");
         int col = valid_int_input(scanner, "Masukkan jumlah kolom matriks : ");
         this.set_new_size(row, col);
@@ -76,7 +83,7 @@ public class Matrix {
                 this.data[i][j] = scanner.nextFloat();
             }
         }
-        scanner.close();
+        scanner.nextLine();
     }
 
     private void determine_matrix_size_from_file(String file_name) {
@@ -101,21 +108,20 @@ public class Matrix {
         }
     }
 
-    public void read_matrix_from_file() {
-        Scanner file_scanner = new Scanner(System.in);
+    public void read_matrix_from_file(Scanner scanner) {
         System.out.print("Masukkan nama file beserta extension (.txt) : ");
-        String file_name = file_scanner.nextLine();
-        file_scanner.close();
+        String file_name = scanner.nextLine();
         try {
             determine_matrix_size_from_file(file_name);
             File file = new File(file_name);
-            Scanner scanner = new Scanner(file);
+            Scanner file_scanner = new Scanner(file);
             for (int i = 0; i < this.get_row(); i++) {
                 for (int j = 0; j < this.get_col(); j++) {
-                    this.set_elmt(i, j, scanner.nextFloat());
+                    this.set_elmt(i, j, file_scanner.nextFloat());
                 }
             }
-            scanner.close();
+            file_scanner.close();
+            System.out.println("Matrix berhasil terbaca.");
         } catch (FileNotFoundException e) {
             return;
         }
