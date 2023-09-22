@@ -28,6 +28,10 @@ public class Matrix {
         return this.n_col;
     }
 
+    public double[][] get_data() {
+        return this.data;
+    }
+
     public double get_elmt(int row, int col) {
         return this.data[row][col];
     }
@@ -134,5 +138,29 @@ public class Matrix {
             }
             System.out.println();
         }
+    }
+
+    public void op_to_triangle(boolean instruction) {
+        
+    }
+
+    public int op_to_triangle_return_swap(boolean instruction) {
+        return 0;
+    }
+
+    public boolean is_matrix_upper_triangle() {
+        boolean triangle = true;
+        for (int i = 1; i < this.get_row(); i++) {
+            for (int j = 0; j < i; j ++) {
+                if (this.get_elmt(i, j) != 0) {
+                    triangle = false;
+                    break;
+                }
+            }
+            if (triangle == false) {
+                break;
+            }
+        }
+        return triangle;
     }
 }
