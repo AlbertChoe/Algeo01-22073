@@ -5,19 +5,19 @@ import java.util.Scanner;
 public class Matrix {
     private int n_row;
     private int n_col;
-    private float[][] data;
+    private double[][] data;
 
     //default constructor
     public Matrix() {
         this.n_row = 0;
         this.n_col = 0;
-        this.data = new float[0][0];  
+        this.data = new double[0][0];  
     }
 
     public Matrix(int n_row, int n_col) {
         this.n_row= n_row;
         this.n_col = n_col;
-        this.data = new float[n_row][n_col];
+        this.data = new double[n_row][n_col];
     }
 
     public int get_row() {
@@ -28,17 +28,17 @@ public class Matrix {
         return this.n_col;
     }
 
-    public float get_elmt(int row, int col) {
+    public double get_elmt(int row, int col) {
         return this.data[row][col];
     }
 
     public void set_new_size(int new_n_row, int new_n_col) {
         this.n_row = new_n_row;
         this.n_col = new_n_col;
-        this.data = new float[new_n_row][new_n_col];
+        this.data = new double[new_n_row][new_n_col];
     }
 
-    public void set_elmt(int row, int col, float value) {
+    public void set_elmt(int row, int col, double value) {
         if (row >= 0 && row < this.get_row() && col >= 0 && col < this.get_col()) {
             this.data[row][col] = value;
         } else {
@@ -80,7 +80,7 @@ public class Matrix {
         System.out.println(String.format("Masukkan matriks %dx%d : ", this.get_row(), this.get_col()));
         for (int i = 0; i < this.get_row(); i++) {
             for (int j = 0; j < this.get_col(); j++) {
-                this.data[i][j] = scanner.nextFloat();
+                this.data[i][j] = scanner.nextDouble();
             }
         }
         scanner.nextLine();
@@ -117,7 +117,7 @@ public class Matrix {
             Scanner file_scanner = new Scanner(file);
             for (int i = 0; i < this.get_row(); i++) {
                 for (int j = 0; j < this.get_col(); j++) {
-                    this.set_elmt(i, j, file_scanner.nextFloat());
+                    this.set_elmt(i, j, file_scanner.nextDouble());
                 }
             }
             file_scanner.close();
