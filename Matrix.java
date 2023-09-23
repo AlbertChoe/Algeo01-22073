@@ -158,7 +158,7 @@ public class Matrix {
         val /= 1000;
         return val;
     }
-    
+
     public void determinant_row_reduction() {
         System.out.println();
         System.out.println("Matriks masukan");
@@ -221,6 +221,10 @@ public class Matrix {
         }
         determinant *= Math.pow(-1, swap);
         System.out.println(String.format(" = %.2f", determinant));
+    }
+
+    public void determinant_cofactor_expansion() {
+        
     }
 
     public boolean is_matrix_upper_triangle() {
