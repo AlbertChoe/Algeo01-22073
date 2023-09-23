@@ -285,6 +285,10 @@ public class Matrix {
 
     private Matrix find_cofactor_matrix() {
         Matrix cofactor = new Matrix(this.get_row(), this.get_col());
+        if (this.get_row() == 1 && this.get_col() == 1) {
+            cofactor.set_elmt(0, 0, this.get_elmt(0, 0));
+            return cofactor;
+        }
         for (int i = 0; i < this.get_row(); i++) {
             for (int j = 0; j < this.get_col(); j++) {
                 int length = this.get_row() - 1;
