@@ -16,7 +16,7 @@ public class Matrix {
     }
 
     public Matrix(int n_row, int n_col) {
-        this.n_row= n_row;
+        this.n_row = n_row;
         this.n_col = n_col;
         this.data = new double[n_row][n_col];
     }
@@ -241,5 +241,15 @@ public class Matrix {
             }
         }
         return triangle;
+    }
+
+    public Matrix transpose() {
+        Matrix m2 = new Matrix(this.n_row, this.n_col);
+        for (int i = 0; i < get_row(); i++) {
+            for (int j = 0; j < get_col(); j++) {
+                m2.data[i][j] = this.data[j][i];
+            }
+        }
+        return m2;
     }
 }
