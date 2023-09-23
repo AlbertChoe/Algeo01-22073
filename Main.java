@@ -33,35 +33,44 @@ public class Main {
         System.out.println("5. Interpolasi Bicubic Spline");
         System.out.println("6. Regresi Linier Berganda");
         System.out.println("7. Keluar Program");
+        System.out.println("-----------------------------");
     }
 
     public static void display_submenu_1() {
-        System.out.println("Sistem Persamaan Linier :");
+        System.out.println("* Sistem Persamaan Linier");
+        System.out.println("--------------------------------");
         System.out.println("1. Metode Eliminasi Gauss");
         System.out.println("2. Metode Eliminasi Gauss-Jordan");
         System.out.println("3. Metode Matriks Balikan");
         System.out.println("4. Kaidah Cramer");
         System.out.println("5. Balik ke Menu Utama");
+        System.out.println("--------------------------------");
     }
 
     public static void display_submenu_2() {
-        System.out.println("Determinan :");
+        System.out.println("*  Determinan");
+        System.out.println("--------------------------");
         System.out.println("1. Metode Reduksi Baris");
         System.out.println("2. Metode Ekpansi Kofaktor");
         System.out.println("3. Balik ke Menu Utama");
+        System.out.println("--------------------------");
     }
 
     public static void display_submenu_3() {
-        System.out.println("Matriks Balikan :");
+        System.out.println("*  Matriks Balikan");
+        System.out.println("--------------------------------------");
         System.out.println("1. Metode Matriks Adjoin");
         System.out.println("2. Metode Transformasi Baris Elementer");
         System.out.println("3. Balik ke Menu Utama");
+        System.out.println("--------------------------------------");
     }
 
     public static void display_input_options() {
-        System.out.println("Opsi Memasukkan Matriks :");
+        System.out.println("*  Opsi Memasukkan Matriks");
+        System.out.println("--------------------------");
         System.out.println("1. Dari Command Line");
         System.out.println("2. Dari File .txt");
+        System.out.println("--------------------------");
     }
 
     public static int valid_input_choice(Scanner scanner, int range_from, int range_to) {
@@ -145,7 +154,7 @@ public class Main {
 
                     if (matrix.is_not_empty()) {
                         if (sub_choice == 1) {
-                            //Determinan reduksi baris
+                            matrix.determinant_row_reduction();
                         } else {
                             //Determinan ekspansi kofaktor
                         }

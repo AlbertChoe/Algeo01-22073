@@ -112,26 +112,31 @@ public class Matrix {
             this.set_new_size(row_count, col_count);
             scanner.close();
         } catch (FileNotFoundException e) {
-            System.out.println("File " + file_name + " tidak ditemukan.");
+            System.out.println("Baca file gagal. File " + file_name + " tidak ditemukan.");
         }
     }
 
     public void read_matrix_from_file(Scanner scanner) {
         System.out.print("Masukkan nama file beserta extension (.txt) : ");
         String file_name = scanner.nextLine();
-        try {
-            determine_matrix_size_from_file(file_name);
-            File file = new File(file_name);
-            Scanner file_scanner = new Scanner(file);
-            for (int i = 0; i < this.get_row(); i++) {
-                for (int j = 0; j < this.get_col(); j++) {
-                    this.set_elmt(i, j, file_scanner.nextDouble());
+        file_name.strip();
+        if (file_name.contains(".txt")) {
+            try {
+                determine_matrix_size_from_file(file_name);
+                File file = new File(file_name);
+                Scanner file_scanner = new Scanner(file);
+                for (int i = 0; i < this.get_row(); i++) {
+                    for (int j = 0; j < this.get_col(); j++) {
+                        this.set_elmt(i, j, file_scanner.nextDouble());
+                    }
                 }
+                file_scanner.close();
+                System.out.println("Matrix berhasil terbaca.");
+            } catch (FileNotFoundException e) {
+                return;
             }
-            file_scanner.close();
-            System.out.println("Matrix berhasil terbaca.");
-        } catch (FileNotFoundException e) {
-            return;
+        } else {
+            System.out.println("Baca file gagal. File bukan file txt.");
         }
     }
 
@@ -159,6 +164,7 @@ public class Matrix {
         return val;
     }
 
+    //TODO: salah anjeng
     public void determinant_row_reduction() {
         System.out.println();
         System.out.println("Matriks masukan");
@@ -168,7 +174,7 @@ public class Matrix {
 
             int row_to_swap = -1;
             if (this.get_elmt(j, j) == 0) {
-                for (int i = 0; i < this.get_row(); i++) {
+                for (int i = j; i < this.get_row(); i++) {
                     if (this.get_elmt(i, j) != 0) {
                         row_to_swap = i;
                         break;
@@ -181,28 +187,35 @@ public class Matrix {
                 this.data[j] = this.data[row_to_swap];
                 this.data[row_to_swap] = temp;
                 swap += 1;
-                System.out.println(String.format("Baris %d ditukar dengan baris %d", j + 1, row_to_swap + 1));
+                System.out.println(String.format("Baris %d ditukar dengan Baris %d", j + 1, row_to_swap + 1));
                 this.print_matrix();
             }
             
             for (int row = j + 1; row < this.get_row(); row++) {
+                System.out.println(row);
                 if (row != row_to_swap || this.get_elmt(row, j) != 0) {
                     double x = Math.abs(this.get_elmt(row, j));
                     double y = Math.abs(this.get_elmt(j, j));
+                    if (y == 0 || x == 0) {
+                        continue;
+                    }
                     double factor = x/y;
-
-                    if (this.get_elmt(row, j) > 0) {
+                    if ((this.get_elmt(row, j) > 0 && this.get_elmt(j, j) > 0) || (this.get_elmt(row, j) < 0 && this.get_elmt(j, j) < 0)) {
                         this.el_row_op(row, j, -1 * factor);
-                        if (factor != 1) {
-                            System.out.println(String.format("Baris %d - %.2f/%.2f Baris %d", row + 1, x, y, j + 1));
+                        if (factor - Math.round(factor) == 0) {
+                            System.out.println(String.format("Baris %d - (%.0f)Baris %d", row + 1, factor, j + 1));
+                        } else if (factor != 1) {
+                            System.out.println(String.format("Baris %d - (%.2f/%.2f)Baris %d", row + 1, x, y, j + 1));
                         } else {
                             System.out.println(String.format("Baris %d - Baris %d", row + 1, j + 1));
                         }
                         this.print_matrix();
                     } else {
                         this.el_row_op(row, j, factor);
-                        if (factor != 1) {
-                            System.out.println(String.format("Baris %d + %.2f/%.2f Baris %d", row + 1, x, y, j + 1));
+                        if (factor - Math.round(factor) == 0) {
+                            System.out.println(String.format("Baris %d + (%.0f)Baris %d", row + 1, factor, j + 1));
+                        } else if (factor != 1) {
+                            System.out.println(String.format("Baris %d + (%.2f/%.2f)Baris %d", row + 1, x, y, j + 1));
                         } else {
                             System.out.println(String.format("Baris %d + Baris %d", row + 1, j + 1));
                         }
@@ -224,7 +237,10 @@ public class Matrix {
     }
 
     public void determinant_cofactor_expansion() {
-        
+        System.out.println();
+        System.out.println("Matriks masukan");
+        this.print_matrix();
+        System.out.println("Matriks Kofaktor");
     }
 
     public boolean is_matrix_upper_triangle() {
