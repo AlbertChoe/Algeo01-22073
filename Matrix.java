@@ -165,7 +165,7 @@ public class Matrix {
     private void el_row_op(int row_operated, int row_operator, double factor) {
         for (int j = 0; j < this.get_col(); j++) {
             this.data[row_operated][j] += factor * this.get_elmt(row_operator, j);
-            this.data[row_operated][j] = round_three_decimals(this.data[row_operated][j]);
+            this.data[row_operated][j] = this.data[row_operated][j];
         }
     };
     
@@ -319,7 +319,7 @@ public class Matrix {
         Matrix cof_matrix = this.find_cofactor_matrix();
         System.out.println("Matriks Kofaktor dari Matriks Masukan");
         cof_matrix.print_matrix();
-        System.out.println("Perhitungan akan menggunakan baris bertama.");
+        System.out.println("Perhitungan akan menggunakan baris pertama.");
         System.out.print("Determinan = ");
         double determinant = this.get_elmt(0, 0) * cof_matrix.get_elmt(0, 0);
         System.out.print(String.format("(%.2f) x (%.2f)", this.get_elmt(0, 0), cof_matrix.get_elmt(0, 0)));
