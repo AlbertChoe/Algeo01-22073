@@ -8,11 +8,11 @@ public class Matrix {
     private int n_col;
     private double[][] data;
 
-    //default constructor
+    // default constructor
     public Matrix() {
         this.n_row = 0;
         this.n_col = 0;
-        this.data = new double[0][0];  
+        this.data = new double[0][0];
     }
 
     public Matrix(int n_row, int n_col) {
@@ -66,7 +66,8 @@ public class Matrix {
     }
 
     public static int valid_int_input(Scanner scanner, String message, int range_from) {
-        String err_msg = String.format(">> Tidak valid. Hanya menerima input bilangan bulat lebih besar dari %d!", range_from);
+        String err_msg = String.format(">> Tidak valid. Hanya menerima input bilangan bulat lebih besar dari %d!",
+                range_from);
 
         while (true) {
             System.out.print(message);
@@ -84,9 +85,11 @@ public class Matrix {
         }
     }
 
-    /* Scanner standard untuk semua case (bebas baris dan kolom) bisa untuk apa aja,
-    Scanner khusus untuk SPL nanti */
-    public void read_matrix_scan(Scanner scanner) {  
+    /*
+     * Scanner standard untuk semua case (bebas baris dan kolom) bisa untuk apa aja,
+     * Scanner khusus untuk SPL nanti
+     */
+    public void read_matrix_scan(Scanner scanner) {
         int row = valid_int_input(scanner, "Masukkan jumlah baris matriks : ", 0);
         int col = valid_int_input(scanner, "Masukkan jumlah kolom matriks : ", 0);
         this.set_new_size(row, col);
@@ -99,8 +102,8 @@ public class Matrix {
         scanner.nextLine();
     }
 
-    //Scanner matriks untuk matriks persegi
-    public void read_square_matrix_scan(Scanner scanner, int min_dimension) {  
+    // Scanner matriks untuk matriks persegi
+    public void read_square_matrix_scan(Scanner scanner, int min_dimension) {
         int dimension = valid_int_input(scanner, "Masukkan dimensi matriks persegi : ", min_dimension - 1);
         this.set_new_size(dimension, dimension);
         System.out.println(String.format("Masukkan matriks %dx%d : ", this.get_row(), this.get_col()));
@@ -175,7 +178,7 @@ public class Matrix {
             this.data[row_operated][j] = this.data[row_operated][j];
         }
     };
-    
+
     public static double round_x_decimals(double val, int x) {
         val *= Math.pow(10, x);
         val = Math.round(val);
@@ -197,9 +200,9 @@ public class Matrix {
                         row_to_swap = i;
                         break;
                     }
-                }                
+                }
             }
-            
+
             if (row_to_swap != -1) {
                 double[] temp = this.data[j];
                 this.data[j] = this.data[row_to_swap];
@@ -208,7 +211,7 @@ public class Matrix {
                 System.out.println(String.format("Baris %d ditukar dengan Baris %d", j + 1, row_to_swap + 1));
                 this.print_matrix(2);
             }
-            
+
             for (int row = j + 1; row < this.get_row(); row++) {
                 if (row != row_to_swap || this.get_elmt(row, j) != 0) {
                     double x = Math.abs(this.get_elmt(row, j));
@@ -216,8 +219,9 @@ public class Matrix {
                     if (y == 0 || x == 0) {
                         continue;
                     }
-                    double factor = x/y;
-                    if ((this.get_elmt(row, j) > 0 && this.get_elmt(j, j) > 0) || (this.get_elmt(row, j) < 0 && this.get_elmt(j, j) < 0)) {
+                    double factor = x / y;
+                    if ((this.get_elmt(row, j) > 0 && this.get_elmt(j, j) > 0)
+                            || (this.get_elmt(row, j) < 0 && this.get_elmt(j, j) < 0)) {
                         this.el_row_op(row, j, -1 * factor);
                         if (factor - Math.round(factor) == 0) {
                             System.out.println(String.format("Baris %d - (%.0f)Baris %d", row + 1, factor, j + 1));
@@ -257,7 +261,7 @@ public class Matrix {
     private static double find_determinant(Matrix m) {
         if (m.get_row() == 1 && m.get_col() == 1) {
             return m.get_elmt(0, 0);
-        } 
+        }
         if (m.get_row() == 2 && m.get_col() == 2) {
             return (m.get_elmt(0, 0) * m.get_elmt(1, 1)) - (m.get_elmt(0, 1) * m.get_elmt(1, 0));
         } else {
@@ -267,7 +271,7 @@ public class Matrix {
                 int length = m.get_row() - 1;
                 Matrix submatrix = new Matrix(length, length);
                 int a, b;
-                int subi = 0; 
+                int subi = 0;
                 for (a = 0; a < m.get_row(); a++) {
                     if (a == i) {
                         continue;
@@ -279,7 +283,7 @@ public class Matrix {
                     }
                     subi += 1;
                 }
-                
+
                 double temp = m.get_elmt(i, 0) * find_determinant(submatrix);
                 if (i % 2 == 1) {
                     temp *= -1;
@@ -331,7 +335,7 @@ public class Matrix {
         System.out.println("Matriks Kofaktor dari Matriks Masukan");
         cof_matrix.print_matrix(2);
         if (this.get_col() == 1) {
-            System.out.println(String.format("Determinan = %.2f", this.get_elmt(0,0)));
+            System.out.println(String.format("Determinan = %.2f", this.get_elmt(0, 0)));
             return;
         }
         System.out.println("Perhitungan akan menggunakan baris pertama.");
@@ -349,7 +353,7 @@ public class Matrix {
     public boolean is_matrix_upper_triangle() {
         boolean triangle = true;
         for (int i = 1; i < this.get_row(); i++) {
-            for (int j = 0; j < i; j ++) {
+            for (int j = 0; j < i; j++) {
                 if (this.get_elmt(i, j) != 0) {
                     triangle = false;
                     break;
@@ -390,7 +394,7 @@ public class Matrix {
         Matrix adjoin = cofactor.transpose();
         System.out.println("Adjoin matriks dari matriks masukan");
         adjoin.print_matrix(2);
-        double factor = 1/determinant;
+        double factor = 1 / determinant;
         System.out.println(String.format("Matriks balikan = (1/%.3f) * Adjoin matriks masukan", determinant));
         for (int i = 0; i < adjoin.get_row(); i++) {
             for (int j = 0; j < adjoin.get_col(); j++) {
@@ -401,13 +405,15 @@ public class Matrix {
         adjoin.print_matrix(3);
     }
 
-    /* Return invers dari matrix. 
-    Prekondisi : Matriks bukan singular (determinan != 0) dan dimensi >= 2 */
+    /*
+     * Return invers dari matrix.
+     * Prekondisi : Matriks bukan singular (determinan != 0) dan dimensi >= 2
+     */
     private Matrix find_inverse() {
         double determinant = find_determinant(this);
         Matrix cofactor = this.find_cofactor_matrix();
         Matrix adjoin = cofactor.transpose();
-        double factor = 1/determinant;
+        double factor = 1 / determinant;
         for (int i = 0; i < adjoin.get_row(); i++) {
             for (int j = 0; j < adjoin.get_col(); j++) {
                 adjoin.set_elmt(i, j, factor * adjoin.get_elmt(i, j));
@@ -415,4 +421,100 @@ public class Matrix {
         }
         return adjoin;
     }
+
+    // #Albert
+    // Mengecek apakah ada baris yang 0 semuanya
+    public boolean is_baris_0() {
+        boolean flag;
+        flag = true;
+        for (int i = 0; i < this.get_row(); i++) {
+            flag = true;
+            for (int j = 0; j < this.get_col(); j++) {
+                if (this.data[i][j] != 0) {
+                    flag = false;
+                    break;
+                }
+            }
+            if (flag) {
+                return flag;
+            }
+        }
+        return false;
+    }
+
+    // Membuat matriks agar tidak ada baris yang 0 semua di tengah tengah
+    // contoh
+    // 0 0 0 0 0 6
+    // 0 0 0 menjadi 0 0 0
+    // 0 0 6 0 0 0
+    // 0 0 0 0 6 6
+    // 0 6 6 menjadi 0 0 6
+    // 0 0 6 0 0 0
+    public void atur_baris_rapi() {
+        int[] listidxbukan0 = new int[this.get_row()];
+        int idx = 0;
+        boolean flag = false;
+        for (int i = 0; i < this.get_row(); i++) {
+            flag = false;
+            for (int j = 0; j < this.get_col(); j++) {
+                if (this.get_elmt(i, j) != 0) {
+                    listidxbukan0[idx] = this.get_row() - j;
+                    flag = true;
+                    idx++;
+                    break;
+                }
+            }
+            if (!flag) {
+                listidxbukan0[idx] = 0;
+                idx++;
+            }
+        }
+
+        for (int i = 0; i < this.get_row() - 1; i++) {
+            flag = false;
+            for (int j = 0; j < this.get_row() - i - 1; j++) {
+                if (listidxbukan0[j] < listidxbukan0[j + 1]) {
+                    double[] temp1 = this.data[j];
+                    this.data[j] = this.data[j + 1];
+                    this.data[j + 1] = temp1;
+                    int temp = listidxbukan0[j];
+                    listidxbukan0[j] = listidxbukan0[j + 1];
+                    listidxbukan0[j + 1] = temp;
+                    flag = true;
+                }
+            }
+            if (!flag) {
+                break;
+            }
+        }
+    }
+
+    public void eliminasi_gauss() {
+        this.determinant_row_reduction();
+        if (this.is_baris_0()) {
+            this.atur_baris_rapi();
+        }
+        boolean sebaris0 = false;
+        for (int i = 0; i < this.n_row; i++) {
+            for (int j = 0; j < this.get_col(); j++) {
+                if (this.get_elmt(i, j) == 1) {
+                    sebaris0 = false;
+                    break;
+                } else if (this.get_elmt(i, j) != 0 && this.get_elmt(i, j) != 1) {
+                    sebaris0 = false;
+                    double pembagi = get_elmt(i, j);
+                    for (int k = j; k < this.get_col(); k++) {
+                        this.set_elmt(i, k, get_elmt(i, k) / pembagi);
+                    }
+                    break;
+                } else if (this.get_elmt(i, j) == 0) {
+                    sebaris0 = true;
+                }
+            }
+            if (sebaris0) {
+                break;
+            }
+        }
+    }
+
 }
