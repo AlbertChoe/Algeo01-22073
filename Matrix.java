@@ -164,7 +164,6 @@ public class Matrix {
         return val;
     }
 
-    //TODO: salah anjeng
     public void determinant_row_reduction() {
         System.out.println();
         System.out.println("Matriks masukan");
