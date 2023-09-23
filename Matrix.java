@@ -59,8 +59,14 @@ public class Matrix {
         return !this.is_empty();
     }
 
-    public static int valid_int_input(Scanner scanner, String message) {
-        String err_msg = String.format(">> Tidak valid. Hanya menerima input bilangan bulat positif!");
+    private static String format_x_precision(double val, int x) {
+        String format_string = String.format("%%.%df", x);
+        String formatted_value = String.format(format_string, val);
+        return formatted_value;
+    }
+
+    public static int valid_int_input(Scanner scanner, String message, int range_from) {
+        String err_msg = String.format(">> Tidak valid. Hanya menerima input bilangan bulat lebih besar dari %d!", range_from);
 
         while (true) {
             System.out.print(message);
@@ -68,7 +74,7 @@ public class Matrix {
 
             try {
                 int num = Integer.parseInt(input);
-                if (num > 0) {
+                if (num > range_from) {
                     return num;
                 }
                 System.out.println(err_msg);
@@ -81,8 +87,8 @@ public class Matrix {
     /* Scanner standard untuk semua case (bebas baris dan kolom) bisa untuk apa aja,
     Scanner khusus untuk SPL nanti */
     public void read_matrix_scan(Scanner scanner) {  
-        int row = valid_int_input(scanner, "Masukkan jumlah baris matriks : ");
-        int col = valid_int_input(scanner, "Masukkan jumlah kolom matriks : ");
+        int row = valid_int_input(scanner, "Masukkan jumlah baris matriks : ", 0);
+        int col = valid_int_input(scanner, "Masukkan jumlah kolom matriks : ", 0);
         this.set_new_size(row, col);
         System.out.println(String.format("Masukkan matriks %dx%d : ", this.get_row(), this.get_col()));
         for (int i = 0; i < this.get_row(); i++) {
@@ -94,8 +100,8 @@ public class Matrix {
     }
 
     //Scanner matriks untuk matriks persegi
-    public void read_square_matrix_scan(Scanner scanner) {  
-        int dimension = valid_int_input(scanner, "Masukkan dimensi matriks persegi : ");
+    public void read_square_matrix_scan(Scanner scanner, int min_dimension) {  
+        int dimension = valid_int_input(scanner, "Masukkan dimensi matriks persegi : ", min_dimension - 1);
         this.set_new_size(dimension, dimension);
         System.out.println(String.format("Masukkan matriks %dx%d : ", this.get_row(), this.get_col()));
         for (int i = 0; i < this.get_row(); i++) {
@@ -152,10 +158,11 @@ public class Matrix {
         }
     }
 
-    public void print_matrix() {
+    public void print_matrix(int x_decimal_places) {
         for (int i = 0; i < this.get_row(); i++) {
             for (int j = 0; j < this.get_col(); j++) {
-                System.out.print(String.format("%.2f ", this.get_elmt(i, j)));
+                String out = format_x_precision(this.get_elmt(i, j), x_decimal_places);
+                System.out.print(String.format(out + " "));
             }
             System.out.println();
         }
@@ -169,17 +176,17 @@ public class Matrix {
         }
     };
     
-    public static double round_three_decimals(double val) {
-        val *= 1000;
+    public static double round_x_decimals(double val, int x) {
+        val *= Math.pow(10, x);
         val = Math.round(val);
-        val /= 1000;
+        val /= Math.pow(10, x);
         return val;
     }
 
     public void determinant_row_reduction() {
         System.out.println();
         System.out.println("Matriks yang dimasukkan");
-        this.print_matrix();
+        this.print_matrix(2);
         int swap = 0;
         for (int j = 0; j < this.get_col() - 1; j++) {
 
@@ -199,7 +206,7 @@ public class Matrix {
                 this.data[row_to_swap] = temp;
                 swap += 1;
                 System.out.println(String.format("Baris %d ditukar dengan Baris %d", j + 1, row_to_swap + 1));
-                this.print_matrix();
+                this.print_matrix(2);
             }
             
             for (int row = j + 1; row < this.get_row(); row++) {
@@ -219,7 +226,7 @@ public class Matrix {
                         } else {
                             System.out.println(String.format("Baris %d - Baris %d", row + 1, j + 1));
                         }
-                        this.print_matrix();
+                        this.print_matrix(2);
                     } else {
                         this.el_row_op(row, j, factor);
                         if (factor - Math.round(factor) == 0) {
@@ -229,7 +236,7 @@ public class Matrix {
                         } else {
                             System.out.println(String.format("Baris %d + Baris %d", row + 1, j + 1));
                         }
-                        this.print_matrix();
+                        this.print_matrix(2);
                     }
                 }
             }
@@ -243,7 +250,7 @@ public class Matrix {
             determinant *= this.get_elmt(i, i);
         }
         determinant *= Math.pow(-1, swap);
-        determinant = round_three_decimals(determinant);
+        determinant = round_x_decimals(determinant, 3);
         System.out.println(String.format(" = %.2f", determinant));
     }
 
@@ -309,7 +316,7 @@ public class Matrix {
                     }
                     subi += 1;
                 }
-                double temp = round_three_decimals(Math.pow(-1, i + j) * find_determinant(submatrix));
+                double temp = round_x_decimals(Math.pow(-1, i + j) * find_determinant(submatrix), 3);
                 cofactor.set_elmt(i, j, temp);
             }
         }
@@ -319,10 +326,14 @@ public class Matrix {
     public void determinant_cofactor_expansion() {
         System.out.println();
         System.out.println("Matriks yang dimasukkan");
-        this.print_matrix();
+        this.print_matrix(2);
         Matrix cof_matrix = this.find_cofactor_matrix();
         System.out.println("Matriks Kofaktor dari Matriks Masukan");
-        cof_matrix.print_matrix();
+        cof_matrix.print_matrix(2);
+        if (this.get_col() == 1) {
+            System.out.println(String.format("Determinan = %.2f", this.get_elmt(0,0)));
+            return;
+        }
         System.out.println("Perhitungan akan menggunakan baris pertama.");
         System.out.print("Determinan = ");
         double determinant = this.get_elmt(0, 0) * cof_matrix.get_elmt(0, 0);
@@ -331,7 +342,7 @@ public class Matrix {
             determinant += this.get_elmt(0, j) * cof_matrix.get_elmt(0, j);
             System.out.print(String.format(" + (%.2f) x (%.2f)", this.get_elmt(0, j), cof_matrix.get_elmt(0, j)));
         }
-        determinant = round_three_decimals(determinant);
+        determinant = round_x_decimals(determinant, 3);
         System.out.println(String.format(" = %.2f", determinant));
     }
 
@@ -351,7 +362,7 @@ public class Matrix {
         return triangle;
     }
 
-    public Matrix transpose() {
+    private Matrix transpose() {
         Matrix m2 = new Matrix(this.n_row, this.n_col);
         for (int i = 0; i < this.get_row(); i++) {
             for (int j = 0; j < this.get_col(); j++) {
@@ -359,5 +370,49 @@ public class Matrix {
             }
         }
         return m2;
+    }
+
+    public void inverse_adjoint() {
+        System.out.println();
+        System.out.println("Matriks yang dimasukkan");
+        this.print_matrix(2);
+        double determinant = find_determinant(this);
+
+        if (determinant == 0) {
+            System.out.println("Determinan matriks adalah 0.");
+            System.out.println("Sehingga matriks tidak mempunyai matriks balikan.");
+            System.out.println("Matriks masukan adalah matriks tunggal(singular).");
+            return;
+        }
+        System.out.println(String.format("Determinan matriks masukan : %.2f", determinant));
+        System.out.println();
+        Matrix cofactor = this.find_cofactor_matrix();
+        Matrix adjoin = cofactor.transpose();
+        System.out.println("Adjoin matriks dari matriks masukan");
+        adjoin.print_matrix(2);
+        double factor = 1/determinant;
+        System.out.println(String.format("Matriks balikan = (1/%.3f) * Adjoin matriks masukan", determinant));
+        for (int i = 0; i < adjoin.get_row(); i++) {
+            for (int j = 0; j < adjoin.get_col(); j++) {
+                adjoin.set_elmt(i, j, factor * adjoin.get_elmt(i, j));
+            }
+        }
+        System.out.println("Matriks balikan (Inverse matriks) yang didapat");
+        adjoin.print_matrix(3);
+    }
+
+    /* Return invers dari matrix. 
+    Prekondisi : Matriks bukan singular (determinan != 0) dan dimensi >= 2 */
+    private Matrix find_inverse() {
+        double determinant = find_determinant(this);
+        Matrix cofactor = this.find_cofactor_matrix();
+        Matrix adjoin = cofactor.transpose();
+        double factor = 1/determinant;
+        for (int i = 0; i < adjoin.get_row(); i++) {
+            for (int j = 0; j < adjoin.get_col(); j++) {
+                adjoin.set_elmt(i, j, factor * adjoin.get_elmt(i, j));
+            }
+        }
+        return adjoin;
     }
 }

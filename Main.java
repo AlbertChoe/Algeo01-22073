@@ -131,7 +131,7 @@ public class Main {
 
                     //PRINT MATRIX FOR TESTING!
                     System.out.println("(TEST) inputted matrix : ");
-                    matrix.print_matrix();
+                    matrix.print_matrix(2);
 
                     press_to_menu(scanner);
                 } else {
@@ -149,7 +149,7 @@ public class Main {
                     int input_option = valid_input_choice(scanner, 1, 2);
                     clear_terminal();
                     if (input_option == 1) {
-                        matrix.read_square_matrix_scan(scanner);
+                        matrix.read_square_matrix_scan(scanner, 1);
                     } else {
                         matrix.read_matrix_from_file(scanner);
                     }
@@ -179,14 +179,14 @@ public class Main {
                     int input_option = valid_input_choice(scanner, 1, 2);
                     clear_terminal();
                     if (input_option == 1) {
-                        matrix.read_square_matrix_scan(scanner);
+                        matrix.read_square_matrix_scan(scanner, 2);
                     } else {
                         matrix.read_matrix_from_file(scanner);
                     }
 
                     if (matrix.is_not_empty()) {
                         if (sub_choice == 1) {
-                            //Matriks balikan metode matriks adjoin
+                            matrix.inverse_adjoint();
                         } else {
                             //Matriks balikan metode transformasi baris el.
                         }
