@@ -203,7 +203,6 @@ public class Matrix {
             }
             
             for (int row = j + 1; row < this.get_row(); row++) {
-                System.out.println(row);
                 if (row != row_to_swap || this.get_elmt(row, j) != 0) {
                     double x = Math.abs(this.get_elmt(row, j));
                     double y = Math.abs(this.get_elmt(j, j));
@@ -244,14 +243,92 @@ public class Matrix {
             determinant *= this.get_elmt(i, i);
         }
         determinant *= Math.pow(-1, swap);
+        determinant = round_three_decimals(determinant);
         System.out.println(String.format(" = %.2f", determinant));
+    }
+
+    private static double find_determinant(Matrix m) {
+        if (m.get_row() == 1 && m.get_col() == 1) {
+            return m.get_elmt(0, 0);
+        } 
+        if (m.get_row() == 2 && m.get_col() == 2) {
+            return (m.get_elmt(0, 0) * m.get_elmt(1, 1)) - (m.get_elmt(0, 1) * m.get_elmt(1, 0));
+        } else {
+            double determinant_total = 0;
+            int i;
+            for (i = 0; i < m.get_row(); i++) {
+                int length = m.get_row() - 1;
+                Matrix submatrix = new Matrix(length, length);
+                int a, b;
+                int subi = 0; 
+                for (a = 0; a < m.get_row(); a++) {
+                    if (a == i) {
+                        continue;
+                    }
+                    int subj = 0;
+                    for (b = 1; b < m.get_col(); b++) {
+                        submatrix.data[subi][subj] = m.get_elmt(a, b);
+                        subj += 1;
+                    }
+                    subi += 1;
+                }
+                
+                double temp = m.get_elmt(i, 0) * find_determinant(submatrix);
+                if (i % 2 == 1) {
+                    temp *= -1;
+                }
+                determinant_total += temp;
+            }
+            return determinant_total;
+        }
+    };
+
+    private Matrix find_cofactor_matrix() {
+        Matrix cofactor = new Matrix(this.get_row(), this.get_col());
+        for (int i = 0; i < this.get_row(); i++) {
+            for (int j = 0; j < this.get_col(); j++) {
+                int length = this.get_row() - 1;
+                Matrix submatrix = new Matrix(length, length);
+                int subi, subj;
+                subi = 0;
+                for (int a = 0; a < length + 1; a++) {
+                    if (a == i) {
+                        continue;
+                    }
+                    subj = 0;
+                    for (int b = 0; b < length + 1; b++) {
+                        if (b == j) {
+                            continue;
+                        }
+                        submatrix.set_elmt(subi, subj, this.get_elmt(a, b));
+                        subj += 1;
+                    }
+                    subi += 1;
+                }
+                double temp = round_three_decimals(Math.pow(-1, i + j) * find_determinant(submatrix));
+                cofactor.set_elmt(i, j, temp);
+            }
+        }
+        return cofactor;
     }
 
     public void determinant_cofactor_expansion() {
         System.out.println();
-        System.out.println("Matriks masukan");
+        System.out.println("Matriks yang dimasukkan");
         this.print_matrix();
-        System.out.println("Matriks Kofaktor");
+        Matrix cof_matrix = this.find_cofactor_matrix();
+        System.out.println("Matriks Kofaktor dari Matriks Masukan");
+        cof_matrix.print_matrix();
+        System.out.println("Perhitungan akan menggunakan baris bertama.");
+        System.out.print("Determinan = ");
+        double determinant = this.get_elmt(0, 0) * cof_matrix.get_elmt(0, 0);
+        System.out.print(String.format("(%.2f) x (%.2f)", this.get_elmt(0, 0), cof_matrix.get_elmt(0, 0)));
+        for (int j = 1; j < this.get_col(); j++) {
+            determinant += this.get_elmt(0, j) * cof_matrix.get_elmt(0, j);
+            System.out.print(String.format(" + (%.2f) x (%.2f)", this.get_elmt(0, j), cof_matrix.get_elmt(0, j)));
+        }
+        determinant = round_three_decimals(determinant);
+        System.out.println(String.format(" = %.2f", determinant));
     }
 
     public boolean is_matrix_upper_triangle() {
@@ -272,8 +349,8 @@ public class Matrix {
 
     public Matrix transpose() {
         Matrix m2 = new Matrix(this.n_row, this.n_col);
-        for (int i = 0; i < get_row(); i++) {
-            for (int j = 0; j < get_col(); j++) {
+        for (int i = 0; i < this.get_row(); i++) {
+            for (int j = 0; j < this.get_col(); j++) {
                 m2.data[i][j] = this.data[j][i];
             }
         }

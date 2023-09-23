@@ -158,7 +158,7 @@ public class Main {
                         if (sub_choice == 1) {
                             matrix.determinant_row_reduction();
                         } else {
-                            //Determinan ekspansi kofaktor
+                            matrix.determinant_cofactor_expansion();
                         }
                     }
 

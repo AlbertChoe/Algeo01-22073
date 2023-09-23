@@ -7,7 +7,6 @@ public class Test {
         Scanner scanner = new Scanner(System.in);
         Matrix test_matrix = new Matrix(0,0);
         test_matrix.read_matrix_scan(scanner);
-        test_matrix.determinant_row_reduction();
         scanner.close();
     }
 }
