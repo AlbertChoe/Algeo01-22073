@@ -79,12 +79,24 @@ public class Matrix {
     }
 
     /* Scanner standard untuk semua case (bebas baris dan kolom) bisa untuk apa aja,
-    Scanner khusus untuk SPL atau untuk matriks persegi buat determinan + invers mungkin dibuat tapi
-    setelah semua soal selesai */
+    Scanner khusus untuk SPL nanti */
     public void read_matrix_scan(Scanner scanner) {  
         int row = valid_int_input(scanner, "Masukkan jumlah baris matriks : ");
         int col = valid_int_input(scanner, "Masukkan jumlah kolom matriks : ");
         this.set_new_size(row, col);
+        System.out.println(String.format("Masukkan matriks %dx%d : ", this.get_row(), this.get_col()));
+        for (int i = 0; i < this.get_row(); i++) {
+            for (int j = 0; j < this.get_col(); j++) {
+                this.data[i][j] = scanner.nextDouble();
+            }
+        }
+        scanner.nextLine();
+    }
+
+    //Scanner matriks untuk matriks persegi
+    public void read_square_matrix_scan(Scanner scanner) {  
+        int dimension = valid_int_input(scanner, "Masukkan dimensi matriks persegi : ");
+        this.set_new_size(dimension, dimension);
         System.out.println(String.format("Masukkan matriks %dx%d : ", this.get_row(), this.get_col()));
         for (int i = 0; i < this.get_row(); i++) {
             for (int j = 0; j < this.get_col(); j++) {
@@ -166,7 +178,7 @@ public class Matrix {
 
     public void determinant_row_reduction() {
         System.out.println();
-        System.out.println("Matriks masukan");
+        System.out.println("Matriks yang dimasukkan");
         this.print_matrix();
         int swap = 0;
         for (int j = 0; j < this.get_col() - 1; j++) {

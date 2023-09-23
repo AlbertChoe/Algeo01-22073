@@ -110,6 +110,7 @@ public class Main {
                     Matrix matrix = new Matrix();
                     display_input_options();
                     int input_option = valid_input_choice(scanner, 1, 2);
+                    clear_terminal();
                     if (input_option == 1) {
                         matrix.read_matrix_scan(scanner);
                     } else {
@@ -146,8 +147,9 @@ public class Main {
                     Matrix matrix = new Matrix();
                     display_input_options();
                     int input_option = valid_input_choice(scanner, 1, 2);
+                    clear_terminal();
                     if (input_option == 1) {
-                        matrix.read_matrix_scan(scanner);
+                        matrix.read_square_matrix_scan(scanner);
                     } else {
                         matrix.read_matrix_from_file(scanner);
                     }
@@ -175,8 +177,9 @@ public class Main {
                     Matrix matrix = new Matrix();
                     display_input_options();
                     int input_option = valid_input_choice(scanner, 1, 2);
+                    clear_terminal();
                     if (input_option == 1) {
-                        matrix.read_matrix_scan(scanner);
+                        matrix.read_square_matrix_scan(scanner);
                     } else {
                         matrix.read_matrix_from_file(scanner);
                     }
