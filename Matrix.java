@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.lang.Math;
 
 public class Matrix {
     private int n_row;
@@ -137,7 +138,7 @@ public class Matrix {
     public void print_matrix() {
         for (int i = 0; i < this.get_row(); i++) {
             for (int j = 0; j < this.get_col(); j++) {
-                System.out.print(String.format("%.1f ", this.get_elmt(i, j)));
+                System.out.print(String.format("%.2f ", this.get_elmt(i, j)));
             }
             System.out.println();
         }
@@ -147,14 +148,23 @@ public class Matrix {
     private void el_row_op(int row_operated, int row_operator, double factor) {
         for (int j = 0; j < this.get_col(); j++) {
             this.data[row_operated][j] += factor * this.get_elmt(row_operator, j);
+            this.data[row_operated][j] = round_three_decimals(this.data[row_operated][j]);
         }
     };
-
-    //TODO: wrong calc
+    
+    public static double round_three_decimals(double val) {
+        val *= 1000;
+        val = Math.round(val);
+        val /= 1000;
+        return val;
+    }
+    
     public void determinant_row_reduction() {
+        System.out.println();
+        System.out.println("Matriks masukan");
+        this.print_matrix();
         int swap = 0;
         for (int j = 0; j < this.get_col() - 1; j++) {
-
 
             int row_to_swap = -1;
             if (this.get_elmt(j, j) == 0) {
@@ -175,17 +185,16 @@ public class Matrix {
                 this.print_matrix();
             }
             
-            //SALAH DISINI
             for (int row = j + 1; row < this.get_row(); row++) {
                 if (row != row_to_swap || this.get_elmt(row, j) != 0) {
-                    double x = this.get_elmt(row, j);
-                    double y = this.get_elmt(j, j);
+                    double x = Math.abs(this.get_elmt(row, j));
+                    double y = Math.abs(this.get_elmt(j, j));
                     double factor = x/y;
 
-                    if (factor < 0) {
+                    if (this.get_elmt(row, j) > 0) {
                         this.el_row_op(row, j, -1 * factor);
                         if (factor != 1) {
-                            System.out.println(String.format("Baris %d - %.1f/%.1f Baris %d", row + 1, x, y, j + 1));
+                            System.out.println(String.format("Baris %d - %.2f/%.2f Baris %d", row + 1, x, y, j + 1));
                         } else {
                             System.out.println(String.format("Baris %d - Baris %d", row + 1, j + 1));
                         }
@@ -193,7 +202,7 @@ public class Matrix {
                     } else {
                         this.el_row_op(row, j, factor);
                         if (factor != 1) {
-                            System.out.println(String.format("Baris %d + %.1f/%.1f Baris %d", row + 1, x, y, j + 1));
+                            System.out.println(String.format("Baris %d + %.2f/%.2f Baris %d", row + 1, x, y, j + 1));
                         } else {
                             System.out.println(String.format("Baris %d + Baris %d", row + 1, j + 1));
                         }
@@ -202,6 +211,16 @@ public class Matrix {
                 }
             }
         }
+        System.out.println(String.format("Total pertukaran baris yang dilakukan : %d", swap));
+        System.out.print(String.format("Determinan = (-1)^%d x ", swap));
+        double determinant = this.get_elmt(0, 0);
+        System.out.print(determinant);
+        for (int i = 1; i < this.get_row(); i++) {
+            System.out.print(String.format(" x %.2f", this.get_elmt(i, i)));
+            determinant *= this.get_elmt(i, i);
+        }
+        determinant *= Math.pow(-1, swap);
+        System.out.println(String.format(" = %.2f", determinant));
     }
 
     public boolean is_matrix_upper_triangle() {
