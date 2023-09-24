@@ -517,4 +517,33 @@ public class Matrix {
         }
     }
 
+    public void cramer(Matrix b) {
+        Matrix x = new Matrix(this.n_row, 1);
+        Matrix a = new Matrix(this.n_row, this.n_col);
+        Matrix temp = new Matrix(this.n_row, this.n_col);
+        double det1;
+        double det2 = 1;
+
+        for (int i = 0; i < a.n_row; i++) {
+            for (int j = 0; j < a.n_col; j++) {
+                a.set_elmt(i, j, this.data[i][j]);
+            }
+        }
+        det1 = find_determinant(a);
+
+        for (int i = 0; i < a.n_col; i++) {
+            for (int j = 0; j < a.n_row; j++) {
+                for (int q = 0; q < a.n_col; q++) {
+                    temp.set_elmt(j, q, a.data[j][q]);
+                }
+            }
+            for (int p = 0; p < b.n_row; p++) {
+                temp.set_elmt(p, i, b.data[p][0]);
+            }
+            det2 = find_determinant(temp);
+            x.set_elmt(i, 0, (det2 / det1));
+        }
+        System.out.println("Berikut solusi dari kaidah Cramer");
+        x.print_matrix(3);
+    }
 }
