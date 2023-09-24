@@ -111,12 +111,13 @@ public class Main {
                     display_input_options();
                     int input_option = valid_input_choice(scanner, 1, 2);
                     clear_terminal();
-                    if (input_option == 1) {
+                    if(input_option == 1 && sub_choice == 4) {
+                        matrix.read_square_matrix_scan(scanner, 1);
+                    } else if (input_option == 1) {
                         matrix.read_matrix_scan(scanner);
                     } else {
                         matrix.read_matrix_from_file(scanner);
                     }
-
                     if (matrix.is_not_empty()) {
                         if (sub_choice == 1) {
                             //SPL elim. gauss
@@ -126,10 +127,17 @@ public class Main {
                             //SPL matriks balikan
                         } else {
                             //SPL kaidah cramer
-                        }
+                            int row = matrix.get_row();
+                            Matrix b = new Matrix(row, 1);
+                            System.out.println("Masukkan konstanta hasil dari tiap persamaann: ");
+                            for (int i = 0; i < row; i++) {
+                                double x = scanner.nextDouble();
+                                b.set_elmt(i, 0, x);
+                            }
+                            matrix.cramer(b);
+                        } 
                     }
-
-                    //PRINT MATRIX FOR TESTING!
+                    
                     System.out.println("(TEST) inputted matrix : ");
                     matrix.print_matrix(2);
 
