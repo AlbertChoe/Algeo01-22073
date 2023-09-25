@@ -25,7 +25,8 @@ public class Main {
     }
 
     public static void display_menu() {
-        System.out.println("=========== MENU ===========");
+        System.out.println("# MENU");
+        System.out.println("-----------------------------");
         System.out.println("1. Sistem Persamaaan Linier");
         System.out.println("2. Determinan");
         System.out.println("3. Matriks Balikan");

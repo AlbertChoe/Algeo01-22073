@@ -141,7 +141,8 @@ public class Matrix {
         System.out.print("Masukkan nama file beserta extension (.txt) : ");
         String file_name = scanner.nextLine();
         file_name.strip();
-        if (file_name.contains(".txt")) {
+        boolean txt_extension = file_name.endsWith(".txt");
+        if (txt_extension) {
             try {
                 determine_matrix_size_from_file(file_name);
                 File file = new File(file_name);
