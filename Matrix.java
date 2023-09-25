@@ -478,6 +478,8 @@ public class Matrix {
                     this.data[j] = this.data[j + 1];
                     this.data[j + 1] = temp1;
                     int temp = listidxbukan0[j];
+                    System.out.println(String.format("Menukar baris %d dengan bairs %d", j + 1, j + 2));
+                    this.print_matrix(2);
                     listidxbukan0[j] = listidxbukan0[j + 1];
                     listidxbukan0[j + 1] = temp;
                     flag = true;
@@ -490,35 +492,15 @@ public class Matrix {
     }
 
     public void eliminasi_gauss() {
-        this.determinant_row_reduction();
-        if (this.is_baris_0()) {
-            this.atur_baris_rapi();
-        }
-        boolean sebaris0 = false;
-        for (int i = 0; i < this.n_row; i++) {
-            for (int j = 0; j < this.get_col(); j++) {
-                if (this.get_elmt(i, j) == 1) {
-                    sebaris0 = false;
-                    break;
-                } else if (this.get_elmt(i, j) != 0 && this.get_elmt(i, j) != 1) {
-                    sebaris0 = false;
-                    double pembagi = get_elmt(i, j);
-                    for (int k = j; k < this.get_col(); k++) {
-                        this.set_elmt(i, k, get_elmt(i, k) / pembagi);
-                    }
-                    break;
-                } else if (this.get_elmt(i, j) == 0) {
-                    sebaris0 = true;
-                }
-            }
-            if (sebaris0) {
-                break;
-            }
-        }
+        this.row_eselon();
     }
-    
+
+    public void eliminasi_gauss_jordan() {
+        this.row_eselon_reduction();
+    }
+
     public static Matrix multiply_matrix(Matrix m1, Matrix m2) {
-        Matrix hasil = new Matrix(m1.get_row(), m1.get_col());
+        Matrix hasil = new Matrix(m1.get_row(), m2.get_col());
         int i, j;
         for (i = 0; i < hasil.get_row(); i++) {
             for (j = 0; j < hasil.get_col(); j++) {
@@ -532,7 +514,66 @@ public class Matrix {
         }
         return hasil;
     }
-    
+
+    public void row_eselon() {
+        int i, j, baris, kolom;
+        baris = this.get_row();
+        kolom = this.get_col();
+        this.atur_baris_rapi();
+        for (i = 0; i < baris; i++) {
+            int idx = -1;
+            for (j = 0; j < kolom; j++) {
+                if (this.get_elmt(i, j) != 0) {
+                    idx = j;
+                    break;
+                }
+            }
+            if (idx == -1) {
+                continue;
+            }
+            double value = this.get_elmt(i, idx);
+            for (j = 0; j < kolom; j++) {
+                set_elmt(i, j, round_x_decimals(this.get_elmt(i, j) / value, 7));
+            }
+
+            for (int k = i + 1; k < baris; k++) {
+                double pengurang = -this.get_elmt(k, idx);
+                for (j = 0; j < kolom; j++) {
+                    set_elmt(k, j, round_x_decimals(get_elmt(k, j) + pengurang * this.get_elmt(i, j), 7));
+                }
+            }
+        }
+    }
+
+    public void row_eselon_reduction() {
+        this.row_eselon();
+        int i, j, baris, kolom;
+        baris = this.get_row();
+        kolom = this.get_col();
+
+        for (i = baris - 1; i >= 0; i--) {
+            int idx = -1;
+            for (j = 0; j < kolom; j++) {
+                if (this.get_elmt(i, j) != 0) {
+                    idx = j;
+                    break;
+                }
+            }
+            if (idx == -1) {
+                continue;
+            }
+
+            for (int k = i - 1; k >= 0; k--) {
+                double pengurang = -this.get_elmt(k, idx);
+                for (j = 0; j < kolom; j++) {
+                    this.set_elmt(k, j, round_x_decimals(this.get_elmt(k, j) + pengurang * this.get_elmt(i, j), 7));
+                }
+            }
+        }
+    }
+    // #akhirAlbert
+
+    // Ivan
     public void cramer(Matrix b) {
         Matrix x = new Matrix(this.n_row, 1);
         Matrix a = new Matrix(this.n_row, this.n_col);
