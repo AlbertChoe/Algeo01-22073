@@ -516,7 +516,23 @@ public class Matrix {
             }
         }
     }
+    
+    public static Matrix multiply_matrix(Matrix m1, Matrix m2) {
+        Matrix hasil = new Matrix(m1.get_row(), m1.get_col());
+        int i, j;
+        for (i = 0; i < hasil.get_row(); i++) {
+            for (j = 0; j < hasil.get_col(); j++) {
+                int x, jumlah = 0;
+                for (x = 0; x < m1.get_col(); x++) {
+                    jumlah += m1.get_elmt(i, x) * m2.get_elmt(x, j);
+                }
+                hasil.set_elmt(i, j, jumlah);
 
+            }
+        }
+        return hasil;
+    }
+    
     public void cramer(Matrix b) {
         Matrix x = new Matrix(this.n_row, 1);
         Matrix a = new Matrix(this.n_row, this.n_col);
