@@ -66,8 +66,7 @@ public class Matrix {
     }
 
     public static int valid_int_input(Scanner scanner, String message, int range_from) {
-        String err_msg = String.format(">> Tidak valid. Hanya menerima input bilangan bulat lebih besar dari %d!",
-                range_from);
+        String err_msg = String.format(">> Tidak valid. Hanya menerima input bilangan bulat lebih besar dari %d!", range_from);
 
         while (true) {
             System.out.print(message);
@@ -79,6 +78,22 @@ public class Matrix {
                     return num;
                 }
                 System.out.println(err_msg);
+            } catch (NumberFormatException e) {
+                System.out.println(err_msg);
+            }
+        }
+    }
+
+    public static double valid_double_input(Scanner scanner, String message) {
+        String err_msg = ">> Tidak valid. Hanya menerima input suatu bilangan riil";
+        
+        while (true) {
+            System.out.print(message);
+            String input = scanner.nextLine();
+
+            try {
+                double num = Double.parseDouble(input);
+                return num;
             } catch (NumberFormatException e) {
                 System.out.println(err_msg);
             }
@@ -100,6 +115,28 @@ public class Matrix {
             }
         }
         scanner.nextLine();
+    }
+
+    // Scanner matriks untuk SPL
+    public void read_matrix_spl(Scanner scanner) {
+        int row = valid_int_input(scanner, "Masukkan jumlah persamaan  : ", 0);
+        int col = valid_int_input(scanner, "Masukkan jumlah variabel x : ", 0);
+        this.set_new_size(row, col + 1);
+        System.out.println();
+        System.out.println("Masukkan data tiap persamaan!");
+        for (int i = 0; i < this.get_row(); i++) {
+            System.out.println();
+            System.out.println(String.format("Persamaan ke-%d :", i + 1));
+            for (int j = 0; j < this.get_col(); j++) {
+                String msg;
+                if (j != this.get_col() - 1) {
+                    msg = String.format("Konstanta x%d : ", j + 1);
+                } else {
+                    msg = String.format("Hasil persamaan %d : ", i + 1);
+                }
+                this.data[i][j] = valid_double_input(scanner, msg);
+            }
+        }
     }
 
     // Scanner matriks untuk matriks persegi
@@ -421,6 +458,44 @@ public class Matrix {
             }
         }
         return adjoin;
+    }
+
+    public void spl_inverse() {
+        System.out.println();
+        System.out.println("Matriks Augmented dari masukan");
+        this.print_matrix(2);
+        System.out.println("x = (Invers A) * b");
+        System.out.println();
+        Matrix b = new Matrix(this.get_row(), 1);
+        Matrix A = new Matrix(this.get_row(), this.get_col() - 1);
+        for (int i = 0; i < this.get_row(); i++) {
+            for (int j = 0; j < this.get_col() - 1; j++) {
+                A.set_elmt(i, j, this.get_elmt(i, j));
+            }
+        }
+        for (int i = 0; i < this.get_row(); i++) {
+            b.set_elmt(i, 0, this.get_elmt(i, this.get_col() - 1));
+        }
+        System.out.println("Matriks A");
+        A.print_matrix(2);
+        if (find_determinant(A) == 0) {
+            System.out.println("Determinan matriks A = 0. Matriks A tidak memiliki balikan.");
+            System.out.println("Gunakan cara lain untuk mencari solusi SPL!");
+            return;
+        }
+        System.out.println("Invers Matriks A");
+        A = A.find_inverse();
+        A.print_matrix(2);
+        System.out.println("Matriks b");
+        b.print_matrix(2);
+        System.out.println("x = (Invers A) * b");
+        Matrix x = multiply_matrix(A, b);
+        System.out.println("Matriks x");
+        x.print_matrix(2);
+
+        for (int i = 0; i < x.get_row(); i++) {
+            System.out.println(String.format("x%d : %.2f", i + 1, x.get_elmt(i, 0)));
+        }
     }
 
     // #Albert

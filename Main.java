@@ -115,7 +115,7 @@ public class Main {
                     if(input_option == 1 && sub_choice == 4) {
                         matrix.read_square_matrix_scan(scanner, 1);
                     } else if (input_option == 1) {
-                        matrix.read_matrix_scan(scanner);
+                        matrix.read_matrix_spl(scanner);
                     } else {
                         matrix.read_matrix_from_file(scanner);
                     }
@@ -125,15 +125,11 @@ public class Main {
                         } else if (sub_choice == 2) {
                             //SPL elim. gauss-jordan
                         } else if (sub_choice == 3) {
-                            //SPL matriks balikan
+                            matrix.spl_inverse();
                         } else {
-                            //SPL kaidah cramer
                             matrix.cramer(scanner);
                         } 
                     }
-                    
-                    System.out.println("(TEST) inputted matrix : ");
-                    matrix.print_matrix(2);
 
                     press_to_menu(scanner);
                 } else {
