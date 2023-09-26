@@ -128,7 +128,7 @@ public class Main {
                             //SPL matriks balikan
                         } else {
                             //SPL kaidah cramer
-                            matrix.cramer();
+                            matrix.cramer(scanner);
                         } 
                     }
                     

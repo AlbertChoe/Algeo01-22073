@@ -575,11 +575,10 @@ public class Matrix {
     // #akhirAlbert
 
     // Ivan
-    public void cramer() {
+    public void cramer(Scanner scanner) {
         Matrix x = new Matrix(this.n_row, 1);
         Matrix a = new Matrix(this.n_row, this.n_col);
         Matrix temp = new Matrix(this.n_row, this.n_col);
-        Scanner scanner = new Scanner(System.in);
         double det1;
         double det2 = 1;
         int row = this.n_row;
