@@ -128,14 +128,7 @@ public class Main {
                             //SPL matriks balikan
                         } else {
                             //SPL kaidah cramer
-                            int row = matrix.get_row();
-                            Matrix b = new Matrix(row, 1);
-                            System.out.println("Masukkan konstanta hasil dari tiap persamaann: ");
-                            for (int i = 0; i < row; i++) {
-                                double x = scanner.nextDouble();
-                                b.set_elmt(i, 0, x);
-                            }
-                            matrix.cramer(b);
+                            matrix.cramer();
                         } 
                     }
                     

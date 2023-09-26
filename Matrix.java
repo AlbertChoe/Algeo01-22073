@@ -575,12 +575,21 @@ public class Matrix {
     // #akhirAlbert
 
     // Ivan
-    public void cramer(Matrix b) {
+    public void cramer() {
         Matrix x = new Matrix(this.n_row, 1);
         Matrix a = new Matrix(this.n_row, this.n_col);
         Matrix temp = new Matrix(this.n_row, this.n_col);
+        Scanner scanner = new Scanner(System.in);
         double det1;
         double det2 = 1;
+        int row = this.n_row;
+        Matrix b = new Matrix(row, 1);
+
+        System.out.println("\nMasukkan konstanta hasil dari tiap persamaann: ");
+        for (int i = 0; i < row; i++) {
+            double el = scanner.nextDouble();
+            b.set_elmt(i, 0, el);
+        }
 
         for (int i = 0; i < a.n_row; i++) {
             for (int j = 0; j < a.n_col; j++) {
@@ -601,7 +610,7 @@ public class Matrix {
             det2 = find_determinant(temp);
             x.set_elmt(i, 0, (det2 / det1));
         }
-        System.out.println("Berikut solusi dari kaidah Cramer");
+        System.out.println("\nBerikut solusi dari kaidah Cramer");
         x.print_matrix(3);
     }
 }
