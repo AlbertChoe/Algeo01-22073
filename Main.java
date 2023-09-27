@@ -220,6 +220,8 @@ public class Main {
                 }
             } else if (choice == 4) {
                 // Interpolasi polinom
+                Matrix.polynomial_interpolation(scanner);
+                press_to_menu(scanner);
             } else if (choice == 5) {
                 // Interpolasi bicubic
             } else if (choice == 6) {

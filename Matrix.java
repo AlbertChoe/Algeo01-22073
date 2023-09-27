@@ -597,12 +597,12 @@ public class Matrix {
         int i, j;
         for (i = 0; i < hasil.get_row(); i++) {
             for (j = 0; j < hasil.get_col(); j++) {
-                int x, jumlah = 0;
+                int x;
+                double jumlah = 0;
                 for (x = 0; x < m1.get_col(); x++) {
                     jumlah += m1.get_elmt(i, x) * m2.get_elmt(x, j);
                 }
                 hasil.set_elmt(i, j, jumlah);
-
             }
         }
         return hasil;
@@ -710,5 +710,59 @@ public class Matrix {
         for (int i = 0; i < x.n_row; i++) {
             System.out.println("x" + i + " = " + x.data[i][0]);
         }
+    }
+
+    //Untuk interpolasi polinom
+    private double[] spl_solution_to_arr() {
+        Matrix b = new Matrix(this.get_row(), 1);
+        Matrix A = new Matrix(this.get_row(), this.get_col() - 1);
+        for (int i = 0; i < this.get_row(); i++) {
+            for (int j = 0; j < this.get_col() - 1; j++) {
+                A.set_elmt(i, j, this.get_elmt(i, j));
+            }
+        }
+        for (int i = 0; i < this.get_row(); i++) {
+            b.set_elmt(i, 0, this.get_elmt(i, this.get_col() - 1));
+        }
+        A = A.find_inverse();
+        Matrix x = multiply_matrix(A, b);
+        double[] solution_arr = new double[x.get_row()];
+        for (int i = 0; i < x.get_row(); i++) {
+            solution_arr[i] = x.get_elmt(i, 0);
+        }
+        return solution_arr;
+    }
+
+    public static void polynomial_interpolation(Scanner scanner) {
+        int n = valid_int_input(scanner, "Masukkan berapa banyak titik yang akan digunakan untuk interpolasi : ", 1);
+        Matrix temp = new Matrix(n, n + 1);       
+        for (int i = 0; i < temp.get_row(); i++) {
+            int exponent = 0;
+            String msg = String.format("x%d : ", i);
+            double xi = valid_double_input(scanner, msg);
+            
+            int j = 0;
+            while (j < temp.get_col() - 1) {
+                temp.data[i][j] = Math.pow(xi, exponent);
+                exponent += 1;
+                j += 1;
+            }
+            msg = String.format("y%d : ", i);
+            double yi = valid_double_input(scanner, msg);
+            temp.data[i][j] = yi;
+        }
+        double x = valid_double_input(scanner, "x yang ingin diinterpolasikan y-nya: ");
+        temp.print_matrix(2);
+        System.out.println(x);
+        double[] solution_a = temp.spl_solution_to_arr();
+        double result = 0;
+        double temp_double;
+        int exp = 0;
+        for (int i = 0; i < solution_a.length; i++) {
+            temp_double = solution_a[i] * Math.pow(x, exp);
+            exp += 1;
+            result += temp_double;
+        }
+        System.out.println("y = " + result);
     }
 }
