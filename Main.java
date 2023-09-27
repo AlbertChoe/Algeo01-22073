@@ -185,6 +185,7 @@ public class Main {
                         if (sub_choice == 1) {
                             matrix.inverse_adjoint();
                         } else {
+                            //Matriks balikan metode transformasi baris el.
                             int row = matrix.get_row();
                             int col = matrix.get_col();
                             Matrix m1 = new Matrix(row, col * 2);
@@ -211,7 +212,6 @@ public class Main {
                                 }
                             }
                             hasil.print_matrix(3);
-                            //Matriks balikan metode transformasi baris el.
                         }
                     }
 
