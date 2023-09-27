@@ -107,7 +107,6 @@ public class Main {
                 int sub_choice = valid_input_choice(scanner, 1, 5);
                 if (sub_choice >= 1 && sub_choice <= 4) {
                     clear_terminal();
-
                     // input Matrix
                     Matrix matrix = new Matrix();
                     display_input_options();
@@ -119,11 +118,12 @@ public class Main {
                         matrix.read_matrix_from_file(scanner);
                     }
                     if (matrix.is_not_empty()) {
-                        if (sub_choice == 1) {
+                        if (sub_choice == 1) { // done
                             matrix.eliminasi_gauss();
                             SPL.gauss_result(matrix);
-                        } else if (sub_choice == 2) {
-                            // SPL elim. gauss-jordan
+                        } else if (sub_choice == 2) { // done
+                            matrix.eliminasi_gauss_jordan();
+                            SPL.gauss_result(matrix);
                         } else if (sub_choice == 3) {
                             matrix.spl_inverse();
                         } else {
@@ -131,7 +131,6 @@ public class Main {
                             matrix.cramer();
                         }
                     }
-
                     press_to_menu(scanner);
                 } else {
                     continue;
