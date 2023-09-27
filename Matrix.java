@@ -650,19 +650,16 @@ public class Matrix {
     // #akhirAlbert
 
     // Ivan
-    public void cramer(Scanner scanner) {
+    public void cramer() {
         Matrix x = new Matrix(this.n_row, 1);
-        Matrix a = new Matrix(this.n_row, this.n_col);
-        Matrix temp = new Matrix(this.n_row, this.n_col);
+        Matrix a = new Matrix(this.n_row, this.n_col - 1);
+        Matrix temp = new Matrix(this.n_row, this.n_col - 1);
         double det1;
         double det2 = 1;
-        int row = this.n_row;
-        Matrix b = new Matrix(row, 1);
+        Matrix b = new Matrix(this.n_row, 1);
 
-        System.out.println("\nMasukkan konstanta hasil dari tiap persamaann: ");
-        for (int i = 0; i < row; i++) {
-            double el = scanner.nextDouble();
-            b.set_elmt(i, 0, el);
+        for (int i = 0; i < this.n_row; i++) {
+            b.set_elmt(i, 0, this.get_elmt(i, n_col - 1));
         }
 
         for (int i = 0; i < a.n_row; i++) {

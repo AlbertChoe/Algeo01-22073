@@ -112,9 +112,7 @@ public class Main {
                     display_input_options();
                     int input_option = valid_input_choice(scanner, 1, 2);
                     clear_terminal();
-                    if(input_option == 1 && sub_choice == 4) {
-                        matrix.read_square_matrix_scan(scanner, 1);
-                    } else if (input_option == 1) {
+                    if (input_option == 1) {
                         matrix.read_matrix_spl(scanner);
                     } else {
                         matrix.read_matrix_from_file(scanner);
@@ -127,7 +125,7 @@ public class Main {
                         } else if (sub_choice == 3) {
                             matrix.spl_inverse();
                         } else {
-                            matrix.cramer(scanner);
+                            matrix.cramer();
                         } 
                     }
 
