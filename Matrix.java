@@ -668,6 +668,7 @@ public class Matrix {
             }
         }
         det1 = find_determinant(a);
+        System.out.println("\nDeterminan matriks A: " + det1);
 
         for (int i = 0; i < a.n_col; i++) {
             for (int j = 0; j < a.n_row; j++) {
@@ -679,9 +680,12 @@ public class Matrix {
                 temp.set_elmt(p, i, b.data[p][0]);
             }
             det2 = find_determinant(temp);
+            System.out.println("Determinan matriks A" + i + " : " + det2);
             x.set_elmt(i, 0, (det2 / det1));
         }
         System.out.println("\nBerikut solusi dari kaidah Cramer");
-        x.print_matrix(3);
+        for (int i = 0; i < x.n_row; i++) {
+            System.out.println("x" + i + " = " + x.data[i][0]);
+        }
     }
 }

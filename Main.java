@@ -125,6 +125,7 @@ public class Main {
                         } else if (sub_choice == 3) {
                             matrix.spl_inverse();
                         } else {
+                            // Bila input dengan file, prekondisi ukuran matriks adalah nRow x (nRow + 1)
                             matrix.cramer();
                         } 
                     }
