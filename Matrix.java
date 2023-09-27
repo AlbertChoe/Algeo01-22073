@@ -66,7 +66,8 @@ public class Matrix {
     }
 
     public static int valid_int_input(Scanner scanner, String message, int range_from) {
-        String err_msg = String.format(">> Tidak valid. Hanya menerima input bilangan bulat lebih besar dari %d!", range_from);
+        String err_msg = String.format(">> Tidak valid. Hanya menerima input bilangan bulat lebih besar dari %d!",
+                range_from);
 
         while (true) {
             System.out.print(message);
@@ -86,7 +87,7 @@ public class Matrix {
 
     public static double valid_double_input(Scanner scanner, String message) {
         String err_msg = ">> Tidak valid. Hanya menerima input suatu bilangan riil";
-        
+
         while (true) {
             System.out.print(message);
             String input = scanner.nextLine();
@@ -518,6 +519,20 @@ public class Matrix {
         return false;
     }
 
+    public boolean is_baris_i_0(int row) {
+        boolean flag;
+        flag = true;
+        int i;
+        i = 0;
+        for (i = 0; i < this.get_col() - 1; i++) {
+            if (this.get_elmt(row, i) != 0) {
+                flag = false;
+
+            }
+        }
+        return flag;
+    }
+
     // Membuat matriks agar tidak ada baris yang 0 semua di tengah tengah
     // contoh
     // 0 0 0 0 0 6
@@ -554,7 +569,7 @@ public class Matrix {
                     this.data[j] = this.data[j + 1];
                     this.data[j + 1] = temp1;
                     int temp = listidxbukan0[j];
-                    System.out.println(String.format("Menukar baris %d dengan bairs %d", j + 1, j + 2));
+                    System.out.println(String.format("Menukar baris %d dengan baris %d", j + 1, j + 2));
                     this.print_matrix(2);
                     listidxbukan0[j] = listidxbukan0[j + 1];
                     listidxbukan0[j + 1] = temp;
@@ -569,10 +584,12 @@ public class Matrix {
 
     public void eliminasi_gauss() {
         this.row_eselon();
+        this.print_matrix(2);
     }
 
     public void eliminasi_gauss_jordan() {
         this.row_eselon_reduction();
+        this.print_matrix(2);
     }
 
     public static Matrix multiply_matrix(Matrix m1, Matrix m2) {
@@ -598,6 +615,7 @@ public class Matrix {
         this.atur_baris_rapi();
         for (i = 0; i < baris; i++) {
             int idx = -1;
+            // Mencari Leading one
             for (j = 0; j < kolom; j++) {
                 if (this.get_elmt(i, j) != 0) {
                     idx = j;
@@ -608,10 +626,12 @@ public class Matrix {
                 continue;
             }
             double value = this.get_elmt(i, idx);
+            // Mengubah elemen-elemen pada baris ke-i agar elemen pertama menjadi 1
             for (j = 0; j < kolom; j++) {
                 set_elmt(i, j, round_x_decimals(this.get_elmt(i, j) / value, 7));
             }
-
+            // Mengurangkan baris-baris di bawah baris ke-i agar elemen pertama pada setiap
+            // baris di bawahnya menjadi nol
             for (int k = i + 1; k < baris; k++) {
                 double pengurang = -this.get_elmt(k, idx);
                 for (j = 0; j < kolom; j++) {
@@ -619,6 +639,7 @@ public class Matrix {
                 }
             }
         }
+        this.atur_baris_rapi();
     }
 
     public void row_eselon_reduction() {
@@ -626,7 +647,8 @@ public class Matrix {
         int i, j, baris, kolom;
         baris = this.get_row();
         kolom = this.get_col();
-
+        // Mengurangkan baris-baris di atas baris ke-i agar elemen pertama pada setiap
+        // baris di atasnya menjadi nol
         for (i = baris - 1; i >= 0; i--) {
             int idx = -1;
             for (j = 0; j < kolom; j++) {
@@ -647,6 +669,7 @@ public class Matrix {
             }
         }
     }
+
     // #akhirAlbert
 
     // Ivan

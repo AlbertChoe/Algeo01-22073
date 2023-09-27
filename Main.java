@@ -75,7 +75,8 @@ public class Main {
     }
 
     public static int valid_input_choice(Scanner scanner, int range_from, int range_to) {
-        String err_msg = String.format(">> Tidak valid. Hanya menerima input angka dari %d hingga %d!", range_from, range_to);
+        String err_msg = String.format(">> Tidak valid. Hanya menerima input angka dari %d hingga %d!", range_from,
+                range_to);
 
         while (true) {
             System.out.print("Ketik Pilihan : ");
@@ -92,7 +93,7 @@ public class Main {
             }
         }
     }
-    
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         boolean program_on = true;
@@ -107,7 +108,7 @@ public class Main {
                 if (sub_choice >= 1 && sub_choice <= 4) {
                     clear_terminal();
 
-                    //input Matrix
+                    // input Matrix
                     Matrix matrix = new Matrix();
                     display_input_options();
                     int input_option = valid_input_choice(scanner, 1, 2);
@@ -119,15 +120,16 @@ public class Main {
                     }
                     if (matrix.is_not_empty()) {
                         if (sub_choice == 1) {
-                            //SPL elim. gauss
+                            matrix.eliminasi_gauss();
+                            SPL.gauss_result(matrix);
                         } else if (sub_choice == 2) {
-                            //SPL elim. gauss-jordan
+                            // SPL elim. gauss-jordan
                         } else if (sub_choice == 3) {
                             matrix.spl_inverse();
                         } else {
                             // Bila input dengan file, prekondisi ukuran matriks adalah nRow x (nRow + 1)
                             matrix.cramer();
-                        } 
+                        }
                     }
 
                     press_to_menu(scanner);
@@ -140,7 +142,7 @@ public class Main {
                 if (sub_choice == 1 || sub_choice == 2) {
                     clear_terminal();
 
-                    //input matrix
+                    // input matrix
                     Matrix matrix = new Matrix();
                     display_input_options();
                     int input_option = valid_input_choice(scanner, 1, 2);
@@ -170,7 +172,7 @@ public class Main {
                 if (sub_choice == 1 || sub_choice == 2) {
                     clear_terminal();
 
-                    //input matrix
+                    // input matrix
                     Matrix matrix = new Matrix();
                     display_input_options();
                     int input_option = valid_input_choice(scanner, 1, 2);
@@ -185,7 +187,7 @@ public class Main {
                         if (sub_choice == 1) {
                             matrix.inverse_adjoint();
                         } else {
-                            //Matriks balikan metode transformasi baris el.
+                            // Matriks balikan metode transformasi baris el.
                             int row = matrix.get_row();
                             int col = matrix.get_col();
                             Matrix m1 = new Matrix(row, col * 2);
@@ -193,11 +195,9 @@ public class Main {
                                 for (int j = 0; j < col * 2; j++) {
                                     if (j < col) {
                                         m1.set_elmt(i, j, matrix.get_elmt(i, j));
-                                    }
-                                    else if (i == j - col) {
+                                    } else if (i == j - col) {
                                         m1.set_elmt(i, j, 1);
-                                    }
-                                    else {
+                                    } else {
                                         m1.set_elmt(i, j, 0);
                                     }
                                 }
@@ -220,11 +220,11 @@ public class Main {
                     continue;
                 }
             } else if (choice == 4) {
-                //Interpolasi polinom
+                // Interpolasi polinom
             } else if (choice == 5) {
-                //Interpolasi bicubic
+                // Interpolasi bicubic
             } else if (choice == 6) {
-                //Regresi lsinier
+                // Regresi lsinier
             } else {
                 program_on = false;
             }
