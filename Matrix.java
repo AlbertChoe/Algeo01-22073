@@ -733,9 +733,77 @@ public class Matrix {
         return solution_arr;
     }
 
-    public static void polynomial_interpolation(Scanner scanner) {
+    public static void polynomial_interpolation_file(Scanner scanner) {
+        System.out.print("Masukkan nama file beserta extension (.txt) : ");
+        String file_name = scanner.nextLine();
+        file_name.strip();
+        boolean txt_extension = file_name.endsWith(".txt");
+        Matrix temp = new Matrix();   
+        if (txt_extension) {
+            try {
+                File file = new File(file_name);
+                Scanner file_scanner = new Scanner(file);
+                int row_count = 0;
+                int col_count;
+                while (file_scanner.hasNextLine()) {
+                    file_scanner.nextLine();
+                    row_count += 1;
+                }
+                col_count = row_count;
+                row_count -= 1;
+                temp.set_new_size(row_count, col_count);
+                file_scanner.close();
+                Scanner file_scanner2 = new Scanner(file);
+                for (int i = 0; i < temp.get_row(); i++) {
+                    int exponent = 0;
+                    double xi = file_scanner2.nextDouble();
+                    
+                    int j = 0;
+                    while (j < temp.get_col() - 1) {
+                        temp.data[i][j] = Math.pow(xi, exponent);
+                        exponent += 1;
+                        j += 1;
+                    }
+                    double yi = file_scanner2.nextDouble();
+                    temp.data[i][j] = yi;
+                }
+                double x = file_scanner2.nextDouble();
+                file_scanner2.close();
+                System.out.println("File berhasil terbaca.");
+                System.out.println("\nBerikut merupakan titik - titik yang terbaca dari file");
+                for (int i = 0; i < temp.get_row(); i++) {
+                    String msg = String.format("(x%d, y%d) : (%.4f, %.4f)", i, i, temp.get_elmt(i, 1), temp.get_elmt(i, temp.get_row() - 1));
+                    System.out.println(msg);
+                }
+                double[] solution_a = temp.spl_solution_to_arr();
+                double result = solution_a[0];
+                double temp_double;
+                int exp = 1;
+                System.out.println();
+                System.out.println("Polinom yang didapat");
+                System.out.print(String.format("P(x) = %.4f", solution_a[0]));
+                for (int i = 1; i < solution_a.length; i++) {
+                    System.out.print(String.format(" + %.4fx^(%d)", solution_a[i], exp));
+                    temp_double = solution_a[i] * Math.pow(x, exp);
+                    exp += 1;
+                    result += temp_double;
+                }
+                System.out.println("\nHasil Interpolasi");
+                System.out.println(String.format("y = P(%.4f) = %.4f", x, result));
+            } catch (FileNotFoundException e) {
+                System.out.println("Baca file gagal. File " + file_name + " tidak ditemukan.");
+                return;
+            }
+        } else {
+            System.out.println("Baca file gagal. File bukan file txt.");
+            return;
+        }
+    }
+    
+    public static void polynomial_interpolation_scan(Scanner scanner) {
         int n = valid_int_input(scanner, "Masukkan berapa banyak titik yang akan digunakan untuk interpolasi : ", 1);
-        Matrix temp = new Matrix(n, n + 1);       
+        System.out.println("Masukkan data tiap titik!\n");
+        Matrix temp = new Matrix(n, n + 1);    
         for (int i = 0; i < temp.get_row(); i++) {
             int exponent = 0;
             String msg = String.format("x%d : ", i);
@@ -752,17 +820,20 @@ public class Matrix {
             temp.data[i][j] = yi;
         }
         double x = valid_double_input(scanner, "x yang ingin diinterpolasikan y-nya: ");
-        temp.print_matrix(2);
-        System.out.println(x);
         double[] solution_a = temp.spl_solution_to_arr();
-        double result = 0;
+        double result = solution_a[0];
         double temp_double;
-        int exp = 0;
-        for (int i = 0; i < solution_a.length; i++) {
+        int exp = 1;
+        System.out.println();
+        System.out.println("Polinom yang didapat");
+        System.out.print(String.format("P(x) = %.4f", solution_a[0]));
+        for (int i = 1; i < solution_a.length; i++) {
+            System.out.print(String.format(" + %.4fx^(%d)", solution_a[i], exp));
             temp_double = solution_a[i] * Math.pow(x, exp);
             exp += 1;
             result += temp_double;
         }
-        System.out.println("y = " + result);
+        System.out.println("\nHasil Interpolasi");
+        System.out.println(String.format("y = P(%.4f) = %.4f", x, result));
     }
 }
