@@ -670,6 +670,49 @@ public class Matrix {
         }
     }
 
+    public void read_matrix_bicubic(Scanner scanner) {
+        this.set_new_size(4, 4);
+        System.out.println("Masukkan matriks 4x4 : ");
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                this.data[i][j] = scanner.nextDouble();
+            }
+        }
+        double a = scanner.nextDouble();
+        double b = scanner.nextDouble();
+        System.out.format("%.2f %.2f\n", a, b);
+        scanner.nextLine();
+    }
+
+    public void read_matrix_bicubic_from_file(Scanner scanner) {
+        System.out.print("Masukkan nama file beserta extension (.txt) : ");
+        String file_name = scanner.nextLine();
+        file_name.strip();
+        boolean txt_extension = file_name.endsWith(".txt");
+        if (txt_extension) {
+            try {
+                this.set_new_size(4, 4);
+                File file = new File(file_name);
+                Scanner file_scanner = new Scanner(file);
+                for (int i = 0; i < 4; i++) {
+                    for (int j = 0; j < 4; j++) {
+                        this.set_elmt(i, j, file_scanner.nextDouble());
+                    }
+                }
+                double a = file_scanner.nextDouble();
+                double b = file_scanner.nextDouble();
+                file_scanner.close();
+                this.print_matrix(2);
+                System.out.format("%.2f %.2f\n", a, b);
+                System.out.println("Matrix berhasil terbaca.");
+                Main.press_to_menu(scanner);
+            } catch (FileNotFoundException e) {
+                return;
+            }
+        } else {
+            System.out.println("Baca file gagal. File bukan file txt.");
+        }
+    }
     // #akhirAlbert
 
     // Ivan
@@ -695,8 +738,7 @@ public class Matrix {
             System.out.println("Determinan matriks = 0, SPL tidak memiliki solusi yang unik.\n");
             this.row_eselon();
             SPL.gauss_result(this);
-        }
-        else {
+        } else {
             for (int i = 0; i < this.n_row; i++) {
                 b.set_elmt(i, 0, this.get_elmt(i, n_col - 1));
             }
@@ -729,7 +771,7 @@ public class Matrix {
         }
     }
 
-    //Untuk interpolasi polinom
+    // Untuk interpolasi polinom
     private double[] spl_solution_to_arr() {
         Matrix b = new Matrix(this.get_row(), 1);
         Matrix A = new Matrix(this.get_row(), this.get_col() - 1);
@@ -755,7 +797,7 @@ public class Matrix {
         String file_name = scanner.nextLine();
         file_name.strip();
         boolean txt_extension = file_name.endsWith(".txt");
-        Matrix temp = new Matrix();   
+        Matrix temp = new Matrix();
         if (txt_extension) {
             try {
                 File file = new File(file_name);
@@ -774,7 +816,7 @@ public class Matrix {
                 for (int i = 0; i < temp.get_row(); i++) {
                     int exponent = 0;
                     double xi = file_scanner2.nextDouble();
-                    
+
                     int j = 0;
                     while (j < temp.get_col() - 1) {
                         temp.data[i][j] = Math.pow(xi, exponent);
@@ -789,7 +831,8 @@ public class Matrix {
                 System.out.println("File berhasil terbaca.");
                 System.out.println("\nBerikut merupakan titik - titik yang terbaca dari file");
                 for (int i = 0; i < temp.get_row(); i++) {
-                    String msg = String.format("(x%d, y%d) : (%.4f, %.4f)", i, i, temp.get_elmt(i, 1), temp.get_elmt(i, temp.get_row() - 1));
+                    String msg = String.format("(x%d, y%d) : (%.4f, %.4f)", i, i, temp.get_elmt(i, 1),
+                            temp.get_elmt(i, temp.get_row() - 1));
                     System.out.println(msg);
                 }
                 double[] solution_a = temp.spl_solution_to_arr();
@@ -816,16 +859,16 @@ public class Matrix {
             return;
         }
     }
-    
+
     public static void polynomial_interpolation_scan(Scanner scanner) {
         int n = valid_int_input(scanner, "Masukkan berapa banyak titik yang akan digunakan untuk interpolasi : ", 0);
         System.out.println("Masukkan data tiap titik!\n");
-        Matrix temp = new Matrix(n, n + 1);    
+        Matrix temp = new Matrix(n, n + 1);
         for (int i = 0; i < temp.get_row(); i++) {
             int exponent = 0;
             String msg = String.format("x%d : ", i);
             double xi = valid_double_input(scanner, msg);
-            
+
             int j = 0;
             while (j < temp.get_col() - 1) {
                 temp.data[i][j] = Math.pow(xi, exponent);
@@ -921,4 +964,5 @@ public class Matrix {
     public void multiple_linear_regression() {
         Matrix points = this;
     }
+
 }
