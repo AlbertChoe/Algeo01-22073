@@ -83,6 +83,15 @@ public class Main {
         System.out.println("--------------------------");
     }
 
+    public static void display_input_options_bicubic() {
+        System.out.println("*  Opsi Memasukkan Data");
+        System.out.println("--------------------------");
+        System.out.println("1. Dari Command Line");
+        System.out.println("2. Dari File .txt");
+        System.out.println("3. Balik ke Menu Utama");
+        System.out.println("--------------------------");
+    }
+
     public static void display_input_options_mulreg() {
         System.out.println("*  Opsi Memasukkan Data");
         System.out.println("--------------------------");
@@ -248,11 +257,26 @@ public class Main {
                 }
 
                 press_to_menu(scanner);
-            } else if (choice == 5) {
-                // Interpolasi bicubic
+            } else if (choice == 5) { // ON PROGRESS
+                display_input_options_bicubic();
+                int input_option = valid_input_choice(scanner, 1, 3);
+                clear_terminal();
+                Matrix matrix = new Matrix();
+                if (input_option == 1) {
+                    matrix.read_matrix_bicubic(scanner);
+                } else if (input_option == 2) {
+                    matrix.read_matrix_bicubic_from_file(scanner);
+
+                } else {
+                    continue;
+                }
+
+                matrix.print_matrix(2);
+                press_to_menu(scanner);
+
             } else if (choice == 6) {
 
-                //STILL ON PROGRESS!
+                // STILL ON PROGRESS!
                 display_input_options_mulreg();
                 Matrix points = new Matrix();
                 int input_option = valid_input_choice(scanner, 1, 3);
