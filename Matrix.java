@@ -691,24 +691,41 @@ public class Matrix {
             }
         }
         det1 = find_determinant(a);
-        System.out.println("\nDeterminan matriks A: " + det1);
+        if (det1 == 0) {
+            this.row_eselon();
+            System.out.print("\n");
+            SPL.gauss_result(this);
+        }
+        else {
+            for (int i = 0; i < this.n_row; i++) {
+                b.set_elmt(i, 0, this.get_elmt(i, n_col - 1));
+            }
 
-        for (int i = 0; i < a.n_col; i++) {
-            for (int j = 0; j < a.n_row; j++) {
-                for (int q = 0; q < a.n_col; q++) {
-                    temp.set_elmt(j, q, a.data[j][q]);
+            for (int i = 0; i < a.n_row; i++) {
+                for (int j = 0; j < a.n_col; j++) {
+                    a.set_elmt(i, j, this.data[i][j]);
                 }
             }
-            for (int p = 0; p < b.n_row; p++) {
-                temp.set_elmt(p, i, b.data[p][0]);
+            det1 = find_determinant(a);
+            System.out.println("\nDeterminan matriks A: " + det1);
+
+            for (int i = 0; i < a.n_col; i++) {
+                for (int j = 0; j < a.n_row; j++) {
+                    for (int q = 0; q < a.n_col; q++) {
+                        temp.set_elmt(j, q, a.data[j][q]);
+                    }
+                }
+                for (int p = 0; p < b.n_row; p++) {
+                    temp.set_elmt(p, i, b.data[p][0]);
+                }
+                det2 = find_determinant(temp);
+                System.out.println("Determinan matriks A" + i + " : " + det2);
+                x.set_elmt(i, 0, (det2 / det1));
             }
-            det2 = find_determinant(temp);
-            System.out.println("Determinan matriks A" + i + " : " + det2);
-            x.set_elmt(i, 0, (det2 / det1));
-        }
-        System.out.println("\nBerikut solusi dari kaidah Cramer");
-        for (int i = 0; i < x.n_row; i++) {
-            System.out.println("x" + i + " = " + x.data[i][0]);
+            System.out.println("\nBerikut solusi dari kaidah Cramer");
+            for (int i = 0; i < x.n_row; i++) {
+                System.out.println("x" + i + " = " + x.data[i][0]);
+            }
         }
     }
 
