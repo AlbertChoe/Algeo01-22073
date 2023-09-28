@@ -83,6 +83,15 @@ public class Main {
         System.out.println("--------------------------");
     }
 
+    public static void display_input_options_mulreg() {
+        System.out.println("*  Opsi Memasukkan Data");
+        System.out.println("--------------------------");
+        System.out.println("1. Dari Command Line");
+        System.out.println("2. Dari File .txt");
+        System.out.println("3. Balik ke Menu Utama");
+        System.out.println("--------------------------");
+    }
+
     public static int valid_input_choice(Scanner scanner, int range_from, int range_to) {
         String err_msg = String.format(">> Tidak valid. Hanya menerima input angka dari %d hingga %d!", range_from,
                 range_to);
@@ -242,7 +251,21 @@ public class Main {
             } else if (choice == 5) {
                 // Interpolasi bicubic
             } else if (choice == 6) {
-                // Regresi lsinier
+
+                //STILL ON PROGRESS!
+                display_input_options_mulreg();
+                Matrix points = new Matrix();
+                int input_option = valid_input_choice(scanner, 1, 3);
+                clear_terminal();
+                if (input_option == 1) {
+                    points.read_points_reg(scanner);
+                } else if (input_option == 2) {
+                    points.read_points_from_file(scanner);
+                } else {
+                    continue;
+                }
+                points.print_matrix(2);
+                press_to_menu(scanner);
             } else {
                 program_on = false;
             }

@@ -818,7 +818,7 @@ public class Matrix {
     }
     
     public static void polynomial_interpolation_scan(Scanner scanner) {
-        int n = valid_int_input(scanner, "Masukkan berapa banyak titik yang akan digunakan untuk interpolasi : ", 1);
+        int n = valid_int_input(scanner, "Masukkan berapa banyak titik yang akan digunakan untuk interpolasi : ", 0);
         System.out.println("Masukkan data tiap titik!\n");
         Matrix temp = new Matrix(n, n + 1);    
         for (int i = 0; i < temp.get_row(); i++) {
@@ -852,5 +852,73 @@ public class Matrix {
         }
         System.out.println("\nHasil Interpolasi");
         System.out.println(String.format("y = P(%.4f) = %.4f", x, result));
+    }
+
+    public void read_points_reg(Scanner scanner) {
+        int n = valid_int_input(scanner, "Masukkan jumlah peubah x : ", 0);
+        int m = valid_int_input(scanner, "Masukkan jumlah sampel : ", 0);
+        this.set_new_size(m + 1, n + 1);
+        for (int i = 0; i < this.get_row() - 1; i++) {
+            for (int j = 0; j < this.get_col(); j++) {
+                String msg;
+                if (j != this.get_col() - 1) {
+                    msg = String.format("x%d sampel %d : ", j + 1, i + 1);
+                } else {
+                    msg = String.format("y sampel %d : ", i + 1);
+                }
+                this.data[i][j] = valid_double_input(scanner, msg);
+            }
+        }
+        System.out.println("\nMasukkan data tiap peubah x, untuk mencari y!");
+        for (int j = 0; j < this.get_col(); j++) {
+            if (j != this.get_col() - 1) {
+                String msg = String.format("x%d : ", j + 1);
+                this.data[this.get_row() - 1][j] = valid_double_input(scanner, msg);
+            } else {
+                this.data[this.get_row() - 1][j] = 999999;
+            }
+        }
+    }
+
+    public void read_points_from_file(Scanner scanner) {
+        /*
+         * Asumsi bentuk data tiap titik dalam txt adalah sebagai berikut
+         * (n = jumlah peubah x)
+         * (i = sampel ke - i)
+         * (k = data x untuk mencari y-nya)
+         * x1i x2i x3i .. xni yi
+         * x1i x2i x3i .. xni yi
+         * x1k x2k x3k .. xnk
+         */
+        System.out.print("Masukkan nama file beserta extension (.txt) : ");
+        String file_name = scanner.nextLine();
+        file_name.strip();
+        boolean txt_extension = file_name.endsWith(".txt");
+        if (txt_extension) {
+            try {
+                determine_matrix_size_from_file(file_name);
+                File file = new File(file_name);
+                Scanner file_scanner = new Scanner(file);
+                for (int i = 0; i < this.get_row(); i++) {
+                    for (int j = 0; j < this.get_col(); j++) {
+                        if (i != this.get_row() - 1 || j != this.get_col() - 1) {
+                            this.set_elmt(i, j, file_scanner.nextDouble());
+                        } else {
+                            this.set_elmt(i, j, 999999);
+                        }
+                    }
+                }
+                file_scanner.close();
+                System.out.println("File berhasil terbaca.");
+            } catch (FileNotFoundException e) {
+                return;
+            }
+        } else {
+            System.out.println("Baca file gagal. File bukan file txt.");
+        }
+    }
+
+    public void multiple_linear_regression() {
+        Matrix points = this;
     }
 }
