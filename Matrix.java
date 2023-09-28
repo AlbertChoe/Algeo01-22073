@@ -678,7 +678,9 @@ public class Matrix {
                 this.data[i][j] = scanner.nextDouble();
             }
         }
+        System.out.println("Masukkan a :");
         double a = scanner.nextDouble();
+        System.out.println("Masukkan b :");
         double b = scanner.nextDouble();
         System.out.format("%.2f %.2f\n", a, b);
         scanner.nextLine();
