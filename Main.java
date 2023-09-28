@@ -266,6 +266,7 @@ public class Main {
                     matrix.read_matrix_bicubic(scanner);
                 } else if (input_option == 2) {
                     matrix.read_matrix_bicubic_from_file(scanner);
+
                 } else {
                     continue;
                 }
