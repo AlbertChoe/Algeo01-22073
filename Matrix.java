@@ -406,10 +406,10 @@ public class Matrix {
     }
 
     private Matrix transpose() {
-        Matrix m2 = new Matrix(this.n_row, this.n_col);
+        Matrix m2 = new Matrix(this.n_col, this.n_row);
         for (int i = 0; i < this.get_row(); i++) {
             for (int j = 0; j < this.get_col(); j++) {
-                m2.data[i][j] = this.data[j][i];
+                m2.data[j][i] = this.data[i][j];
             }
         }
         return m2;
@@ -789,7 +789,7 @@ public class Matrix {
                 System.out.println("File berhasil terbaca.");
                 System.out.println("\nBerikut merupakan titik - titik yang terbaca dari file");
                 for (int i = 0; i < temp.get_row(); i++) {
-                    String msg = String.format("(x%d, y%d) : (%.4f, %.4f)", i, i, temp.get_elmt(i, 1), temp.get_elmt(i, temp.get_row() - 1));
+                    String msg = String.format("(x%d, y%d) : (%.4f, %.4f)", i, i, temp.get_elmt(i, 1), temp.get_elmt(i, temp.get_col() - 1));
                     System.out.println(msg);
                 }
                 double[] solution_a = temp.spl_solution_to_arr();
@@ -797,7 +797,7 @@ public class Matrix {
                 double temp_double;
                 int exp = 1;
                 System.out.println();
-                System.out.println("Polinom yang didapat");
+                System.out.println("Polinom yang didapat :");
                 System.out.print(String.format("P(x) = %.4f", solution_a[0]));
                 for (int i = 1; i < solution_a.length; i++) {
                     System.out.print(String.format(" + %.4fx^(%d)", solution_a[i], exp));
@@ -805,7 +805,7 @@ public class Matrix {
                     exp += 1;
                     result += temp_double;
                 }
-                System.out.println("\nHasil Interpolasi");
+                System.out.println(String.format("\nHasil Interpolasi dari x = %.4f : ", x));
                 System.out.println(String.format("y = P(%.4f) = %.4f", x, result));
             } catch (FileNotFoundException e) {
                 System.out.println("Baca file gagal. File " + file_name + " tidak ditemukan.");
@@ -837,12 +837,17 @@ public class Matrix {
             temp.data[i][j] = yi;
         }
         double x = valid_double_input(scanner, "x yang ingin diinterpolasikan y-nya: ");
+        System.out.println("\nBerikut merupakan titik - titik yang terbaca dari masukan");
+        for (int i = 0; i < temp.get_row(); i++) {
+            String msg = String.format("(x%d, y%d) : (%.4f, %.4f)", i, i, temp.get_elmt(i, 1), temp.get_elmt(i, temp.get_col() - 1));
+            System.out.println(msg);
+        }
         double[] solution_a = temp.spl_solution_to_arr();
         double result = solution_a[0];
         double temp_double;
         int exp = 1;
         System.out.println();
-        System.out.println("Polinom yang didapat");
+        System.out.println("Polinom yang didapat :");
         System.out.print(String.format("P(x) = %.4f", solution_a[0]));
         for (int i = 1; i < solution_a.length; i++) {
             System.out.print(String.format(" + %.4fx^(%d)", solution_a[i], exp));
@@ -850,7 +855,7 @@ public class Matrix {
             exp += 1;
             result += temp_double;
         }
-        System.out.println("\nHasil Interpolasi");
+        System.out.println(String.format("\nHasil Interpolasi dari x = %.4f : ", x));
         System.out.println(String.format("y = P(%.4f) = %.4f", x, result));
     }
 
@@ -864,10 +869,11 @@ public class Matrix {
                 if (j != this.get_col() - 1) {
                     msg = String.format("x%d sampel %d : ", j + 1, i + 1);
                 } else {
-                    msg = String.format("y sampel %d : ", i + 1);
+                    msg = String.format("y  sampel %d : ", i + 1);
                 }
                 this.data[i][j] = valid_double_input(scanner, msg);
             }
+            System.out.println();
         }
         System.out.println("\nMasukkan data tiap peubah x, untuk mencari y!");
         for (int j = 0; j < this.get_col(); j++) {
@@ -920,5 +926,48 @@ public class Matrix {
 
     public void multiple_linear_regression() {
         Matrix points = this;
+        Matrix A = new Matrix(points.get_row() - 1, points.get_col());
+        Matrix Y = new Matrix(points.get_row() - 1, 1);
+        double[] xs = new double[points.get_col() - 1];
+        for (int j = 0; j < xs.length; j++) {
+            xs[j] = points.get_elmt(points.get_row() - 1, j);
+        }
+        for (int i = 0; i < points.get_row() - 1; i++) {
+            for (int j = 0; j < points.get_col() - 1; j++) {
+                A.data[i][j + 1] = points.get_elmt(i, j);
+            }
+        }
+        for (int i = 0; i < A.get_row(); i++) {
+            A.data[i][0] = 1;
+        }
+        for (int i = 0; i < points.get_row() - 1; i++) {
+            Y.data[i][0] = points.get_elmt(i, points.get_col() - 1);
+        }
+        //B = (At * A)^(-1) * (At * Y)
+        Matrix AT = A.transpose();
+        Matrix ATA = multiply_matrix(AT, A);
+        ATA = ATA.find_inverse();
+        Matrix ATY = multiply_matrix(AT, Y);
+        Matrix B = multiply_matrix(ATA, ATY);
+        double[] cof_beta = new double[B.get_row()];
+        for (int i = 0; i < B.get_row(); i++) {
+            cof_beta[i] = B.get_elmt(i, 0);
+        }
+        System.out.println();
+        System.out.println("Persamaan regresi linier berganda yang didapat :");
+        System.out.print(String.format("f(x) = %.4f", cof_beta[0]));
+        double result = cof_beta[0];
+        for (int i = 1; i < cof_beta.length; i++) {
+            System.out.print(String.format(" + %.4f * x%d", cof_beta[i], i));
+            double temp_double = cof_beta[i] * xs[i - 1] ;
+            result += temp_double;
+        }
+        System.out.println();
+        System.out.println("\nHasil regresi : ");
+        System.out.println("Kumpulan X yang digunakan untuk mencari y dari regresi linier berganda (Xk):");
+        for (int i = 0; i < xs.length; i++) {
+            System.out.println(String.format("X%d : %.4f", i + 1, xs[i]));
+        }
+        System.out.println(String.format("y = f(Xk) = %.4f", result));
     }
 }

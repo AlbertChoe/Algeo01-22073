@@ -264,7 +264,11 @@ public class Main {
                 } else {
                     continue;
                 }
-                points.print_matrix(2);
+
+                if (points.is_not_empty()) {
+                    points.multiple_linear_regression();
+                }
+
                 press_to_menu(scanner);
             } else {
                 program_on = false;
