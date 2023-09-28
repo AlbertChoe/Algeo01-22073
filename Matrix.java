@@ -692,8 +692,8 @@ public class Matrix {
         }
         det1 = find_determinant(a);
         if (det1 == 0) {
+            System.out.println("Determinan matriks = 0, SPL tidak memiliki solusi yang unik.\n");
             this.row_eselon();
-            System.out.print("\n");
             SPL.gauss_result(this);
         }
         else {
