@@ -122,7 +122,7 @@ public class Main {
                     int input_option = valid_input_choice(scanner, 1, 2);
                     clear_terminal();
                     if (input_option == 1) {
-                        matrix.read_matrix_spl(scanner);
+                        matrix.read_matrix_scan(scanner);
                     } else {
                         matrix.read_matrix_from_file(scanner);
                     }

@@ -7,12 +7,12 @@ public class SPL {
 
     private double value;
     private double[] array;
-    private int isi;
+    private boolean isi;
 
     public SPL(double value, double[] array) {
         this.value = value;
         this.array = array;
-        this.isi = 0; // 0 jika tidak ada variabel di belakang, 1 jika ada variabel di belakang
+        this.isi = false; // false jika angka adalah bebas , true jika angka adalah 0
     }
 
     public double getValue() {
@@ -32,48 +32,80 @@ public class SPL {
     }
 
     public void set_isi() {
-        this.isi = 1;
+        this.isi = true;
     }
 
     public boolean get_isi_noVar() {
-        return (this.isi == 0);
+        return (this.isi == false);
     }
 
     public void print_out_solution(int get_col, int a) {
         double angka = Matrix.round_x_decimals(this.getValue(), 2);
-        if (angka != 0) {
-            System.out.format("%.2f ", this.getValue());
-        }
         if (!this.get_isi_noVar() && angka != 0) {
+            System.out.format(" %.2f ", this.getValue());
+        }
+        boolean printed = false;
+        // for (int b = 0; b < get_col - 1; b++) {
+        // System.out.format("%.2f ", this.getArray(b));
+        // }
+        if (angka != 0) {
             for (int b = 0; b < get_col - 1; b++) {
                 if (Matrix.round_x_decimals(this.getArray(b), 2) != 0
                         && Matrix.round_x_decimals(this.getArray(b), 2) > 0) {
-                    System.out.format("+ %.2f %c ", Matrix.round_x_decimals(this.getArray(b), 2), (char) (b + 65));
+                    System.out.format("+ %.2f%c ", Matrix.round_x_decimals(this.getArray(b), 2), (char) (b + 65));
                 } else if (Matrix.round_x_decimals(this.getArray(b), 2) != 0
                         && Matrix.round_x_decimals(this.getArray(b), 2) < 0) {
-                    System.out.format("- %.2f %c ", Matrix.round_x_decimals(this.getArray(b), 2) * -1, (char) (b + 65));
+                    System.out.format("- %.2f%c ", Matrix.round_x_decimals(this.getArray(b), 2) * (-1),
+                            (char) (b + 65));
                 }
             }
-            System.out.println("");
-        } else if (!this.get_isi_noVar() && angka == 0) {
+
+        } else if (angka == 0 && this.get_isi_noVar()) {
             boolean first = true;
             for (int b = 0; b < get_col - 1; b++) {
                 if (Matrix.round_x_decimals(this.getArray(b), 2) != 0 && first) {
-                    System.out.format(" %.2f %c", Matrix.round_x_decimals(this.getArray(b), 2), (char) (b + 65));
+                    System.out.format("%.2f%c ", Matrix.round_x_decimals(this.getArray(b), 2), (char) (b + 65));
+                    printed = true;
+                    first = false;
                 } else if (Matrix.round_x_decimals(this.getArray(b), 2) != 0 && !first
                         && Matrix.round_x_decimals(this.getArray(b), 2) > 0) {
-                    System.out.format("+ %.2 f%c ", Matrix.round_x_decimals(this.getArray(b), 2), (char) (b + 65));
+                    System.out.format(" + %.2f%c ", Matrix.round_x_decimals(this.getArray(b), 2), (char) (b + 65));
+                    printed = true;
                 } else if (Matrix.round_x_decimals(this.getArray(b), 2) != 0 && !first
                         && Matrix.round_x_decimals(this.getArray(b), 2) < 0) {
-                    System.out.format("+ %.2 f%c ", Matrix.round_x_decimals(this.getArray(b), 2) * -1, (char) (b + 65));
+                    System.out.format(" - %.2f%c ", Matrix.round_x_decimals(this.getArray(b), 2) * (-1),
+                            (char) (b + 65));
+                    printed = true;
                 }
             }
-            System.out.println("");
-        } else if (angka == 0 && this.get_isi_noVar()) {
-            System.out.println((char) (a + 65));
-            ;
-        }
+            if (!printed) {
+                System.out.format(" %c", (char) (a + 65));
+            }
 
+        } else if (angka == 0 && !this.get_isi_noVar()) {
+            boolean first = true;
+            for (int b = 0; b < get_col - 1; b++) {
+                if (Matrix.round_x_decimals(this.getArray(b), 2) != 0 && first) {
+                    System.out.format(" %.2f%c", Matrix.round_x_decimals(this.getArray(b), 2), (char) (b + 65));
+                    printed = true;
+                    first = false;
+                } else if (Matrix.round_x_decimals(this.getArray(b), 2) != 0 && !first
+                        && Matrix.round_x_decimals(this.getArray(b), 2) > 0) {
+                    System.out.format(" + %.2f%c ", Matrix.round_x_decimals(this.getArray(b), 2), (char) (b + 65));
+                    printed = true;
+                } else if (Matrix.round_x_decimals(this.getArray(b), 2) != 0 && !first
+                        && Matrix.round_x_decimals(this.getArray(b), 2) < 0) {
+                    System.out.format(" - %.2f%c ", Matrix.round_x_decimals(this.getArray(b), 2) * (-1),
+                            (char) (b + 65));
+                    printed = true;
+                }
+            }
+            if (!printed) {
+                System.out.format(" %.2f", 0.00);
+            }
+
+        }
+        System.out.println(" ");
     }
 
     public static void gauss_result(Matrix m) {
@@ -121,15 +153,23 @@ public class SPL {
                     continue;
                 }
 
-                arrayOfSpl[idx].setValue(m.get_elmt(i, m.get_col() - 1)); // set value ke array
+                arrayOfSpl[idx].setValue(m.get_elmt(i, m.get_col() - 1));
+                arrayOfSpl[idx].set_isi(); // set value ke array
                 for (j = idx + 1; j < m.get_col() - 1; j++) { // mulai dari setelah leading 1
                     if (m.get_elmt(i, j) != 0) { // jika tidak sama dengan 0
                         double temp = arrayOfSpl[idx].getValue();
                         double temp2 = arrayOfSpl[j].getValue();
                         double temp3 = m.get_elmt(i, j);
                         arrayOfSpl[idx].setValue(temp - (temp2) * temp3); // kurang value
-                        if (!(arrayOfSpl[j].get_isi_noVar())) {
-                            arrayOfSpl[idx].set_isi();
+                        boolean allVar0 = true;
+                        for (int a = 0; a < m.get_col() - 1; a++) {
+                            if (arrayOfSpl[j].getArray(a) != 0) {
+                                allVar0 = false;
+                                break;
+                            }
+                        }
+                        if (!allVar0) {
+
                             for (int a = 0; a < m.get_col() - 1; a++) {
                                 // kurang var
                                 if (arrayOfSpl[j].getArray(a) != 0) {
@@ -139,26 +179,30 @@ public class SPL {
                                 }
                             }
 
-                        } else if ((arrayOfSpl[j].get_isi_noVar()) && arrayOfSpl[j].getValue() == 0
-                                && arrayOfSpl[idx].getArray(j) != 0) {
+                        } else if (allVar0 && arrayOfSpl[idx].getArray(j) != 0) {
                             double temp5 = arrayOfSpl[idx].getArray(j);
                             arrayOfSpl[idx].setArray(j, temp5 - temp3);
-                            arrayOfSpl[idx].set_isi();
-                        } else if ((arrayOfSpl[j].get_isi_noVar()) && arrayOfSpl[j].getValue() == 0
-                                && arrayOfSpl[idx].getArray(j) == 0) {
 
+                        } else if (allVar0 && arrayOfSpl[idx].getArray(j) == 0 && arrayOfSpl[j].get_isi_noVar()) {
                             arrayOfSpl[idx].setArray(j, -temp3);
-                            arrayOfSpl[idx].set_isi();
+                        } else if (allVar0 && arrayOfSpl[idx].getArray(j) == 0 && !arrayOfSpl[j].get_isi_noVar()) {
+                            arrayOfSpl[idx].setArray(j, 0);
                         }
 
                     }
-
                 }
-
+                // for (int a = 0; a < m.get_col() - 1; a++) {
+                // System.out.format("%.2f ", arrayOfSpl[a].getValue());
+                // for (int b = 0; b < m.get_col() - 1; b++) {
+                // System.out.format("%.2f ", arrayOfSpl[a].getArray(b));
+                // }
+                // System.out.println("");
+                // }
+                // System.out.println("");
             }
             for (int a = 0; a < m.get_col() - 1; a++) {
                 System.out.format("X%d -> ", a + 1);
-                arrayOfSpl[a].print_out_solution(m.get_col() - 1, a);
+                arrayOfSpl[a].print_out_solution(m.get_col(), a);
             }
 
         } else { // solusi tunggal
@@ -240,15 +284,23 @@ public class SPL {
                     continue;
                 }
 
-                arrayOfSpl[idx].setValue(m.get_elmt(i, m.get_col() - 1)); // set value ke array
+                arrayOfSpl[idx].setValue(m.get_elmt(i, m.get_col() - 1));
+                arrayOfSpl[idx].set_isi(); // set value ke array
                 for (j = idx + 1; j < m.get_col() - 1; j++) { // mulai dari setelah leading 1
                     if (m.get_elmt(i, j) != 0) { // jika tidak sama dengan 0
                         double temp = arrayOfSpl[idx].getValue();
                         double temp2 = arrayOfSpl[j].getValue();
                         double temp3 = m.get_elmt(i, j);
                         arrayOfSpl[idx].setValue(temp - (temp2) * temp3); // kurang value
-                        if (!(arrayOfSpl[j].get_isi_noVar())) {
-                            arrayOfSpl[idx].set_isi();
+                        boolean allVar0 = true;
+                        for (int a = 0; a < m.get_col() - 1; a++) {
+                            if (arrayOfSpl[j].getArray(a) != 0) {
+                                allVar0 = false;
+                                break;
+                            }
+                        }
+                        if (!allVar0) {
+
                             for (int a = 0; a < m.get_col() - 1; a++) {
                                 // kurang var
                                 if (arrayOfSpl[j].getArray(a) != 0) {
@@ -258,26 +310,30 @@ public class SPL {
                                 }
                             }
 
-                        } else if ((arrayOfSpl[j].get_isi_noVar()) && arrayOfSpl[j].getValue() == 0
-                                && arrayOfSpl[idx].getArray(j) != 0) {
+                        } else if (allVar0 && arrayOfSpl[idx].getArray(j) != 0) {
                             double temp5 = arrayOfSpl[idx].getArray(j);
                             arrayOfSpl[idx].setArray(j, temp5 - temp3);
-                            arrayOfSpl[idx].set_isi();
-                        } else if ((arrayOfSpl[j].get_isi_noVar()) && arrayOfSpl[j].getValue() == 0
-                                && arrayOfSpl[idx].getArray(j) == 0) {
 
+                        } else if (allVar0 && arrayOfSpl[idx].getArray(j) == 0 && arrayOfSpl[j].get_isi_noVar()) {
                             arrayOfSpl[idx].setArray(j, -temp3);
-                            arrayOfSpl[idx].set_isi();
+                        } else if (allVar0 && arrayOfSpl[idx].getArray(j) == 0 && !arrayOfSpl[j].get_isi_noVar()) {
+                            arrayOfSpl[idx].setArray(j, 0);
                         }
 
                     }
-
                 }
-
+                // for (int a = 0; a < m.get_col() - 1; a++) {
+                // System.out.format("%.2f ", arrayOfSpl[a].getValue());
+                // for (int b = 0; b < m.get_col() - 1; b++) {
+                // System.out.format("%.2f ", arrayOfSpl[a].getArray(b));
+                // }
+                // System.out.println("");
+                // }
+                // System.out.println("");
             }
             for (int a = 0; a < m.get_col() - 1; a++) {
                 System.out.format("X%d -> ", a + 1);
-                arrayOfSpl[a].print_out_solution(m.get_col() - 1, a);
+                arrayOfSpl[a].print_out_solution(m.get_col(), a);
             }
 
         } else { // solusi tunggal
