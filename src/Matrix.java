@@ -1137,7 +1137,7 @@ public class Matrix {
     }
 
     public static void polynomial_interpolation_scan(Scanner scanner) {
-        int n = valid_int_input(scanner, "Masukkan berapa banyak titik yang akan digunakan untuk interpolasi : ", 0);
+        int n = valid_int_input(scanner, "Masukkan berapa banyak titik yang akan digunakan untuk interpolasi : ", 1);
         System.out.println("Masukkan data tiap titik!\n");
         Matrix temp = new Matrix(n, n + 1);
         for (int i = 0; i < temp.get_row(); i++) {
@@ -1276,8 +1276,8 @@ public class Matrix {
             String regx = String.format("f(Xk) = %.4f", cof_beta[0]);
             double result = cof_beta[0];
             for (int i = 0; i < xs.length; i++) {
-                regx += String.format(" + %.4f * %.4f", cof_beta[i+1], xs[i]);
-                result += cof_beta[i+1] * xs[i];
+                regx += String.format(" + %.4f * %.4f", cof_beta[i + 1], xs[i]);
+                result += cof_beta[i + 1] * xs[i];
             }
             System.out.println(regx);
             System.out.println(String.format("y = f(Xk) = %.4f", result));
