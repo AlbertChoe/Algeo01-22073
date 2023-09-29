@@ -683,22 +683,8 @@ public class Matrix {
         System.out.println("Masukkan b :");
         double b = scanner.nextDouble();
 
-        Matrix hasil = new Matrix(16, 16);
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                for (int k = 0; k < 4; k++) {
-                    for (int l = 0; l < 4; l++) {
-                        hasil.set_elmt(i * 4 + k, j * 4 + l, a * this.data[i][j] * Math.pow(b, k) * Math.pow(a, l));
-                    }
-                }
-            }
-        }
-        for (int i = 0; i < 16; i++) {
-            for (int j = 0; j < 16; j++) {
-                System.out.format("%.2f ", hasil.get_elmt(i, j));
-            }
-            System.out.println();
-        }
+        
+        
 
         scanner.nextLine();
     }
@@ -724,23 +710,7 @@ public class Matrix {
                 this.print_matrix(2);
                 System.out.format("%.2f %.2f\n\n", a, b);
 
-                Matrix hasil = new Matrix(16, 16);
-                for (int i = 0; i < 4; i++) {
-                    for (int j = 0; j < 4; j++) {
-                        for (int k = 0; k < 4; k++) {
-                            for (int l = 0; l < 4; l++) {
-                                hasil.set_elmt(i * 4 + k, j * 4 + l,
-                                        a * this.data[i][j] * Math.pow(b, k) * Math.pow(a, l));
-                            }
-                        }
-                    }
-                }
-                for (int i = 0; i < 16; i++) {
-                    for (int j = 0; j < 16; j++) {
-                        System.out.format("%.2f ", hasil.get_elmt(i, j));
-                    }
-                    System.out.println();
-                }
+                
 
                 System.out.println("Matrix berhasil terbaca.");
                 Main.press_to_menu(scanner);
