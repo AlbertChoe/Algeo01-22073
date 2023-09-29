@@ -110,17 +110,12 @@ public class SPL {
 
     public static void gauss_result(Matrix m) {
         int i, j;
-        boolean gaAdaSolusi, banyakSolusi;
+        boolean gaAdaSolusi;
         gaAdaSolusi = false;
-        banyakSolusi = false;
-
         for (i = 0; i < m.get_row(); i++) {
             if (m.is_baris_i_0(i)) {
                 if (m.get_elmt(i, m.get_col() - 1) != 0) {
                     gaAdaSolusi = true;
-                    break;
-                } else if (m.get_elmt(i, m.get_col() - 1) == 0) {
-                    banyakSolusi = true;
                     break;
                 }
             }
@@ -128,7 +123,7 @@ public class SPL {
 
         if (gaAdaSolusi) {
             System.out.println("Tidak ada solusi.");
-        } else if (banyakSolusi) {
+        } else {
             System.out.println("Mempunyai banyak solusi");
 
             SPL[] arrayOfSpl = new SPL[m.get_col() - 1];
@@ -203,36 +198,6 @@ public class SPL {
             for (int a = 0; a < m.get_col() - 1; a++) {
                 System.out.format("X%d -> ", a + 1);
                 arrayOfSpl[a].print_out_solution(m.get_col(), a);
-            }
-
-        } else { // solusi tunggal
-            System.out.println("Mempunyai solusi tunggal");
-            double[] hasil = new double[m.get_row()];
-            for (i = 0; i < m.get_row(); i++) {
-                hasil[i] = 0;
-            }
-            Matrix matriksA = new Matrix(m.get_row(), m.get_col() - 1);
-            for (i = 0; i < m.get_row(); i++) {
-                for (j = 0; j < m.get_col() - 1; j++) {
-                    matriksA.set_elmt(i, j, m.get_elmt(i, j));
-                }
-            }
-            double[] matriksB = new double[m.get_row()];
-            for (i = 0; i < m.get_row(); i++) {
-                matriksB[i] = m.get_elmt(i, m.get_col() - 1);
-            }
-
-            for (i = m.get_row() - 1; i >= 0; i--) {
-                hasil[i] = matriksB[i];
-                for (j = i + 1; j < m.get_row(); j++) {
-                    hasil[i] -= matriksA.get_elmt(i, j) * hasil[j];
-                }
-                hasil[i] = hasil[i] / matriksA.get_elmt(i, i);
-            }
-
-            for (int a = 0; a < m.get_row(); a++) {
-                System.out.format("X%d -> ", a + 1);
-                System.out.format("%.2f\n", hasil[a]);
             }
 
         }
@@ -241,17 +206,12 @@ public class SPL {
 
     public static void gauss_jordan_result(Matrix m) {
         int i, j;
-        boolean gaAdaSolusi, banyakSolusi;
+        boolean gaAdaSolusi;
         gaAdaSolusi = false;
-        banyakSolusi = false;
-
         for (i = 0; i < m.get_row(); i++) {
             if (m.is_baris_i_0(i)) {
                 if (m.get_elmt(i, m.get_col() - 1) != 0) {
                     gaAdaSolusi = true;
-                    break;
-                } else if (m.get_elmt(i, m.get_col() - 1) == 0) {
-                    banyakSolusi = true;
                     break;
                 }
             }
@@ -259,7 +219,7 @@ public class SPL {
 
         if (gaAdaSolusi) {
             System.out.println("Tidak ada solusi.");
-        } else if (banyakSolusi) {
+        } else {
             System.out.println("Mempunyai banyak solusi");
 
             SPL[] arrayOfSpl = new SPL[m.get_col() - 1];
@@ -336,38 +296,7 @@ public class SPL {
                 arrayOfSpl[a].print_out_solution(m.get_col(), a);
             }
 
-        } else { // solusi tunggal
-            System.out.println("Mempunyai solusi tunggal");
-            double[] hasil = new double[m.get_row()];
-            for (i = 0; i < m.get_row(); i++) {
-                hasil[i] = 0;
-            }
-            Matrix matriksA = new Matrix(m.get_row(), m.get_col() - 1);
-            for (i = 0; i < m.get_row(); i++) {
-                for (j = 0; j < m.get_col() - 1; j++) {
-                    matriksA.set_elmt(i, j, m.get_elmt(i, j));
-                }
-            }
-            double[] matriksB = new double[m.get_row()];
-            for (i = 0; i < m.get_row(); i++) {
-                matriksB[i] = m.get_elmt(i, m.get_col() - 1);
-            }
-
-            for (i = m.get_row() - 1; i >= 0; i--) {
-                hasil[i] = matriksB[i];
-                for (j = i + 1; j < m.get_row(); j++) {
-                    hasil[i] -= matriksA.get_elmt(i, j) * hasil[j];
-                }
-                hasil[i] = hasil[i] / matriksA.get_elmt(i, i);
-            }
-
-            for (int a = 0; a < m.get_row(); a++) {
-                System.out.format("X%d -> ", a + 1);
-                System.out.format("%.2f\n", hasil[a]);
-            }
-
         }
-
     }
 
 }
