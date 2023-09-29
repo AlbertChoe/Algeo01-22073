@@ -678,7 +678,7 @@ public class Matrix {
             for (int k = i + 1; k < baris; k++) {
                 double pengurang = -this.get_elmt(k, idx);
                 for (j = 0; j < kolom; j++) {
-                    set_elmt(k, j, round_x_decimals(get_elmt(k, j) + pengurang * this.get_elmt(i, j), 7));
+                    set_elmt(k, j, round_x_decimals(get_elmt(k, j) + pengurang * this.get_elmt(i, j), 5));
                 }
             }
         }
