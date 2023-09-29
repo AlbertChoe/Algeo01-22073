@@ -485,7 +485,7 @@ public class Matrix {
             return;
         }
         System.out.println("Invers Matriks A");
-        A = A.find_inverse();
+        A = A.find_inverse_obe();
         A.print_matrix(2);
         System.out.println("Matriks b");
         b.print_matrix(2);
@@ -951,7 +951,7 @@ public class Matrix {
         for (int i = 0; i < this.get_row(); i++) {
             b.set_elmt(i, 0, this.get_elmt(i, this.get_col() - 1));
         }
-        A = A.find_inverse();
+        A = A.find_inverse_obe();
         Matrix x = multiply_matrix(A, b);
         double[] solution_arr = new double[x.get_row()];
         for (int i = 0; i < x.get_row(); i++) {
@@ -1157,7 +1157,7 @@ public class Matrix {
         //B = (At * A)^(-1) * (At * Y)
         Matrix AT = A.transpose();
         Matrix ATA = multiply_matrix(AT, A);
-        ATA = ATA.find_inverse();
+        ATA = ATA.find_inverse_obe();
         Matrix ATY = multiply_matrix(AT, Y);
         Matrix B = multiply_matrix(ATA, ATY);
         double[] cof_beta = new double[B.get_row()];
