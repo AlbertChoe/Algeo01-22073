@@ -479,6 +479,11 @@ public class Matrix {
         }
         System.out.println("Matriks A");
         A.print_matrix(2);
+        if (A.get_row() != A.get_col()) {
+            System.out.println("Matriks tidak dapat dikerjakan dengan menggunakan metode matriks balikan.");
+            System.out.println("Karena matriks A bukan matriks persegi.");
+            return;
+        }
         if (find_determinant(A) == 0) {
             System.out.println("Determinan matriks A = 0. Matriks A tidak memiliki balikan.");
             System.out.println("Gunakan cara lain untuk mencari solusi SPL!");
