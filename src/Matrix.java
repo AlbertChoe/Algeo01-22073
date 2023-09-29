@@ -1069,6 +1069,9 @@ public class Matrix {
     }
 
     public static void polynomial_interpolation_file(Scanner scanner) {
+        /*
+         * Todo : Cek kalo dalam txt tidak ada titik yang xnya sama
+         */
         System.out.print("Masukkan nama file beserta extension (.txt) : ");
         String file_name = scanner.nextLine();
         file_name.strip();
@@ -1136,15 +1139,39 @@ public class Matrix {
         }
     }
 
+    private static boolean is_in_array(double[] arr, double x) {
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] == x) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static double[] fill_arr_with_mark(double[] arr) {
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = -99999.9999;
+        }
+        return arr;
+    }
+
     public static void polynomial_interpolation_scan(Scanner scanner) {
         int n = valid_int_input(scanner, "Masukkan berapa banyak titik yang akan digunakan untuk interpolasi : ", 0);
         System.out.println("Masukkan data tiap titik!\n");
         Matrix temp = new Matrix(n, n + 1);
+        double[] mem = new double[temp.get_row()];
+        mem = fill_arr_with_mark(mem);
         for (int i = 0; i < temp.get_row(); i++) {
             int exponent = 0;
             String msg = String.format("x%d : ", i);
             double xi = valid_double_input(scanner, msg);
-
+            if (is_in_array(mem, xi)) {
+                System.out.println("\nTidak dapat membuat interpolasi.");
+                System.out.println(String.format("Sudah terdapat masukan titik yang x-nya adalah %.4f!", xi));
+                return;
+            } else {
+                mem[i] = xi;
+            }
             int j = 0;
             while (j < temp.get_col() - 1) {
                 temp.data[i][j] = Math.pow(xi, exponent);
