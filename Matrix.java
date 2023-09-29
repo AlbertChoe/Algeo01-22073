@@ -582,6 +582,45 @@ public class Matrix {
         }
     }
 
+    public void atur_baris_rapi_silent() {
+        int[] listidxbukan0 = new int[this.get_row()];
+        int idx = 0;
+        boolean flag = false;
+        for (int i = 0; i < this.get_row(); i++) {
+            flag = false;
+            for (int j = 0; j < this.get_col(); j++) {
+                if (this.get_elmt(i, j) != 0) {
+                    listidxbukan0[idx] = this.get_row() - j;
+                    flag = true;
+                    idx++;
+                    break;
+                }
+            }
+            if (!flag) {
+                listidxbukan0[idx] = 0;
+                idx++;
+            }
+        }
+
+        for (int i = 0; i < this.get_row() - 1; i++) {
+            flag = false;
+            for (int j = 0; j < this.get_row() - i - 1; j++) {
+                if (listidxbukan0[j] < listidxbukan0[j + 1]) {
+                    double[] temp1 = this.data[j];
+                    this.data[j] = this.data[j + 1];
+                    this.data[j + 1] = temp1;
+                    int temp = listidxbukan0[j];
+                    listidxbukan0[j] = listidxbukan0[j + 1];
+                    listidxbukan0[j + 1] = temp;
+                    flag = true;
+                }
+            }
+            if (!flag) {
+                break;
+            }
+        }
+    }
+
     public void eliminasi_gauss() {
         this.row_eselon();
         this.print_matrix(2);
@@ -590,6 +629,10 @@ public class Matrix {
     public void eliminasi_gauss_jordan() {
         this.row_eselon_reduction();
         this.print_matrix(2);
+    }
+
+    public void eliminasi_gauss_jordan_silent() {
+        this.row_eselon_reduction_silent();
     }
 
     public static Matrix multiply_matrix(Matrix m1, Matrix m2) {
@@ -642,8 +685,70 @@ public class Matrix {
         this.atur_baris_rapi();
     }
 
+    public void row_eselon_silent() {
+        int i, j, baris, kolom;
+        baris = this.get_row();
+        kolom = this.get_col();
+        this.atur_baris_rapi_silent();
+        for (i = 0; i < baris; i++) {
+            int idx = -1;
+            // Mencari Leading one
+            for (j = 0; j < kolom; j++) {
+                if (this.get_elmt(i, j) != 0) {
+                    idx = j;
+                    break;
+                }
+            }
+            if (idx == -1) {
+                continue;
+            }
+            double value = this.get_elmt(i, idx);
+            // Mengubah elemen-elemen pada baris ke-i agar elemen pertama menjadi 1
+            for (j = 0; j < kolom; j++) {
+                set_elmt(i, j, round_x_decimals(this.get_elmt(i, j) / value, 7));
+            }
+            // Mengurangkan baris-baris di bawah baris ke-i agar elemen pertama pada setiap
+            // baris di bawahnya menjadi nol
+            for (int k = i + 1; k < baris; k++) {
+                double pengurang = -this.get_elmt(k, idx);
+                for (j = 0; j < kolom; j++) {
+                    set_elmt(k, j, round_x_decimals(get_elmt(k, j) + pengurang * this.get_elmt(i, j), 7));
+                }
+            }
+        }
+        this.atur_baris_rapi_silent();
+    }
+
     public void row_eselon_reduction() {
         this.row_eselon();
+        int i, j, baris, kolom;
+        baris = this.get_row();
+        kolom = this.get_col();
+        // Mengurangkan baris-baris di atas baris ke-i agar elemen pertama pada setiap
+        // baris di atasnya menjadi nol
+        for (i = baris - 1; i >= 0; i--) {
+            int idx = -1;
+            for (j = 0; j < kolom; j++) {
+                if (this.get_elmt(i, j) != 0) {
+                    idx = j;
+                    break;
+                }
+            }
+            if (idx == -1) {
+                continue;
+            }
+
+            for (int k = i - 1; k >= 0; k--) {
+                double pengurang = -this.get_elmt(k, idx);
+                for (j = 0; j < kolom; j++) {
+                    this.set_elmt(k, j, round_x_decimals(this.get_elmt(k, j) + pengurang * this.get_elmt(i, j), 7));
+                }
+            }
+        }
+    }
+
+    public void row_eselon_reduction_silent() {
+        this.row_eselon_silent();
         int i, j, baris, kolom;
         baris = this.get_row();
         kolom = this.get_col();
@@ -810,32 +915,25 @@ public class Matrix {
     }
 
     public Matrix find_invers_obe() {
-        double det = find_determinant(this);
         int row = this.get_row();
         int col = this.get_col();
         Matrix hasil = new Matrix(row, col);
-        if (det == 0) {
-            System.out.println("Matriks tidak mempunyai determinan sehingga matriks tidak mempunyai balikan");
-        }
-        else {
-            Matrix m1 = new Matrix(row, col * 2);
-            for (int i = 0; i < row; i++) {
-                for (int j = 0; j < col * 2; j++) {
-                    if (j < col) {
-                        m1.set_elmt(i, j, this.get_elmt(i, j));
-                    } else if (i == j - col) {
-                        m1.set_elmt(i, j, 1);
-                    } else {
-                        m1.set_elmt(i, j, 0);
-                    }
+        Matrix m1 = new Matrix(row, col * 2);
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col * 2; j++) {
+                if (j < col) {
+                    m1.set_elmt(i, j, this.get_elmt(i, j));
+                } else if (i == j - col) {
+                    m1.set_elmt(i, j, 1);
+                } else {
+                    m1.set_elmt(i, j, 0);
                 }
             }
-            m1.print_matrix(2);
-            m1.eliminasi_gauss_jordan();
-            for (int i = 0; i < row; i++) {
-                for (int j = 0; j < col; j++) {
-                    hasil.set_elmt(i, j, m1.get_elmt(i, j + col));
-                }
+        }
+        m1.eliminasi_gauss_jordan_silent();
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                hasil.set_elmt(i, j, m1.get_elmt(i, j + col));
             }
         }
         return hasil;
