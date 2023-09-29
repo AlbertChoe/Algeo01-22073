@@ -214,29 +214,7 @@ public class Main {
                             matrix.inverse_adjoint();
                         } else {
                             // Matriks balikan metode transformasi baris el.
-                            int row = matrix.get_row();
-                            int col = matrix.get_col();
-                            Matrix m1 = new Matrix(row, col * 2);
-                            for (int i = 0; i < row; i++) {
-                                for (int j = 0; j < col * 2; j++) {
-                                    if (j < col) {
-                                        m1.set_elmt(i, j, matrix.get_elmt(i, j));
-                                    } else if (i == j - col) {
-                                        m1.set_elmt(i, j, 1);
-                                    } else {
-                                        m1.set_elmt(i, j, 0);
-                                    }
-                                }
-                            }
-                            m1.print_matrix(2);
-                            m1.eliminasi_gauss_jordan();
-                            Matrix hasil = new Matrix(row, col);
-                            for (int i = 0; i < row; i++) {
-                                for (int j = 0; j < col; j++) {
-                                    hasil.set_elmt(i, j, m1.get_elmt(i, j + col));
-                                }
-                            }
-                            hasil.print_matrix(3);
+                            matrix.invers_OBE();
                         }
                     }
 

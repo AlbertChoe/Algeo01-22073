@@ -723,7 +723,6 @@ public class Matrix {
     }
     // #akhirAlbert
 
-    // Ivan
     public void cramer() {
         Matrix x = new Matrix(this.n_row, 1);
         Matrix a = new Matrix(this.n_row, this.n_col - 1);
@@ -777,6 +776,31 @@ public class Matrix {
                 System.out.println("x" + i + " = " + x.data[i][0]);
             }
         }
+    }
+    public void invers_OBE() {
+        int row = this.get_row();
+        int col = this.get_col();
+        Matrix m1 = new Matrix(row, col * 2);
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col * 2; j++) {
+                if (j < col) {
+                    m1.set_elmt(i, j, this.get_elmt(i, j));
+                } else if (i == j - col) {
+                    m1.set_elmt(i, j, 1);
+                } else {
+                    m1.set_elmt(i, j, 0);
+                }
+            }
+        }
+        m1.print_matrix(2);
+        m1.eliminasi_gauss_jordan();
+        Matrix hasil = new Matrix(row, col);
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                hasil.set_elmt(i, j, m1.get_elmt(i, j + col));
+            }
+        }
+        hasil.print_matrix(3);
     }
 
     // Untuk interpolasi polinom
