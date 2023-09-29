@@ -165,7 +165,7 @@ public class Matrix {
 
     private void determine_matrix_size_from_file(String file_name) {
         try {
-            File file = new File(file_name);
+            File file = new File("test" + File.separator + file_name);
             Scanner scanner = new Scanner(file);
             int row_count = 0;
             int col_count = 0;
@@ -193,7 +193,7 @@ public class Matrix {
         if (txt_extension) {
             try {
                 determine_matrix_size_from_file(file_name);
-                File file = new File(file_name);
+                File file = new File("test" + File.separator + file_name);
                 Scanner file_scanner = new Scanner(file);
                 for (int i = 0; i < this.get_row(); i++) {
                     for (int j = 0; j < this.get_col(); j++) {
@@ -879,7 +879,7 @@ public class Matrix {
         if (txt_extension) {
             try {
                 this.set_new_size(4, 4);
-                File file = new File(file_name);
+                File file = new File("test" + File.separator + file_name);
                 Scanner file_scanner = new Scanner(file);
                 for (int i = 0; i < 4; i++) {
                     for (int j = 0; j < 4; j++) {
@@ -1076,7 +1076,7 @@ public class Matrix {
         Matrix temp = new Matrix();
         if (txt_extension) {
             try {
-                File file = new File(file_name);
+                File file = new File("test" + File.separator + file_name);
                 Scanner file_scanner = new Scanner(file);
                 int row_count = 0;
                 int col_count;
@@ -1223,7 +1223,7 @@ public class Matrix {
         if (txt_extension) {
             try {
                 determine_matrix_size_from_file(file_name);
-                File file = new File(file_name);
+                File file = new File("test" + File.separator + file_name);
                 Scanner file_scanner = new Scanner(file);
                 for (int i = 0; i < this.get_row(); i++) {
                     for (int j = 0; j < this.get_col(); j++) {
