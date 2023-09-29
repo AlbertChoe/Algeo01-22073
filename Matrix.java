@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.lang.Math;
 
@@ -144,13 +145,22 @@ public class Matrix {
     public void read_square_matrix_scan(Scanner scanner, int min_dimension) {
         int dimension = valid_int_input(scanner, "Masukkan dimensi matriks persegi : ", min_dimension - 1);
         this.set_new_size(dimension, dimension);
-        System.out.println(String.format("Masukkan matriks %dx%d : ", this.get_row(), this.get_col()));
-        for (int i = 0; i < this.get_row(); i++) {
-            for (int j = 0; j < this.get_col(); j++) {
-                this.data[i][j] = scanner.nextDouble();
+        while (true) {
+            try {
+                System.out.println(String.format("Masukkan matriks %dx%d : ", this.get_row(), this.get_col()));
+                for (int i = 0; i < this.get_row(); i++) {
+                    for (int j = 0; j < this.get_col(); j++) {
+                        this.data[i][j] = scanner.nextDouble();
+                    }
+                }
+                scanner.nextLine();
+                return;
+            } catch (InputMismatchException e) {
+                System.out.println("Masukan matriks tidak boleh selain bilangan riil.");
+                System.out.println("Proses memasukkan matriks diulang dari awal!\n");
+                scanner.nextLine();
             }
         }
-        scanner.nextLine();
     }
 
     private void determine_matrix_size_from_file(String file_name) {
