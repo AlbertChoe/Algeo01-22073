@@ -882,7 +882,7 @@ public class Matrix {
             }
         }
     }
-    public void invers_OBE() {
+    public void inverse_obe() {
         double det = find_determinant(this);
         if (det == 0) {
             System.out.println("Matriks tidak mempunyai determinan sehingga matriks tidak mempunyai balikan");
@@ -914,7 +914,7 @@ public class Matrix {
         }
     }
 
-    public Matrix find_invers_obe() {
+    public Matrix find_inverse_obe() {
         int row = this.get_row();
         int col = this.get_col();
         Matrix hasil = new Matrix(row, col);

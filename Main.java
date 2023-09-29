@@ -207,7 +207,7 @@ public class Main {
                         if (sub_choice == 1) {
                             matrix.inverse_adjoint();
                         } else {
-                            matrix.invers_OBE();
+                            matrix.inverse_obe();
                         }
                     }
 
