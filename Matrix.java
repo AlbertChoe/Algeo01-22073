@@ -683,7 +683,7 @@ public class Matrix {
             for (int k = i + 1; k < baris; k++) {
                 double pengurang = -this.get_elmt(k, idx);
                 for (j = 0; j < kolom; j++) {
-                    set_elmt(k, j, round_x_decimals(get_elmt(k, j) + pengurang * this.get_elmt(i, j), 7));
+                    set_elmt(k, j, round_x_decimals(get_elmt(k, j) + pengurang * this.get_elmt(i, j), 5));
                 }
             }
         }
@@ -788,15 +788,75 @@ public class Matrix {
                 this.data[i][j] = scanner.nextDouble();
             }
         }
-        System.out.println("Masukkan a :");
+        System.out.print("Masukkan a : ");
         double a = scanner.nextDouble();
-        System.out.println("Masukkan b :");
+        System.out.print("Masukkan b : ");
         double b = scanner.nextDouble();
 
-        
-        
+        Matrix hasil = new Matrix(16, 16);
+        int idxRow = 0;
+        int idxCol = 0;
+        for (int x = -1; x < 3; x++) {
+            for (int y = -1; y < 3; y++) {
+                idxCol = 0;
+                for (int i = 0; i <= 3; i++) {
+                    for (int j = 0; j <= 3; j++) {
+                        hasil.set_elmt(idxRow, idxCol, Math.pow(x, i) * Math.pow(y, j));
+                        idxCol++;
+                    }
+                }
+                idxRow++;
+            }
+        }
+        hasil.print_matrix(1);
+        hasil = hasil.find_inverse_obe(); // hasil yang sudah di invers ukuran 16x16
+        Matrix sixteen_row_Matrix = new Matrix(16, 1); // matrix ukuran 16x1
+        int row = 0;
+        for (int i = 0; i < this.get_row(); i++) {
+            for (int j = 0; j < this.get_col(); j++) {
+                sixteen_row_Matrix.set_elmt(row, 0, this.get_elmt(i, j));
+                row++;
+            }
+        }
+        Matrix hasilKoef = Matrix.multiply_matrix(hasil, sixteen_row_Matrix); // Menghasilkan matrix koef
+        double hasilJumlah = 0;
+        row = 0;
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                hasilJumlah += Math.pow(a, i) * Math.pow(b, j) * hasilKoef.get_elmt(row, 0);
+                row++;
+            }
+        }
+        System.out.format("Hasil f(%.2f ,%.2f) = %.2f\n", a, b, hasilJumlah);
+        int input = -1;
+        System.out.println("Apakah ingin mengecek hasil taksiran fungsi lain?");
+        System.out.println("1. Ya");
+        System.out.println("2. Tidak");
+        scanner.nextLine(); // Consume the newline character from previous input.
+        input = Main.valid_input_choice(scanner, 1, 2);
+        while (input == 1) {
+            System.out.print("Masukkan a : ");
+            a = scanner.nextDouble();
+            System.out.print("Masukkan b : ");
+            b = scanner.nextDouble();
+            scanner.nextLine();
+            hasilJumlah = 0;
+            row = 0;
+            for (int i = 0; i < 4; i++) {
+                for (int j = 0; j < 4; j++) {
+                    hasilJumlah += Math.pow(a, i) * Math.pow(b, j) * hasilKoef.get_elmt(row, 0);
+                    row++;
+                }
+            }
+            System.out.format("Hasil f(%.2f ,%.2f) = %.2f\n", a, b, hasilJumlah);
 
-        scanner.nextLine();
+            System.out.println("Apakah ingin mengecek hasil taksiran fungsi lain?");
+            System.out.println("1. Ya");
+            System.out.println("2. Tidak");
+            input = Main.valid_input_choice(scanner, 1, 2);
+
+        }
+
     }
 
     public void read_matrix_bicubic_from_file(Scanner scanner) {
@@ -804,6 +864,8 @@ public class Matrix {
         String file_name = scanner.nextLine();
         file_name.strip();
         boolean txt_extension = file_name.endsWith(".txt");
+        double a = 0;
+        double b = 0;
         if (txt_extension) {
             try {
                 this.set_new_size(4, 4);
@@ -814,19 +876,50 @@ public class Matrix {
                         this.set_elmt(i, j, file_scanner.nextDouble());
                     }
                 }
-                double a = file_scanner.nextDouble();
-                double b = file_scanner.nextDouble();
+                a = file_scanner.nextDouble();
+                b = file_scanner.nextDouble();
                 file_scanner.close();
-                this.print_matrix(2);
-                System.out.format("%.2f %.2f\n\n", a, b);
 
-                
-
-                System.out.println("Matrix berhasil terbaca.");
-                Main.press_to_menu(scanner);
             } catch (FileNotFoundException e) {
+                System.out.format("Tidak ditemukan file dengan nama %s\n", file_name);
                 return;
             }
+            Matrix hasil = new Matrix(16, 16);
+            int idxRow = 0;
+            int idxCol = 0;
+            for (int x = -1; x < 3; x++) {
+                for (int y = -1; y < 3; y++) {
+                    idxCol = 0;
+                    for (int i = 0; i <= 3; i++) {
+                        for (int j = 0; j <= 3; j++) {
+                            hasil.set_elmt(idxRow, idxCol, Math.pow(x, i) * Math.pow(y, j));
+                            idxCol++;
+                        }
+                    }
+                    idxRow++;
+                }
+            }
+            hasil.print_matrix(1);
+            hasil = hasil.find_inverse_obe(); // hasil yang sudah di invers ukuran 16x16
+            Matrix sixteen_row_Matrix = new Matrix(16, 1); // matrix ukuran 16x1
+            int row = 0;
+            for (int i = 0; i < this.get_row(); i++) {
+                for (int j = 0; j < this.get_col(); j++) {
+                    sixteen_row_Matrix.set_elmt(row, 0, this.get_elmt(i, j));
+                    row++;
+                }
+            }
+            Matrix hasilKoef = Matrix.multiply_matrix(hasil, sixteen_row_Matrix); // Menghasilkan matrix koef
+            double hasilJumlah = 0;
+            row = 0;
+            for (int i = 0; i < 4; i++) {
+                for (int j = 0; j < 4; j++) {
+                    hasilJumlah += Math.pow(a, i) * Math.pow(b, j) * hasilKoef.get_elmt(row, 0);
+                    row++;
+                }
+            }
+            System.out.format("Hasil f(%.2f ,%.2f) = %.2f\n", a, b, hasilJumlah);
+
         } else {
             System.out.println("Baca file gagal. File bukan file txt.");
         }
@@ -887,12 +980,12 @@ public class Matrix {
             }
         }
     }
+
     public void inverse_obe() {
         double det = find_determinant(this);
         if (det == 0) {
             System.out.println("Matriks tidak mempunyai determinan sehingga matriks tidak mempunyai balikan");
-        }
-        else {
+        } else {
             int row = this.get_row();
             int col = this.get_col();
             Matrix m1 = new Matrix(row, col * 2);
@@ -1055,7 +1148,8 @@ public class Matrix {
         double x = valid_double_input(scanner, "x yang ingin diinterpolasikan y-nya: ");
         System.out.println("\nBerikut merupakan titik - titik yang terbaca dari masukan");
         for (int i = 0; i < temp.get_row(); i++) {
-            String msg = String.format("(x%d, y%d) : (%.4f, %.4f)", i, i, temp.get_elmt(i, 1), temp.get_elmt(i, temp.get_col() - 1));
+            String msg = String.format("(x%d, y%d) : (%.4f, %.4f)", i, i, temp.get_elmt(i, 1),
+                    temp.get_elmt(i, temp.get_col() - 1));
             System.out.println(msg);
         }
         double[] solution_a = temp.spl_solution_to_arr();
@@ -1159,7 +1253,7 @@ public class Matrix {
         for (int i = 0; i < points.get_row() - 1; i++) {
             Y.data[i][0] = points.get_elmt(i, points.get_col() - 1);
         }
-        //B = (At * A)^(-1) * (At * Y)
+        // B = (At * A)^(-1) * (At * Y)
         Matrix AT = A.transpose();
         Matrix ATA = multiply_matrix(AT, A);
         ATA = ATA.find_inverse_obe();
@@ -1175,7 +1269,7 @@ public class Matrix {
         double result = cof_beta[0];
         for (int i = 1; i < cof_beta.length; i++) {
             System.out.print(String.format(" + %.4f * x%d", cof_beta[i], i));
-            double temp_double = cof_beta[i] * xs[i - 1] ;
+            double temp_double = cof_beta[i] * xs[i - 1];
             result += temp_double;
         }
         System.out.println();

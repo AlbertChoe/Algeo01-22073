@@ -241,8 +241,6 @@ public class Main {
                 } else {
                     continue;
                 }
-
-                matrix.print_matrix(2);
                 press_to_menu(scanner);
 
             } else if (choice == 6) {
