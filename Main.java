@@ -134,7 +134,6 @@ public class Main {
                 int sub_choice = valid_input_choice(scanner, 1, 5);
                 if (sub_choice >= 1 && sub_choice <= 4) {
                     clear_terminal();
-                    // input Matrix
                     Matrix matrix = new Matrix();
                     display_input_options();
                     int input_option = valid_input_choice(scanner, 1, 2);
@@ -145,16 +144,15 @@ public class Main {
                         matrix.read_matrix_from_file(scanner);
                     }
                     if (matrix.is_not_empty()) {
-                        if (sub_choice == 1) { // done
+                        if (sub_choice == 1) {
                             matrix.eliminasi_gauss();
                             SPL.gauss_result(matrix);
-                        } else if (sub_choice == 2) { // done
+                        } else if (sub_choice == 2) {
                             matrix.eliminasi_gauss_jordan();
                             SPL.gauss_result(matrix);
                         } else if (sub_choice == 3) {
                             matrix.spl_inverse();
                         } else {
-                            // Bila input dengan file, prekondisi ukuran matriks adalah nRow x (nRow + 1)
                             matrix.cramer();
                         }
                     }
@@ -167,8 +165,6 @@ public class Main {
                 int sub_choice = valid_input_choice(scanner, 1, 3);
                 if (sub_choice == 1 || sub_choice == 2) {
                     clear_terminal();
-
-                    // input matrix
                     Matrix matrix = new Matrix();
                     display_input_options();
                     int input_option = valid_input_choice(scanner, 1, 2);
@@ -197,8 +193,6 @@ public class Main {
                 int sub_choice = valid_input_choice(scanner, 1, 3);
                 if (sub_choice == 1 || sub_choice == 2) {
                     clear_terminal();
-
-                    // input matrix
                     Matrix matrix = new Matrix();
                     display_input_options();
                     int input_option = valid_input_choice(scanner, 1, 2);
@@ -213,7 +207,6 @@ public class Main {
                         if (sub_choice == 1) {
                             matrix.inverse_adjoint();
                         } else {
-                            // Matriks balikan metode transformasi baris el.
                             matrix.invers_OBE();
                         }
                     }
@@ -253,8 +246,6 @@ public class Main {
                 press_to_menu(scanner);
 
             } else if (choice == 6) {
-
-                // STILL ON PROGRESS!
                 display_input_options_mulreg();
                 Matrix points = new Matrix();
                 int input_option = valid_input_choice(scanner, 1, 3);
