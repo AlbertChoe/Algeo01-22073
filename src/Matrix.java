@@ -955,18 +955,21 @@ public class Matrix {
         }
     }
 
+    // Mencari solusi dari SPL dengan metode cramer dengan ukuran matriks nRow * (nRow+1)
     public void cramer() {
-        Matrix x = new Matrix(this.n_row, 1);
-        Matrix a = new Matrix(this.n_row, this.n_col - 1);
-        Matrix temp = new Matrix(this.n_row, this.n_col - 1);
-        double det1;
-        double det2 = 1;
-        Matrix b = new Matrix(this.n_row, 1);
+        Matrix x = new Matrix(this.n_row, 1); // Untuk menampung hasil jawaban
+        Matrix a = new Matrix(this.n_row, this.n_col - 1); // Untuk menampung koefisien dari tiap variabel
+        Matrix temp = new Matrix(this.n_row, this.n_col - 1); // Mengcopy matriks a ke temp lalu diproses sebanyak nCol kali dengan memasukkan elemen dari b dari 0 hingga nCol-1
+        double det1; // Determinan dari koefisien variabel
+        double det2 = 1; // Determinan ketika elemen dari b dimasukkan ke temp
+        Matrix b = new Matrix(this.n_row, 1); // Berisi konstanta tiap persamaan
 
+        // Mengisi matriks b dengan konstanta tiap persamaan
         for (int i = 0; i < this.n_row; i++) {
             b.set_elmt(i, 0, this.get_elmt(i, n_col - 1));
         }
 
+        // Mengisi matriks a dengan koefisien dari matriks input
         for (int i = 0; i < a.n_row; i++) {
             for (int j = 0; j < a.n_col; j++) {
                 a.set_elmt(i, j, this.data[i][j]);
@@ -976,8 +979,9 @@ public class Matrix {
         if (det1 == 0) {
             System.out.println("Determinan matriks = 0, SPL tidak memiliki solusi yang unik.\n");
             this.row_eselon();
-            SPL.gauss_result(this);
-        } else {
+            SPL.gauss_result(this); // Menghasilkan solusi dalam bentuk parametrik atau tidak ada solusi
+        // Jika determinan koefisien tidak sama dengan nol
+        } else { 
             for (int i = 0; i < this.n_row; i++) {
                 b.set_elmt(i, 0, this.get_elmt(i, n_col - 1));
             }
@@ -1010,6 +1014,7 @@ public class Matrix {
         }
     }
 
+    // Proses untuk menginverse sebuah matriks dengan metode OBE
     public void inverse_obe() {
         double det = find_determinant(this);
         if (det == 0) {
@@ -1018,6 +1023,7 @@ public class Matrix {
             int row = this.get_row();
             int col = this.get_col();
             Matrix m1 = new Matrix(row, col * 2);
+            // Memasukkan elemen m1 dari matriks input dan matriks identitas, dengan posisi matriks identitas di sebelah kanan matriks input
             for (int i = 0; i < row; i++) {
                 for (int j = 0; j < col * 2; j++) {
                     if (j < col) {
@@ -1041,6 +1047,7 @@ public class Matrix {
         }
     }
 
+    // Mengembalikan sebuah matriks inverse dengan metode OBE dengan menggunakan fungsi eliminasi_gauss_jordan_silent yang bersih dari output proses pengerjaan
     public Matrix find_inverse_obe() {
         int row = this.get_row();
         int col = this.get_col();
