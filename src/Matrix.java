@@ -514,7 +514,6 @@ public class Matrix {
         }
     }
 
-    // #Albert
     // Mengecek apakah ada baris yang 0 semuanya
     public boolean is_baris_0() {
         boolean flag;
@@ -534,6 +533,7 @@ public class Matrix {
         return false;
     }
 
+    // Mengecek apakak baris ke i dari matriks bernilai 0 semua
     public boolean is_baris_i_0(int row) {
         boolean flag;
         flag = true;
@@ -550,12 +550,13 @@ public class Matrix {
 
     // Membuat matriks agar tidak ada baris yang 0 semua di tengah tengah
     // contoh
-    // 0 0 0 0 0 6
+    // 0 0 0 menjadi 0 0 6
     // 0 0 0 menjadi 0 0 0
-    // 0 0 6 0 0 0
-    // 0 0 0 0 6 6
+    // 0 0 6 menjadi 0 0 0
+
+    // 0 0 0 menjadi 0 6 6
     // 0 6 6 menjadi 0 0 6
-    // 0 0 6 0 0 0
+    // 0 0 6 menjadi 0 0 0
     public void atur_baris_rapi() {
         int[] listidxbukan0 = new int[this.get_row()];
         int idx = 0;
@@ -597,6 +598,7 @@ public class Matrix {
         }
     }
 
+    // Fungsi atur baris rapi yang tidak memilii print apa apa
     public void atur_baris_rapi_silent() {
         int[] listidxbukan0 = new int[this.get_row()];
         int idx = 0;
@@ -650,6 +652,7 @@ public class Matrix {
         this.row_eselon_reduction_silent();
     }
 
+    // Fungsi untuk mengalikan matrix antara matriks 1 dan 2
     public static Matrix multiply_matrix(Matrix m1, Matrix m2) {
         Matrix hasil = new Matrix(m1.get_row(), m2.get_col());
         int i, j;
@@ -666,6 +669,7 @@ public class Matrix {
         return hasil;
     }
 
+    // Fungsi Row eselon untuk menghasilkan matriks dengan bentuk eselon
     public void row_eselon() {
         int i, j, baris, kolom;
         baris = this.get_row();
@@ -673,8 +677,7 @@ public class Matrix {
         this.atur_baris_rapi();
         for (i = 0; i < baris; i++) {
             int idx = -1;
-            // Mencari Leading one
-            for (j = 0; j < kolom; j++) {
+            for (j = 0; j < kolom; j++) {// Mencari Leading one
                 if (this.get_elmt(i, j) != 0) {
                     idx = j;
                     break;
@@ -697,9 +700,11 @@ public class Matrix {
                 }
             }
         }
+        // Mengatur baris rapi kembali
         this.atur_baris_rapi();
     }
 
+    // Fungis row eselon yang tidak print apa apa
     public void row_eselon_silent() {
         int i, j, baris, kolom;
         baris = this.get_row();
@@ -734,8 +739,9 @@ public class Matrix {
         this.atur_baris_rapi_silent();
     }
 
+    // Fungsi row eselon yang menghasilkan matriks row eselon tereduksi
     public void row_eselon_reduction() {
-        this.row_eselon();
+        this.row_eselon(); // Memanggil fungis row eselon agar membuat 0 di semua leading one
         int i, j, baris, kolom;
         baris = this.get_row();
         kolom = this.get_col();
@@ -743,7 +749,7 @@ public class Matrix {
         // baris di atasnya menjadi nol
         for (i = baris - 1; i >= 0; i--) {
             int idx = -1;
-            for (j = 0; j < kolom; j++) {
+            for (j = 0; j < kolom; j++) { // Mencari leading one
                 if (this.get_elmt(i, j) != 0) {
                     idx = j;
                     break;
@@ -753,7 +759,7 @@ public class Matrix {
                 continue;
             }
 
-            for (int k = i - 1; k >= 0; k--) {
+            for (int k = i - 1; k >= 0; k--) { // Pengurangan agar kolom di atas leading one menjadi 0
                 double pengurang = -this.get_elmt(k, idx);
                 for (j = 0; j < kolom; j++) {
                     this.set_elmt(k, j, round_x_decimals(this.get_elmt(k, j) + pengurang * this.get_elmt(i, j), 7));
@@ -762,6 +768,7 @@ public class Matrix {
         }
     }
 
+    // FUNgsi row eselon reduction yang silent
     public void row_eselon_reduction_silent() {
         this.row_eselon_silent();
         int i, j, baris, kolom;
@@ -790,23 +797,25 @@ public class Matrix {
         }
     }
 
+    // Fungsi untuk mencari dan menghitung bicubic spline interpolation dengan input
+    // dari terminal
     public void read_matrix_bicubic(Scanner scanner) {
         this.set_new_size(4, 4);
         System.out.println("Masukkan matriks 4x4 : ");
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 4; i++) { // input matriks dari terminal
             for (int j = 0; j < 4; j++) {
                 this.data[i][j] = scanner.nextDouble();
             }
         }
-        System.out.print("Masukkan a : ");
+        System.out.print("Masukkan a : "); // masukkan a
         double a = scanner.nextDouble();
-        System.out.print("Masukkan b : ");
+        System.out.print("Masukkan b : "); // masukkan a
         double b = scanner.nextDouble();
 
-        Matrix hasil = new Matrix(16, 16);
+        Matrix hasil = new Matrix(16, 16); // mengenerate matriks 16x16
         int idxRow = 0;
         int idxCol = 0;
-        for (int x = -1; x < 3; x++) {
+        for (int x = -1; x < 3; x++) { // mengenerate matriks 16x16
             for (int y = -1; y < 3; y++) {
                 idxCol = 0;
                 for (int i = 0; i <= 3; i++) {
@@ -818,11 +827,13 @@ public class Matrix {
                 idxRow++;
             }
         }
+        // Matriks 16x16 generated dengan fungsi yang sudah ditentukan
+
         hasil.print_matrix(1);
-        hasil = hasil.find_inverse_obe(); // hasil yang sudah di invers ukuran 16x16
+        hasil = hasil.find_inverse_obe(); // Matriks 16x16 yang sudah digenerate di inverse
         Matrix sixteen_row_Matrix = new Matrix(16, 1); // matrix ukuran 16x1
         int row = 0;
-        for (int i = 0; i < this.get_row(); i++) {
+        for (int i = 0; i < this.get_row(); i++) { // Mengubah matriks ukuran 4x4 menjadi 16x1
             for (int j = 0; j < this.get_col(); j++) {
                 sixteen_row_Matrix.set_elmt(row, 0, this.get_elmt(i, j));
                 row++;
@@ -831,7 +842,7 @@ public class Matrix {
         Matrix hasilKoef = Matrix.multiply_matrix(hasil, sixteen_row_Matrix); // Menghasilkan matrix koef
         double hasilJumlah = 0;
         row = 0;
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 4; i++) { // Proses perkalian
             for (int j = 0; j < 4; j++) {
                 hasilJumlah += Math.pow(a, i) * Math.pow(b, j) * hasilKoef.get_elmt(row, 0);
                 row++;
@@ -844,7 +855,7 @@ public class Matrix {
         System.out.println("2. Tidak");
         scanner.nextLine(); // Consume the newline character from previous input.
         input = Main.valid_input_choice(scanner, 1, 2);
-        while (input == 1) {
+        while (input == 1) { // Looping jika pengguna masih ingin mencari taksiran lain
             System.out.print("Masukkan a : ");
             a = scanner.nextDouble();
             System.out.print("Masukkan b : ");
@@ -869,6 +880,8 @@ public class Matrix {
 
     }
 
+    // Fungsi untuk mencari dan menghitung bicubic spline interpolation dengan input
+    // dari file
     public void read_matrix_bicubic_from_file(Scanner scanner) {
         System.out.print("Masukkan nama file beserta extension (.txt) : ");
         String file_name = scanner.nextLine();
@@ -876,9 +889,9 @@ public class Matrix {
         boolean txt_extension = file_name.endsWith(".txt");
         double a = 0;
         double b = 0;
-        if (txt_extension) {
+        if (txt_extension) { // error handling jika nama file bukan txt
             try {
-                this.set_new_size(4, 4);
+                this.set_new_size(4, 4); // Proses menscan matriks dari file
                 File file = new File("../test/" + file_name);
                 Scanner file_scanner = new Scanner(file);
                 for (int i = 0; i < 4; i++) {
@@ -886,15 +899,17 @@ public class Matrix {
                         this.set_elmt(i, j, file_scanner.nextDouble());
                     }
                 }
-                a = file_scanner.nextDouble();
+                a = file_scanner.nextDouble(); // Proses menscan nilai A dan B dari file
                 b = file_scanner.nextDouble();
                 file_scanner.close();
 
-            } catch (FileNotFoundException e) {
+            } catch (FileNotFoundException e) { // error handling jika file tidak ditemukan
                 System.out.format("Tidak ditemukan file dengan nama %s\n", file_name);
                 return;
             }
-            Matrix hasil = new Matrix(16, 16);
+
+            Matrix hasil = new Matrix(16, 16); // Proses Mengenerate matriks 16x16 dengan fungsi derivative yang sudah
+                                               // ditentukan
             int idxRow = 0;
             int idxCol = 0;
             for (int x = -1; x < 3; x++) {
@@ -909,9 +924,11 @@ public class Matrix {
                     idxRow++;
                 }
             }
+            // Proses genenate matriks 16x16 selesai
+
             hasil.print_matrix(1);
-            hasil = hasil.find_inverse_obe(); // hasil yang sudah di invers ukuran 16x16
-            Matrix sixteen_row_Matrix = new Matrix(16, 1); // matrix ukuran 16x1
+            hasil = hasil.find_inverse_obe(); // Matriks generated yang berukuran 16x16 di inverse
+            Matrix sixteen_row_Matrix = new Matrix(16, 1); // Mengubah matriks berukuran 4x4 menjadi 16x1
             int row = 0;
             for (int i = 0; i < this.get_row(); i++) {
                 for (int j = 0; j < this.get_col(); j++) {
@@ -919,10 +936,13 @@ public class Matrix {
                     row++;
                 }
             }
-            Matrix hasilKoef = Matrix.multiply_matrix(hasil, sixteen_row_Matrix); // Menghasilkan matrix koef
+            Matrix hasilKoef = Matrix.multiply_matrix(hasil, sixteen_row_Matrix); // Menghasilkan matrix koef dengan
+                                                                                  // melakukan perkalian terhadap
+                                                                                  // matirks hasil inverse dan matriks
+                                                                                  // 16x1
             double hasilJumlah = 0;
             row = 0;
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < 4; i++) { // menghitung hasil jumlah
                 for (int j = 0; j < 4; j++) {
                     hasilJumlah += Math.pow(a, i) * Math.pow(b, j) * hasilKoef.get_elmt(row, 0);
                     row++;
@@ -930,11 +950,10 @@ public class Matrix {
             }
             System.out.format("Hasil f(%.2f ,%.2f) = %.2f\n", a, b, hasilJumlah);
 
-        } else {
+        } else { // Jika bukan file txt
             System.out.println("Baca file gagal. File bukan file txt.");
         }
     }
-    // #akhirAlbert
 
     public void cramer() {
         Matrix x = new Matrix(this.n_row, 1);
