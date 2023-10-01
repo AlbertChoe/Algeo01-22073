@@ -1,5 +1,8 @@
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.lang.Math;
@@ -187,8 +190,7 @@ public class Matrix {
 
     public void read_matrix_from_file(Scanner scanner) {
         System.out.print("Masukkan nama file beserta extension (.txt) : ");
-        String file_name = scanner.nextLine();
-        file_name.strip();
+        String file_name = scanner.nextLine().strip();
         boolean txt_extension = file_name.endsWith(".txt");
         if (txt_extension) {
             try {
@@ -884,8 +886,7 @@ public class Matrix {
     // dari file
     public void read_matrix_bicubic_from_file(Scanner scanner) {
         System.out.print("Masukkan nama file beserta extension (.txt) : ");
-        String file_name = scanner.nextLine();
-        file_name.strip();
+        String file_name = scanner.nextLine().strip();
         boolean txt_extension = file_name.endsWith(".txt");
         double a = 0;
         double b = 0;
@@ -1099,8 +1100,7 @@ public class Matrix {
          * Todo : Cek kalo dalam txt tidak ada titik yang xnya sama
          */
         System.out.print("Masukkan nama file beserta extension (.txt) : ");
-        String file_name = scanner.nextLine();
-        file_name.strip();
+        String file_name = scanner.nextLine().strip();
         boolean txt_extension = file_name.endsWith(".txt");
         Matrix temp = new Matrix();
         if (txt_extension) {
@@ -1192,6 +1192,16 @@ public class Matrix {
         return new_arr;
     }
 
+    private static String[] push_arr_string(String[] original_arr, String value) {
+        int array_length = original_arr.length;
+        String[] new_arr = new String[array_length + 1];
+        for (int i = 0; i < array_length; i++) {
+            new_arr[i] = original_arr[i];
+        }
+        new_arr[array_length] = value;
+        return new_arr;
+    }
+
     public static void polynomial_interpolation_scan(Scanner scanner) {
         int n = valid_int_input(scanner, "Masukkan berapa banyak titik yang akan digunakan untuk interpolasi : ", 1);
         System.out.println("Masukkan data tiap titik!\n");
@@ -1263,8 +1273,7 @@ public class Matrix {
 
     public void read_points_from_file(Scanner scanner) {
         System.out.print("Masukkan nama file beserta extension (.txt) : ");
-        String file_name = scanner.nextLine();
-        file_name.strip();
+        String file_name = scanner.nextLine().strip();
         boolean txt_extension = file_name.endsWith(".txt");
         if (txt_extension) {
             try {
@@ -1316,23 +1325,25 @@ public class Matrix {
         for (int i = 1; i < cof_beta.length; i++) {
             reg += String.format(" + %.4f * x%d", cof_beta[i], i);
         }
+        String[] data_to_file = new String[0];
+        data_to_file = push_arr_string(data_to_file, reg);
         System.out.println(reg);
         System.out.println("\nApakah anda ingin menafsir suatu y dengan regresi tersebut?");
         System.out.println("1. Ya");
         System.out.println("2. Tidak\n");
         int calc_option = Main.valid_input_choice(scanner, 1, 2);
         if (calc_option == 2) {
-            /*
-             * Todo : Output ke file
-             */
+            option_output_to_file(data_to_file, scanner);
             return;
         }
         while (true) {
             System.out.println("\nMasukkan data tiap peubah X (Xk)!");
             double[] xs = new double[A.get_col() - 1];
+            String temp_data = new String();
             for (int i = 0; i < xs.length; i++) {
                 String msg = String.format("X%d : ", i + 1);
                 xs[i] = valid_double_input(scanner, msg);
+                temp_data += Double.toString(xs[i]) + " ";
             }
             System.out.println("\nHasil regresi : ");
             System.out.println(reg);
@@ -1344,16 +1355,65 @@ public class Matrix {
             }
             System.out.println(regx);
             System.out.println(String.format("y = f(Xk) = %.4f", result));
-            /*
-             * Todo : Output ke file
-             */
+            temp_data += String.format("%.4f", result);
+            data_to_file = push_arr_string(data_to_file, temp_data);
             System.out.println("\nApakah anda ingin menafsir suatu y lagi dengan regresi tersebut?");
             System.out.println("1. Ya");
             System.out.println("2. Tidak\n");
             int again_option = Main.valid_input_choice(scanner, 1, 2);
             if (again_option == 2) {
+                option_output_to_file(data_to_file, scanner);
                 return;
             }
+        }
+    }
+
+    public static void option_output_to_file(String[] data, Scanner scanner) {
+        display_output_option();
+        int option = Main.valid_input_choice(scanner, 1, 2);
+        if (option == 1) {
+            print_to_file(data, scanner);
+        }
+    }
+
+    public static void display_output_option() {
+        System.out.println("\nApakah ingin menyimpan luaran ke dalam file?");
+        System.out.println("1. Ya");
+        System.out.println("2. Tidak\n");
+    }
+
+    public static String valid_file_name(Scanner scanner) {
+        String file_name;
+        while (true) {
+            System.out.print("\nMasukkan nama file yang ingin dibuat (tidak perlu extension) : ");
+            file_name = scanner.nextLine().strip();
+            if (file_name == "") {
+                System.out.println("Name file tidak boleh kosong!");
+                System.out.println("Ulangi masukan.");
+            } else {
+                break;
+            }
+        }
+        return file_name;
+        
+    }
+
+    public static void print_to_file(String[] data, Scanner scanner) {
+        String file_name =valid_file_name(scanner);
+        String file_path = "../test/" + file_name + ".txt";
+        try {
+            FileWriter fileWriter = new FileWriter(file_path);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            for (int i = 0; i < data.length; i++) {
+                bufferedWriter.write(data[i]);
+                if (i != data.length - 1) {
+                    bufferedWriter.newLine();
+                }
+            }
+            bufferedWriter.close();
+            System.out.println("Luaran berhasil tersimpan ke dalam " + file_name + ".txt!");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
