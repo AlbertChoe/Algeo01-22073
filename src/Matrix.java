@@ -1326,7 +1326,7 @@ public class Matrix {
                         file_scanner2.close();
                         return;
                     } else {
-                        push_arr_double(mem, xi);
+                        mem = push_arr_double(mem, xi);
                     }
                     int j = 0;
                     while (j < temp.get_col() - 1) {
@@ -1431,7 +1431,7 @@ public class Matrix {
                 System.out.println(String.format("Sudah terdapat masukan titik yang x-nya adalah %.4f!", xi));
                 return;
             } else {
-                push_arr_double(mem, xi);
+                mem = push_arr_double(mem, xi);
             }
             int j = 0;
             while (j < temp.get_col() - 1) {
@@ -1443,7 +1443,6 @@ public class Matrix {
             double yi = valid_double_input(scanner, msg);
             temp.data[i][j] = yi;
         }
-        double x = valid_double_input(scanner, "x yang ingin diinterpolasikan y-nya: ");
         System.out.println("\nBerikut merupakan titik - titik yang terbaca dari masukan");
         for (int i = 0; i < temp.get_row(); i++) {
             String msg = String.format("(x%d, y%d) : (%.4f, %.4f)", i, i, temp.get_elmt(i, 1),
@@ -1451,27 +1450,47 @@ public class Matrix {
             System.out.println(msg);
         }
         double[] solution_a = temp.spl_solution_to_arr();
-        double result = solution_a[0];
         double temp_double;
-        int exp = 1;
         System.out.println();
         System.out.println("Polinom yang didapat :");
         String[] data_to_file = new String[0];
         String poly = String.format("P(x) = %.4f", solution_a[0]);
         System.out.print(poly);
         for (int i = 1; i < solution_a.length; i++) {
-            poly += String.format(" + %.4fx^(%d)", solution_a[i], exp);
-            System.out.print(String.format(" + %.4fx^(%d)", solution_a[i], exp));
-            temp_double = solution_a[i] * Math.pow(x, exp);
-            exp += 1;
-            result += temp_double;
+            poly += String.format(" + %.4fx^(%d)", solution_a[i], i);
+            System.out.print(String.format(" + %.4fx^(%d)", solution_a[i], i));
         }
         data_to_file = push_arr_string(data_to_file, poly);
-        System.out.println(String.format("\nHasil Interpolasi dari x = %.4f : ", x));
-        String output_msg = String.format("y = P(%.4f) = %.4f", x, result);
-        System.out.println(output_msg);
-        data_to_file = push_arr_string(data_to_file, output_msg);
-        option_output_to_file(data_to_file, scanner);
+        System.out.println("\nApakah anda ingin menginterpolasi suatu y dengan persamaan polinomial tersebut?");
+        System.out.println("1. Ya");
+        System.out.println("2. Tidak\n");
+        int calc_option = Main.valid_input_choice(scanner, 1, 2);
+        if (calc_option == 2) {
+            option_output_to_file(data_to_file, scanner);
+            return;
+        }
+        while (true) {
+            double x = valid_double_input(scanner, "x yang ingin diinterpolasikan y-nya: ");
+            double result = solution_a[0];
+            int exp = 1;
+            for (int i = 1; i < solution_a.length; i++) {
+                temp_double = solution_a[i] * Math.pow(x, exp);
+                exp += 1;
+                result += temp_double;
+            }
+            System.out.println(String.format("\nHasil Interpolasi dari x = %.4f : ", x));
+            String output_msg = String.format("y = P(%.4f) = %.4f", x, result);
+            System.out.println(output_msg);
+            data_to_file = push_arr_string(data_to_file, output_msg);
+            System.out.println("\nApakah anda ingin menginterpolasi suatu y lagi dengan persamaan polinomial tersebut?");
+            System.out.println("1. Ya");
+            System.out.println("2. Tidak\n");
+            int again_option = Main.valid_input_choice(scanner, 1, 2);
+            if (again_option == 2) {
+                option_output_to_file(data_to_file, scanner);
+                return;
+            }
+        }
     }
 
     public void read_points_reg(Scanner scanner) {
@@ -1547,6 +1566,12 @@ public class Matrix {
             return;
         }
         while (true) {
+            String format_output = new String();
+            for (int i = 0; i < augmented.get_row() - 1; i++) {
+                format_output += String.format("x%d   ", i + 1);
+            }
+            format_output += "y";
+            data_to_file = push_arr_string(data_to_file, format_output);
             System.out.println("\nMasukkan data tiap peubah X (Xk)!");
             double[] xs = new double[A.get_col() - 1];
             String temp_data = new String();
@@ -1599,7 +1624,7 @@ public class Matrix {
     }
 
     public static void display_output_option() {
-        System.out.println("\nApakah ingin menyimpan luaran ke dalam file?");
+        System.out.println("\nApakah anda ingin menyimpan luaran ke dalam file?");
         System.out.println("1. Ya");
         System.out.println("2. Tidak\n");
     }
@@ -1607,11 +1632,15 @@ public class Matrix {
     public static String valid_file_name(Scanner scanner) {
         String file_name;
         while (true) {
-            System.out.print("\nMasukkan nama file yang ingin dibuat (tidak perlu extension) : ");
+            System.out.print("\nMasukkan nama file yang ingin dibuat (tidak perlu mengetik extensionnya) : ");
             file_name = scanner.nextLine().strip();
+            File file = new File("../test", file_name + ".txt");
             if (file_name == "") {
                 System.out.println("Name file tidak boleh kosong!");
                 System.out.println("Ulangi masukan.");
+            } else if (file.exists()) {
+                System.out.println("Sudah ada file " + file_name + ".txt di folder test!");
+                System.out.println("Ulangi masukan nama file selain itu.");
             } else {
                 break;
             }
@@ -1633,7 +1662,7 @@ public class Matrix {
                 }
             }
             bufferedWriter.close();
-            System.out.println("Luaran berhasil tersimpan ke dalam " + file_name + ".txt!");
+            System.out.println("Luaran berhasil tersimpan ke dalam " + file_name + ".txt di folder test!");
         } catch (IOException e) {
             e.printStackTrace();
         }
