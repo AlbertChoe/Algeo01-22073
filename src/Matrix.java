@@ -1310,7 +1310,8 @@ public class Matrix {
                     int exponent = 0;
                     String[] temp_scan = file_scanner2.nextLine().split(" ");
                     if (temp_scan.length != 2) {
-                        System.out.println("Baca file gagal. Dalam file terdapat baris yang tidak terdiri dari dua data!");
+                        System.out.println("Baca file gagal.");
+                        System.out.println("Dalam file terdapat baris (selain baris terakhir) yang tidak terdiri dari dua data!");
                         file_scanner2.close();
                         return;
                     }
@@ -1321,7 +1322,7 @@ public class Matrix {
                     double xi = temp_scan_double[0];
                     if (is_in_array(mem, xi)) {
                         System.out.println("\nBaca file gagal. Tidak dapat membuat interpolasi.");
-                        System.out.println(String.format("Terdapat data dengan masukan titik dengan x yang sama!", xi));
+                        System.out.println("Terdapat data dengan masukan titik dengan x yang sama!");
                         file_scanner2.close();
                         return;
                     } else {
@@ -1336,7 +1337,14 @@ public class Matrix {
                     double yi = temp_scan_double[1];
                     temp.data[i][j] = yi;
                 }
-                double x = file_scanner2.nextDouble();
+                String[] x_line = file_scanner2.nextLine().split(" ");
+                if (x_line.length != 1) {
+                    System.out.println("Baca file gagal.");
+                    System.out.println("Baris terakhir hanya boleh terdiri dari satu data yakni data x untuk menginterpolasi suatu y.");
+                    file_scanner2.close();
+                    return;
+                }
+                double x = Double.parseDouble(x_line[0]);   
                 file_scanner2.close();
                 System.out.println("File berhasil terbaca.");
                 System.out.println("\nBerikut merupakan titik - titik yang terbaca dari file");
