@@ -194,7 +194,7 @@ public class Matrix {
         boolean txt_extension = file_name.endsWith(".txt");
         if (txt_extension) {
             try {
-                determine_matrix_size_from_file(file_name);
+                this.determine_matrix_size_from_file(file_name);
                 File file = new File("../test/" + file_name);
                 Scanner file_scanner = new Scanner(file);
                 for (int i = 0; i < this.get_row(); i++) {
@@ -206,6 +206,10 @@ public class Matrix {
                 System.out.println("Matrix berhasil terbaca.");
             } catch (FileNotFoundException e) {
                 return;
+            } catch (InputMismatchException e) {
+                System.out.println("Baca file gagal. Isi file terdapat elemen bukan bilangan riil.");
+                System.out.println("Tiap elemen dalam file hanya boleh bilangan riil!");
+                this.set_new_size(0, 0);
             }
         } else {
             System.out.println("Baca file gagal. File bukan file txt.");
@@ -241,6 +245,13 @@ public class Matrix {
         System.out.println();
         System.out.println("Matriks yang dimasukkan");
         this.print_matrix(2);
+        if (this.get_row() != this.get_col()) {
+            System.out.println("Matriks masukan bukan matriks persegi!");
+            System.out.println("Tidak dapat menghitung determinan.");
+            System.out.println("Determinan hanya dapat dihitung jika matriks adalah matriks persegi.");
+            System.out.println("NOTE: Matriks persegi adalah ketika jumlah baris = jumlah kolom.");
+            return;
+        }
         int swap = 0;
         for (int j = 0; j < this.get_col() - 1; j++) {
 
@@ -463,6 +474,13 @@ public class Matrix {
         System.out.println();
         System.out.println("Matriks yang dimasukkan");
         this.print_matrix(2);
+        if (this.get_row() != this.get_col()) {
+            System.out.println("Matriks masukan bukan matriks persegi!");
+            System.out.println("Tidak dapat menghitung determinan.");
+            System.out.println("Determinan hanya dapat dihitung jika matriks adalah matriks persegi.");
+            System.out.println("NOTE: Matriks persegi adalah ketika jumlah baris = jumlah kolom.");
+            return;
+        }
         Matrix cof_matrix = this.find_cofactor_matrix();
         System.out.println("Matriks Kofaktor dari Matriks Masukan");
         cof_matrix.print_matrix(2);
@@ -499,6 +517,13 @@ public class Matrix {
         System.out.println();
         System.out.println("Matriks yang dimasukkan");
         this.print_matrix(2);
+        if (this.get_row() != this.get_col()) {
+            System.out.println("Matriks masukan bukan matriks persegi!");
+            System.out.println("Tidak dapat mencari balikan.");
+            System.out.println("Matriks balikan hanya dapat dicari jika matriks adalah matriks persegi.");
+            System.out.println("NOTE: Matriks persegi adalah ketika jumlah baris = jumlah kolom.");
+            return;
+        }
         double determinant = find_determinant(this);
 
         if (determinant == 0) {
@@ -564,11 +589,12 @@ public class Matrix {
         if (A.get_row() != A.get_col()) {
             System.out.println("Matriks tidak dapat dikerjakan dengan menggunakan metode matriks balikan.");
             System.out.println("Karena matriks A bukan matriks persegi.");
+            System.out.println("Gunakan cara lain untuk mencari solusi SPL tersebut!");
             return;
         }
         if (find_determinant(A) == 0) {
             System.out.println("Determinan matriks A = 0. Matriks A tidak memiliki balikan.");
-            System.out.println("Gunakan cara lain untuk mencari solusi SPL!");
+            System.out.println("Gunakan cara lain untuk mencari solusi SPL tersebut!");
             return;
         }
         System.out.println("Invers Matriks A");
@@ -1072,7 +1098,10 @@ public class Matrix {
 
     // Mencari solusi dari SPL dengan metode cramer dengan ukuran matriks nRow *
     // (nRow+1)
-    public void cramer() {
+    public void cramer(Scanner scanner) {
+        System.out.println();
+        System.out.println("Matriks Augmented dari masukan");
+        this.print_matrix(2);
         Matrix x = new Matrix(this.n_row, 1); // Untuk menampung hasil jawaban
         Matrix a = new Matrix(this.n_row, this.n_col - 1); // Untuk menampung koefisien dari tiap variabel
         Matrix temp = new Matrix(this.n_row, this.n_col - 1); // Mengcopy matriks a ke temp lalu diproses sebanyak nCol
@@ -1093,12 +1122,17 @@ public class Matrix {
                 a.set_elmt(i, j, this.data[i][j]);
             }
         }
+        if (a.get_row() != a.get_col()) {
+            System.out.println("Matriks tidak dapat dikerjakan dengan menggunakan kaidah Cramer.");
+            System.out.println("Karena matriks A bukan matriks persegi.");
+            System.out.println("Gunakan cara lain untuk mencari solusi SPL tersebut!");
+            return;
+        }
         det1 = find_determinant(a);
         if (det1 == 0) {
-            System.out.println("Determinan matriks = 0, SPL tidak memiliki solusi yang unik.\n");
-            this.row_eselon();
-            SPL.gauss_result(this); // Menghasilkan solusi dalam bentuk parametrik atau tidak ada solusi
-            // Jika determinan koefisien tidak sama dengan nol
+            System.out.println("Determinan matriks A = 0, SPL tidak memiliki solusi yang unik.");
+            System.out.println("Gunakan cara lain untuk mencari solusi SPL tersebut!");
+            return;
         } else {
             for (int i = 0; i < this.n_row; i++) {
                 b.set_elmt(i, 0, this.get_elmt(i, n_col - 1));
@@ -1110,7 +1144,7 @@ public class Matrix {
                 }
             }
             det1 = find_determinant(a);
-            System.out.println("\nDeterminan matriks A: " + det1);
+            System.out.println("Determinan matriks A : " + det1);
 
             for (int i = 0; i < a.n_col; i++) {
                 for (int j = 0; j < a.n_row; j++) {
@@ -1122,21 +1156,35 @@ public class Matrix {
                     temp.set_elmt(p, i, b.data[p][0]);
                 }
                 det2 = find_determinant(temp);
-                System.out.println("Determinan matriks A" + i + " : " + det2);
+                System.out.println("Determinan matriks A" + (i + 1) + " : " + det2);
                 x.set_elmt(i, 0, (det2 / det1));
             }
             System.out.println("\nBerikut solusi dari kaidah Cramer");
+            String[] data_to_file = new String[0];
             for (int i = 0; i < x.n_row; i++) {
-                System.out.println("x" + i + " = " + x.data[i][0]);
+                String output_msg = String.format("x%d : %.2f", i + 1, x.data[i][0]);
+                System.out.println(output_msg);
+                data_to_file = push_arr_string(data_to_file, output_msg);
             }
+            option_output_to_file(data_to_file, scanner);
         }
     }
 
     // Proses untuk menginverse sebuah matriks dengan metode OBE
     public void inverse_obe(Scanner scanner) {
+        System.out.println();
+        System.out.println("Matriks yang dimasukkan");
+        this.print_matrix(2);
+        if (this.get_row() != this.get_col()) {
+            System.out.println("Matriks masukan bukan matriks persegi!");
+            System.out.println("Tidak dapat mencari balikan.");
+            System.out.println("Matriks balikan hanya dapat dicari jika matriks adalah matriks persegi.");
+            System.out.println("NOTE: Matriks persegi adalah ketika jumlah baris = jumlah kolom.");
+            return;
+        }
         double det = find_determinant(this);
         if (det == 0) {
-            System.out.println("Matriks tidak mempunyai determinan sehingga matriks tidak mempunyai balikan");
+            System.out.println("Determinan matriks masukan = 0 sehingga matriks tidak mempunyai balikan");
         } else {
             int row = this.get_row();
             int col = this.get_col();
@@ -1495,7 +1543,7 @@ public class Matrix {
         for (int i = 0; i < this.get_row(); i++) {
             String temp_string = new String();
             for (int j = 0; j < this.get_col(); j++) {
-                temp_string += String.format("%.4f ", this.get_elmt(i, j));
+                temp_string += String.format("%.3f ", this.get_elmt(i, j));
             }
             lists = push_arr_string(lists, temp_string);
         }

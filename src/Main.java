@@ -153,7 +153,7 @@ public class Main {
                         } else if (sub_choice == 3) {
                             matrix.spl_inverse(scanner);
                         } else {
-                            matrix.cramer();
+                            matrix.cramer(scanner);
                         }
                     }
                     press_to_menu(scanner);
