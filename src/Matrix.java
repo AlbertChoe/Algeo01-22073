@@ -807,6 +807,74 @@ public class Matrix {
         }
     }
 
+    public int cekX(int kolom) {
+        if (kolom == 0 || kolom == 2) {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
+
+    public int cekY(int kolom) {
+        if (kolom == 0 || kolom == 1) {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
+
+    public Matrix generateMatrix() {
+        int kolom = 4;
+        int turunan = 0;
+        double hasil = 0;
+        int pindahX = 0;
+        int pindahY = 0;
+        int idxkolom = 0;// idxkolom dan idxBaris berupa penanda pada matrix hasil inputan
+        Matrix A = new Matrix(16, 16);
+        for (int a = 0; a < 16; a++) {
+            for (int b = 0; b < 16; b++) {
+                int x = this.cekX(idxkolom);
+                int y = this.cekY(idxkolom);
+                int j = pindahY;
+                int i = pindahX;
+                if (turunan == 0) {
+                    hasil = (Math.pow(x, i)) * (Math.pow(y, j));
+                } else if (turunan == 1) {
+                    if (i == 0) {
+                        hasil = 0;
+                    } else {
+                        hasil = i * (Math.pow(x, (i - 1)) * (Math.pow(y, j)));
+                    }
+                } else if (turunan == 2) {
+                    if (j == 0) {
+                        hasil = 0;
+                    } else {
+                        hasil = j * (Math.pow(x, i)) * (Math.pow(y, (j - 1)));
+                    }
+                } else {
+                    if (j == 0 || i == 0) {
+                        hasil = 0;
+                    } else {
+                        hasil = i * j * (Math.pow(x, (i - 1))) * (Math.pow(y, (j - 1)));
+                    }
+                }
+                if (pindahX == kolom - 1) {
+                    pindahY += 1;
+                    pindahX = -1;
+                }
+                pindahX += 1;
+                A.set_elmt(a, b, hasil);
+            }
+            pindahY = 0;
+            if (idxkolom == kolom - 1) { // Setiap 1 baris sudah terisi pada matrix ekspansi, maka penanda bergeser
+                idxkolom = -1;
+                turunan += 1;
+            }
+            idxkolom += 1;
+        }
+        return A;
+    }
+
     // Fungsi untuk mencari dan menghitung bicubic spline interpolation dengan input
     // dari terminal
     public void read_matrix_bicubic(Scanner scanner) {
@@ -821,26 +889,13 @@ public class Matrix {
         double a = scanner.nextDouble();
         System.out.print("Masukkan b : "); // masukkan a
         double b = scanner.nextDouble();
+        System.out.println(" ");
 
-        Matrix hasil = new Matrix(16, 16); // mengenerate matriks 16x16
-        int idxRow = 0;
-        int idxCol = 0;
-        for (int x = -1; x < 3; x++) { // mengenerate matriks 16x16
-            for (int y = -1; y < 3; y++) {
-                idxCol = 0;
-                for (int i = 0; i <= 3; i++) {
-                    for (int j = 0; j <= 3; j++) {
-                        hasil.set_elmt(idxRow, idxCol, Math.pow(x, i) * Math.pow(y, j));
-                        idxCol++;
-                    }
-                }
-                idxRow++;
-            }
-        }
+        Matrix hasil = new Matrix(4, 4); // mengenerate matriks 16x16
+        hasil = generateMatrix();
         // Matriks 16x16 generated dengan fungsi yang sudah ditentukan
-
-        hasil.print_matrix(1);
-        hasil = hasil.find_inverse_obe(); // Matriks 16x16 yang sudah digenerate di inverse
+        hasil = hasil.find_inverse_obe();
+        hasil.print_matrix(2); // Matriks 16x16 yang sudah digenerate di inverse
         Matrix sixteen_row_Matrix = new Matrix(16, 1); // matrix ukuran 16x1
         int row = 0;
         for (int i = 0; i < this.get_row(); i++) { // Mengubah matriks ukuran 4x4 menjadi 16x1
@@ -894,7 +949,8 @@ public class Matrix {
     // dari file
     public void read_matrix_bicubic_from_file(Scanner scanner) {
         System.out.print("Masukkan nama file beserta extension (.txt) : ");
-        String file_name = scanner.nextLine().strip();
+        String file_name = scanner.nextLine();
+        file_name.strip();
         boolean txt_extension = file_name.endsWith(".txt");
         double a = 0;
         double b = 0;
@@ -917,25 +973,10 @@ public class Matrix {
                 return;
             }
 
-            Matrix hasil = new Matrix(16, 16); // Proses Mengenerate matriks 16x16 dengan fungsi derivative yang sudah
-                                               // ditentukan
-            int idxRow = 0;
-            int idxCol = 0;
-            for (int x = -1; x < 3; x++) {
-                for (int y = -1; y < 3; y++) {
-                    idxCol = 0;
-                    for (int i = 0; i <= 3; i++) {
-                        for (int j = 0; j <= 3; j++) {
-                            hasil.set_elmt(idxRow, idxCol, Math.pow(x, i) * Math.pow(y, j));
-                            idxCol++;
-                        }
-                    }
-                    idxRow++;
-                }
-            }
+            Matrix hasil = new Matrix(4, 4); // mengenerate matriks 16x16
+            hasil = generateMatrix();
+            // Matriks 16x16 generated dengan fungsi yang sudah ditentukan
             // Proses genenate matriks 16x16 selesai
-
-            hasil.print_matrix(1);
             hasil = hasil.find_inverse_obe(); // Matriks generated yang berukuran 16x16 di inverse
             Matrix sixteen_row_Matrix = new Matrix(16, 1); // Mengubah matriks berukuran 4x4 menjadi 16x1
             int row = 0;
@@ -964,11 +1005,14 @@ public class Matrix {
         }
     }
 
-    // Mencari solusi dari SPL dengan metode cramer dengan ukuran matriks nRow * (nRow+1)
+    // Mencari solusi dari SPL dengan metode cramer dengan ukuran matriks nRow *
+    // (nRow+1)
     public void cramer() {
         Matrix x = new Matrix(this.n_row, 1); // Untuk menampung hasil jawaban
         Matrix a = new Matrix(this.n_row, this.n_col - 1); // Untuk menampung koefisien dari tiap variabel
-        Matrix temp = new Matrix(this.n_row, this.n_col - 1); // Mengcopy matriks a ke temp lalu diproses sebanyak nCol kali dengan memasukkan elemen dari b dari 0 hingga nCol-1
+        Matrix temp = new Matrix(this.n_row, this.n_col - 1); // Mengcopy matriks a ke temp lalu diproses sebanyak nCol
+                                                              // kali dengan memasukkan elemen dari b dari 0 hingga
+                                                              // nCol-1
         double det1; // Determinan dari koefisien variabel
         double det2 = 1; // Determinan ketika elemen dari b dimasukkan ke temp
         Matrix b = new Matrix(this.n_row, 1); // Berisi konstanta tiap persamaan
@@ -989,8 +1033,8 @@ public class Matrix {
             System.out.println("Determinan matriks = 0, SPL tidak memiliki solusi yang unik.\n");
             this.row_eselon();
             SPL.gauss_result(this); // Menghasilkan solusi dalam bentuk parametrik atau tidak ada solusi
-        // Jika determinan koefisien tidak sama dengan nol
-        } else { 
+            // Jika determinan koefisien tidak sama dengan nol
+        } else {
             for (int i = 0; i < this.n_row; i++) {
                 b.set_elmt(i, 0, this.get_elmt(i, n_col - 1));
             }
@@ -1032,7 +1076,8 @@ public class Matrix {
             int row = this.get_row();
             int col = this.get_col();
             Matrix m1 = new Matrix(row, col * 2);
-            // Memasukkan elemen m1 dari matriks input dan matriks identitas, dengan posisi matriks identitas di sebelah kanan matriks input
+            // Memasukkan elemen m1 dari matriks input dan matriks identitas, dengan posisi
+            // matriks identitas di sebelah kanan matriks input
             for (int i = 0; i < row; i++) {
                 for (int j = 0; j < col * 2; j++) {
                     if (j < col) {
@@ -1058,7 +1103,9 @@ public class Matrix {
         }
     }
 
-    // Mengembalikan sebuah matriks inverse dengan metode OBE dengan menggunakan fungsi eliminasi_gauss_jordan_silent yang bersih dari output proses pengerjaan
+    // Mengembalikan sebuah matriks inverse dengan metode OBE dengan menggunakan
+    // fungsi eliminasi_gauss_jordan_silent yang bersih dari output proses
+    // pengerjaan
     public Matrix find_inverse_obe() {
         int row = this.get_row();
         int col = this.get_col();
@@ -1417,11 +1464,11 @@ public class Matrix {
             }
         }
         return file_name;
-        
+
     }
 
     public static void print_to_file(String[] data, Scanner scanner) {
-        String file_name =valid_file_name(scanner);
+        String file_name = valid_file_name(scanner);
         String file_path = "../test/" + file_name + ".txt";
         try {
             FileWriter fileWriter = new FileWriter(file_path);
