@@ -291,7 +291,7 @@ public class SPL {
 
     }
 
-    public static void gauss_jordan_result(Matrix m) {
+    public static void gauss_jordan_result(Matrix m, Scanner scanner) {
         int i, j;
         boolean gaAdaSolusi;
         gaAdaSolusi = false;
@@ -378,10 +378,14 @@ public class SPL {
                 // }
                 // System.out.println("");
             }
+            String[] data_to_file = new String[0];
             for (int a = 0; a < m.get_col() - 1; a++) {
-                System.out.format("X%d -> ", a + 1);
+                System.out.format("X%d = ", a + 1);
+                String output_msg = String.format("X%d = ", a + 1);
                 arrayOfSpl[a].print_out_solution(m.get_col(), a);
+                data_to_file = arrayOfSpl[a].print_out_solutionToFile(m.get_col(), a, data_to_file, output_msg);
             }
+            Matrix.option_output_to_file(data_to_file, scanner);
 
         }
     }

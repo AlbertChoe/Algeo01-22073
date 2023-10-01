@@ -986,7 +986,7 @@ public class Matrix {
         hasil = generateMatrix();
         // Matriks 16x16 generated dengan fungsi yang sudah ditentukan
         hasil = hasil.find_inverse_obe();
-        hasil.print_matrix(2); // Matriks 16x16 yang sudah digenerate di inverse
+        // Matriks 16x16 yang sudah digenerate di inverse
         Matrix sixteen_row_Matrix = new Matrix(16, 1); // matrix ukuran 16x1
         int row = 0;
         for (int i = 0; i < this.get_row(); i++) { // Mengubah matriks ukuran 4x4 menjadi 16x1
@@ -1004,13 +1004,18 @@ public class Matrix {
                 row++;
             }
         }
+        String output_msg = "";
+        String[] data_to_file = new String[0];
         System.out.format("Hasil f(%.2f ,%.2f) = %.2f\n", a, b, hasilJumlah);
+        output_msg = String.format("Hasil f(%.2f ,%.2f) = %.2f\n", a, b, hasilJumlah);
         int input = -1;
         System.out.println("Apakah ingin mengecek hasil taksiran fungsi lain?");
         System.out.println("1. Ya");
         System.out.println("2. Tidak");
-        scanner.nextLine(); // Consume the newline character from previous input.
+        scanner.nextLine();
         input = Main.valid_input_choice(scanner, 1, 2);
+        data_to_file = Matrix.push_arr_string(data_to_file, output_msg);
+
         while (input == 1) { // Looping jika pengguna masih ingin mencari taksiran lain
             System.out.print("Masukkan a : ");
             a = scanner.nextDouble();
@@ -1025,15 +1030,16 @@ public class Matrix {
                     row++;
                 }
             }
-            System.out.format("Hasil f(%.2f ,%.2f) = %.2f\n", a, b, hasilJumlah);
 
+            System.out.format("Hasil f(%.2f ,%.2f) = %.2f\n", a, b, hasilJumlah);
+            output_msg = String.format("Hasil f(%.2f ,%.2f) = %.2f\n", a, b, hasilJumlah);
+            data_to_file = Matrix.push_arr_string(data_to_file, output_msg);
             System.out.println("Apakah ingin mengecek hasil taksiran fungsi lain?");
             System.out.println("1. Ya");
             System.out.println("2. Tidak");
             input = Main.valid_input_choice(scanner, 1, 2);
-
         }
-
+        Matrix.option_output_to_file(data_to_file, scanner);
     }
 
     // Fungsi untuk mencari dan menghitung bicubic spline interpolation dengan input
@@ -1089,8 +1095,12 @@ public class Matrix {
                     row++;
                 }
             }
+            String output_msg = "";
+            String[] data_to_file = new String[0];
             System.out.format("Hasil f(%.2f ,%.2f) = %.2f\n", a, b, hasilJumlah);
-
+            output_msg = String.format("Hasil f(%.2f ,%.2f) = %.2f\n", a, b, hasilJumlah);
+            data_to_file = Matrix.push_arr_string(data_to_file, output_msg);
+            Matrix.option_output_to_file(data_to_file, scanner);
         } else { // Jika bukan file txt
             System.out.println("Baca file gagal. File bukan file txt.");
         }
