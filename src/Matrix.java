@@ -1116,8 +1116,7 @@ public class Matrix {
                 col_count = row_count;
                 row_count -= 1;
                 temp.set_new_size(row_count, col_count);
-                double[] mem = new double[temp.get_row()];
-                mem = fill_arr_with_mark(mem);
+                double[] mem = new double[0];
                 file_scanner.close();
                 Scanner file_scanner2 = new Scanner(file);
                 for (int i = 0; i < temp.get_row(); i++) {
@@ -1129,7 +1128,7 @@ public class Matrix {
                         file_scanner2.close();
                         return;
                     } else {
-                        mem[i] = xi;
+                        push_arr_double(mem, xi);
                     }
                     int j = 0;
                     while (j < temp.get_col() - 1) {
@@ -1183,19 +1182,21 @@ public class Matrix {
         return false;
     }
 
-    private static double[] fill_arr_with_mark(double[] arr) {
-        for (int i = 0; i < arr.length; i++) {
-            arr[i] = -99999.9999;
+    private static double[] push_arr_double(double[] original_arr, double value) {
+        int array_length = original_arr.length;
+        double[] new_arr = new double[array_length + 1];
+        for (int i = 0; i < array_length; i++) {
+            new_arr[i] = original_arr[i];
         }
-        return arr;
+        new_arr[array_length] = value;
+        return new_arr;
     }
 
     public static void polynomial_interpolation_scan(Scanner scanner) {
         int n = valid_int_input(scanner, "Masukkan berapa banyak titik yang akan digunakan untuk interpolasi : ", 1);
         System.out.println("Masukkan data tiap titik!\n");
         Matrix temp = new Matrix(n, n + 1);
-        double[] mem = new double[temp.get_row()];
-        mem = fill_arr_with_mark(mem);
+        double[] mem = new double[0];
         for (int i = 0; i < temp.get_row(); i++) {
             int exponent = 0;
             String msg = String.format("x%d : ", i);
@@ -1205,7 +1206,7 @@ public class Matrix {
                 System.out.println(String.format("Sudah terdapat masukan titik yang x-nya adalah %.4f!", xi));
                 return;
             } else {
-                mem[i] = xi;
+                push_arr_double(mem, xi);
             }
             int j = 0;
             while (j < temp.get_col() - 1) {
