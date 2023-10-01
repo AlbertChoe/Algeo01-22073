@@ -203,7 +203,7 @@ public class Matrix {
                     }
                 }
                 file_scanner.close();
-                System.out.println("Matrix berhasil terbaca.");
+                System.out.println("File berhasil terbaca.");
             } catch (FileNotFoundException e) {
                 return;
             } catch (InputMismatchException e) {
@@ -1267,9 +1267,6 @@ public class Matrix {
     }
 
     public static void polynomial_interpolation_file(Scanner scanner) {
-        /*
-         * Todo : Cek kalo dalam txt tidak ada titik yang xnya sama
-         */
         System.out.print("Masukkan nama file beserta extension (.txt) : ");
         String file_name = scanner.nextLine().strip();
         boolean txt_extension = file_name.endsWith(".txt");
@@ -1325,15 +1322,22 @@ public class Matrix {
                 int exp = 1;
                 System.out.println();
                 System.out.println("Polinom yang didapat :");
-                System.out.print(String.format("P(x) = %.4f", solution_a[0]));
+                String[] data_to_file = new String[0];
+                String poly = String.format("P(x) = %.4f", solution_a[0]);
+                System.out.print(poly);
                 for (int i = 1; i < solution_a.length; i++) {
+                    poly += String.format(" + %.4fx^(%d)", solution_a[i], exp);
                     System.out.print(String.format(" + %.4fx^(%d)", solution_a[i], exp));
                     temp_double = solution_a[i] * Math.pow(x, exp);
                     exp += 1;
                     result += temp_double;
                 }
+                data_to_file = push_arr_string(data_to_file, poly);
                 System.out.println(String.format("\nHasil Interpolasi dari x = %.4f : ", x));
-                System.out.println(String.format("y = P(%.4f) = %.4f", x, result));
+                String output_msg = String.format("y = P(%.4f) = %.4f", x, result);
+                System.out.println(output_msg);
+                data_to_file = push_arr_string(data_to_file, output_msg);
+                option_output_to_file(data_to_file, scanner);
             } catch (FileNotFoundException e) {
                 System.out.println("Baca file gagal. File " + file_name + " tidak ditemukan.");
                 return;
@@ -1412,15 +1416,22 @@ public class Matrix {
         int exp = 1;
         System.out.println();
         System.out.println("Polinom yang didapat :");
-        System.out.print(String.format("P(x) = %.4f", solution_a[0]));
+        String[] data_to_file = new String[0];
+        String poly = String.format("P(x) = %.4f", solution_a[0]);
+        System.out.print(poly);
         for (int i = 1; i < solution_a.length; i++) {
+            poly += String.format(" + %.4fx^(%d)", solution_a[i], exp);
             System.out.print(String.format(" + %.4fx^(%d)", solution_a[i], exp));
             temp_double = solution_a[i] * Math.pow(x, exp);
             exp += 1;
             result += temp_double;
         }
+        data_to_file = push_arr_string(data_to_file, poly);
         System.out.println(String.format("\nHasil Interpolasi dari x = %.4f : ", x));
-        System.out.println(String.format("y = P(%.4f) = %.4f", x, result));
+        String output_msg = String.format("y = P(%.4f) = %.4f", x, result);
+        System.out.println(output_msg);
+        data_to_file = push_arr_string(data_to_file, output_msg);
+        option_output_to_file(data_to_file, scanner);
     }
 
     public void read_points_reg(Scanner scanner) {
@@ -1439,30 +1450,6 @@ public class Matrix {
                 this.data[i][j] = valid_double_input(scanner, msg);
             }
             System.out.println();
-        }
-    }
-
-    public void read_points_from_file(Scanner scanner) {
-        System.out.print("Masukkan nama file beserta extension (.txt) : ");
-        String file_name = scanner.nextLine().strip();
-        boolean txt_extension = file_name.endsWith(".txt");
-        if (txt_extension) {
-            try {
-                determine_matrix_size_from_file(file_name);
-                File file = new File("../test/" + file_name);
-                Scanner file_scanner = new Scanner(file);
-                for (int i = 0; i < this.get_row(); i++) {
-                    for (int j = 0; j < this.get_col(); j++) {
-                        this.set_elmt(i, j, file_scanner.nextDouble());
-                    }
-                }
-                file_scanner.close();
-                System.out.println("File berhasil terbaca.");
-            } catch (FileNotFoundException e) {
-                return;
-            }
-        } else {
-            System.out.println("Baca file gagal. File bukan file txt.");
         }
     }
 

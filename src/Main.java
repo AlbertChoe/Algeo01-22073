@@ -228,7 +228,7 @@ public class Main {
                 }
 
                 press_to_menu(scanner);
-            } else if (choice == 5) { // ON PROGRESS
+            } else if (choice == 5) {
                 display_input_options_bicubic();
                 int input_option = valid_input_choice(scanner, 1, 3);
                 clear_terminal();
@@ -251,7 +251,7 @@ public class Main {
                 if (input_option == 1) {
                     points.read_points_reg(scanner);
                 } else if (input_option == 2) {
-                    points.read_points_from_file(scanner);
+                    points.read_matrix_from_file(scanner);
                 } else {
                     continue;
                 }
