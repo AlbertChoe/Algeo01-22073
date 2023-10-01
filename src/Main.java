@@ -177,9 +177,9 @@ public class Main {
 
                     if (matrix.is_not_empty()) {
                         if (sub_choice == 1) {
-                            matrix.determinant_row_reduction();
+                            matrix.determinant_row_reduction(scanner);
                         } else {
-                            matrix.determinant_cofactor_expansion();
+                            matrix.determinant_cofactor_expansion(scanner);
                         }
                     }
 
@@ -205,9 +205,9 @@ public class Main {
 
                     if (matrix.is_not_empty()) {
                         if (sub_choice == 1) {
-                            matrix.inverse_adjoint();
+                            matrix.inverse_adjoint(scanner);
                         } else {
-                            matrix.inverse_obe();
+                            matrix.inverse_obe(scanner);
                         }
                     }
 

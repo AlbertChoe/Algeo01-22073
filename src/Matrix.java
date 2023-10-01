@@ -237,7 +237,7 @@ public class Matrix {
         return val;
     }
 
-    public void determinant_row_reduction() {
+    public void determinant_row_reduction(Scanner scanner) {
         System.out.println();
         System.out.println("Matriks yang dimasukkan");
         this.print_matrix(2);
@@ -307,6 +307,9 @@ public class Matrix {
         determinant *= Math.pow(-1, swap);
         determinant = round_x_decimals(determinant, 3);
         System.out.println(String.format(" = %.2f", determinant));
+        String[] data_to_file = new String[0];
+        data_to_file = push_arr_string(data_to_file, String.format("%.2f", determinant));
+        option_output_to_file(data_to_file, scanner);
     }
 
     private static double find_determinant(Matrix m) {
@@ -378,7 +381,7 @@ public class Matrix {
         return cofactor;
     }
 
-    public void determinant_cofactor_expansion() {
+    public void determinant_cofactor_expansion(Scanner scanner) {
         System.out.println();
         System.out.println("Matriks yang dimasukkan");
         this.print_matrix(2);
@@ -399,6 +402,9 @@ public class Matrix {
         }
         determinant = round_x_decimals(determinant, 3);
         System.out.println(String.format(" = %.2f", determinant));
+        String[] data_to_file = new String[0];
+        data_to_file = push_arr_string(data_to_file, String.format("%.2f", determinant));
+        option_output_to_file(data_to_file, scanner);
     }
 
     public boolean is_matrix_upper_triangle() {
@@ -427,7 +433,7 @@ public class Matrix {
         return m2;
     }
 
-    public void inverse_adjoint() {
+    public void inverse_adjoint(Scanner scanner) {
         System.out.println();
         System.out.println("Matriks yang dimasukkan");
         this.print_matrix(2);
@@ -454,6 +460,8 @@ public class Matrix {
         }
         System.out.println("Matriks balikan (Inverse matriks) yang didapat");
         adjoin.print_matrix(3);
+        String[] data_to_file = adjoin.to_string_arr();
+        option_output_to_file(data_to_file, scanner);
     }
 
     /*
@@ -1016,7 +1024,7 @@ public class Matrix {
     }
 
     // Proses untuk menginverse sebuah matriks dengan metode OBE
-    public void inverse_obe() {
+    public void inverse_obe(Scanner scanner) {
         double det = find_determinant(this);
         if (det == 0) {
             System.out.println("Matriks tidak mempunyai determinan sehingga matriks tidak mempunyai balikan");
@@ -1045,6 +1053,8 @@ public class Matrix {
                 }
             }
             hasil.print_matrix(3);
+            String[] data_to_file = hasil.to_string_arr();
+            option_output_to_file(data_to_file, scanner);
         }
     }
 
@@ -1366,6 +1376,18 @@ public class Matrix {
                 return;
             }
         }
+    }
+
+    public String[] to_string_arr() {
+        String[] lists = new String[0];
+        for (int i = 0; i < this.get_row(); i++) {
+            String temp_string = new String();
+            for (int j = 0; j < this.get_col(); j++) {
+                temp_string += String.format("%.4f ", this.get_elmt(i, j));
+            }
+            lists = push_arr_string(lists, temp_string);
+        }
+        return lists;
     }
 
     public static void option_output_to_file(String[] data, Scanner scanner) {
