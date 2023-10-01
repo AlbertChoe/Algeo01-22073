@@ -1090,12 +1090,21 @@ public class Matrix {
                 col_count = row_count;
                 row_count -= 1;
                 temp.set_new_size(row_count, col_count);
+                double[] mem = new double[temp.get_row()];
+                mem = fill_arr_with_mark(mem);
                 file_scanner.close();
                 Scanner file_scanner2 = new Scanner(file);
                 for (int i = 0; i < temp.get_row(); i++) {
                     int exponent = 0;
                     double xi = file_scanner2.nextDouble();
-
+                    if (is_in_array(mem, xi)) {
+                        System.out.println("\nBaca file gagal. Tidak dapat membuat interpolasi.");
+                        System.out.println(String.format("Terdapat data dengan masukan titik dengan x yang sama!", xi));
+                        file_scanner2.close();
+                        return;
+                    } else {
+                        mem[i] = xi;
+                    }
                     int j = 0;
                     while (j < temp.get_col() - 1) {
                         temp.data[i][j] = Math.pow(xi, exponent);
