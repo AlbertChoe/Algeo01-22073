@@ -608,7 +608,7 @@ public class Matrix {
         x.print_matrix(2);
         String[] data_to_file = new String[0];
         for (int i = 0; i < x.get_row(); i++) {
-            String output_msg = String.format("x%d : %.2f", i + 1, x.get_elmt(i, 0));
+            String output_msg = String.format("x%d = %.2f", i + 1, x.get_elmt(i, 0));
             System.out.println(output_msg);
             data_to_file = push_arr_string(data_to_file, output_msg);
         }
@@ -1191,7 +1191,7 @@ public class Matrix {
             System.out.println("\nBerikut solusi dari kaidah Cramer");
             String[] data_to_file = new String[0];
             for (int i = 0; i < x.n_row; i++) {
-                String output_msg = String.format("x%d : %.2f", i + 1, x.data[i][0]);
+                String output_msg = String.format("x%d = %.2f", i + 1, x.data[i][0]);
                 System.out.println(output_msg);
                 data_to_file = push_arr_string(data_to_file, output_msg);
             }

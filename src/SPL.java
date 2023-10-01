@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class SPL {
 
     private double value;
@@ -103,7 +105,90 @@ public class SPL {
         System.out.println(" ");
     }
 
-    public static void gauss_result(Matrix m) {
+    public String[] print_out_solutionToFile(int get_col, int a, String[] arrayOfString, String output_msg) {
+
+        double angka = Matrix.round_x_decimals(this.getValue(), 2);
+        if (!this.get_isi_noVar() && angka != 0) {
+
+            output_msg += String.format(" %.2f", this.getValue());
+        }
+        boolean printed = false;
+        // for (int b = 0; b < get_col - 1; b++) {
+        // System.out.format("%.2f ", this.getArray(b));
+        // }
+
+        if (angka != 0) {
+            for (int b = 0; b < get_col - 1; b++) {
+                if (Matrix.round_x_decimals(this.getArray(b), 2) != 0
+                        && Matrix.round_x_decimals(this.getArray(b), 2) > 0) {
+                    output_msg += String.format("+ %.2f%c", Matrix.round_x_decimals(this.getArray(b), 2),
+                            (char) (b + 65));
+                } else if (Matrix.round_x_decimals(this.getArray(b), 2) != 0
+                        && Matrix.round_x_decimals(this.getArray(b), 2) < 0) {
+                    output_msg += String.format("- %.2f%c", Matrix.round_x_decimals(this.getArray(b), 2) *
+                            (-1),
+                            (char) (b + 65));
+                }
+            }
+
+        } else if (angka == 0 && this.get_isi_noVar()) {
+            boolean first = true;
+            for (int b = 0; b < get_col - 1; b++) {
+                if (Matrix.round_x_decimals(this.getArray(b), 2) != 0 && first) {
+                    printed = true;
+                    first = false;
+
+                } else if (Matrix.round_x_decimals(this.getArray(b), 2) != 0 && !first
+                        && Matrix.round_x_decimals(this.getArray(b), 2) > 0) {
+                    printed = true;
+                    output_msg += String.format(" + %.2f%c ", Matrix.round_x_decimals(this.getArray(b), 2),
+                            (char) (b + 65));
+                } else if (Matrix.round_x_decimals(this.getArray(b), 2) != 0 && !first
+                        && Matrix.round_x_decimals(this.getArray(b), 2) < 0) {
+                    printed = true;
+                    output_msg += String.format(" - %.2f%c ", Matrix.round_x_decimals(this.getArray(b), 2)
+                            * (-1),
+                            (char) (b + 65));
+                }
+            }
+            if (!printed) {
+
+                output_msg += String.format(" %c ", (char) (a + 65));
+            }
+
+        } else if (angka == 0 && !this.get_isi_noVar()) {
+            boolean first = true;
+            for (int b = 0; b < get_col - 1; b++) {
+                if (Matrix.round_x_decimals(this.getArray(b), 2) != 0 && first) {
+                    printed = true;
+                    first = false;
+                    output_msg += String.format(" %.2f%c", Matrix.round_x_decimals(this.getArray(b), 2),
+                            (char) (b + 65));
+                } else if (Matrix.round_x_decimals(this.getArray(b), 2) != 0 && !first
+                        && Matrix.round_x_decimals(this.getArray(b), 2) > 0) {
+                    printed = true;
+                    output_msg += String.format(" + %.2f%c", Matrix.round_x_decimals(this.getArray(b), 2),
+                            (char) (b + 65));
+                } else if (Matrix.round_x_decimals(this.getArray(b), 2) != 0 && !first
+                        && Matrix.round_x_decimals(this.getArray(b), 2) < 0) {
+                    printed = true;
+                    output_msg += String.format(" - %.2f%c", Matrix.round_x_decimals(this.getArray(b), 2)
+                            * (-1),
+                            (char) (b + 65));
+                }
+            }
+            if (!printed) {
+                output_msg += String.format(" %.2f", 0.00);
+            }
+
+        }
+
+        arrayOfString = Matrix.push_arr_string(arrayOfString, output_msg);
+
+        return arrayOfString;
+    }
+
+    public static void gauss_result(Matrix m, Scanner scanner) {
         int i, j;
         boolean gaAdaSolusi;
         gaAdaSolusi = false;
@@ -118,6 +203,9 @@ public class SPL {
 
         if (gaAdaSolusi) {
             System.out.println("Tidak ada solusi.");
+            String[] data_to_file = new String[0];
+            data_to_file = Matrix.push_arr_string(data_to_file, "Tidak ada solusi");
+            Matrix.option_output_to_file(data_to_file, scanner);
         } else {
             System.out.println("Mempunyai banyak solusi");
 
@@ -190,10 +278,14 @@ public class SPL {
                 // }
                 // System.out.println("");
             }
+            String[] data_to_file = new String[0];
             for (int a = 0; a < m.get_col() - 1; a++) {
-                System.out.format("X%d -> ", a + 1);
+                System.out.format("X%d = ", a + 1);
+                String output_msg = String.format("X%d = ", a + 1);
                 arrayOfSpl[a].print_out_solution(m.get_col(), a);
+                data_to_file = arrayOfSpl[a].print_out_solutionToFile(m.get_col(), a, data_to_file, output_msg);
             }
+            Matrix.option_output_to_file(data_to_file, scanner);
 
         }
 
