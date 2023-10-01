@@ -1396,7 +1396,7 @@ public class Matrix {
         return new_arr;
     }
 
-    private static String[] push_arr_string(String[] original_arr, String value) {
+    public static String[] push_arr_string(String[] original_arr, String value) {
         int array_length = original_arr.length;
         String[] new_arr = new String[array_length + 1];
         for (int i = 0; i < array_length; i++) {

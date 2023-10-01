@@ -146,7 +146,7 @@ public class Main {
                     if (matrix.is_not_empty()) {
                         if (sub_choice == 1) {
                             matrix.eliminasi_gauss();
-                            SPL.gauss_result(matrix);
+                            SPL.gauss_result(matrix, scanner);
                         } else if (sub_choice == 2) {
                             matrix.eliminasi_gauss_jordan();
                             SPL.gauss_jordan_result(matrix);
