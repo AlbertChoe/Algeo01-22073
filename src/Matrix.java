@@ -1182,7 +1182,7 @@ public class Matrix {
             System.out.println("NOTE: Matriks persegi adalah ketika jumlah baris = jumlah kolom.");
             return;
         }
-        double det = find_determinant(this);
+        double det = find_determinant_obe(this);
         if (det == 0) {
             System.out.println("Determinan matriks masukan = 0 sehingga matriks tidak mempunyai balikan");
         } else {
@@ -1210,7 +1210,8 @@ public class Matrix {
                     hasil.set_elmt(i, j, m1.get_elmt(i, j + col));
                 }
             }
-            hasil.print_matrix(3);
+            System.out.println("Matriks balikan");
+            hasil.print_matrix(2);
             String[] data_to_file = hasil.to_string_arr();
             option_output_to_file(data_to_file, scanner);
         }
