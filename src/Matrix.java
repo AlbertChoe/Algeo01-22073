@@ -151,17 +151,26 @@ public class Matrix {
         while (true) {
             try {
                 System.out.println(String.format("Masukkan matriks %dx%d : ", this.get_row(), this.get_col()));
+                int loop = 0;
                 for (int i = 0; i < this.get_row(); i++) {
+                    String[] temp = scanner.nextLine().split(" ");
+                    if (temp.length != this.get_col()) {
+                        System.out.println(String.format("Data dalam tiap baris hanya boleh sebanyak %d.", this.get_col()));
+                        System.out.println("Proses memasukkan matriks diulang dari awal!\n");
+                        loop = 0;
+                        break;
+                    }
+                    loop += 1;
                     for (int j = 0; j < this.get_col(); j++) {
-                        this.data[i][j] = scanner.nextDouble();
+                        this.data[i][j] = Double.parseDouble(temp[j]);
                     }
                 }
-                scanner.nextLine();
-                return;
-            } catch (InputMismatchException e) {
+                if (loop == this.get_row()) {
+                    return;
+                }
+            } catch (NumberFormatException e) {
                 System.out.println("Masukan matriks tidak boleh selain bilangan riil.");
                 System.out.println("Proses memasukkan matriks diulang dari awal!\n");
-                scanner.nextLine();
             }
         }
     }
@@ -1289,7 +1298,17 @@ public class Matrix {
                 Scanner file_scanner2 = new Scanner(file);
                 for (int i = 0; i < temp.get_row(); i++) {
                     int exponent = 0;
-                    double xi = file_scanner2.nextDouble();
+                    String[] temp_scan = file_scanner2.nextLine().split(" ");
+                    if (temp_scan.length != 2) {
+                        System.out.println("Baca file gagal. Dalam file terdapat baris yang tidak terdiri dari dua data!");
+                        file_scanner2.close();
+                        return;
+                    }
+                    double[] temp_scan_double = new double[2];
+                    for (int t = 0; t < temp_scan.length; t++) {
+                       temp_scan_double[t] = Double.parseDouble(temp_scan[t]);
+                    }
+                    double xi = temp_scan_double[0];
                     if (is_in_array(mem, xi)) {
                         System.out.println("\nBaca file gagal. Tidak dapat membuat interpolasi.");
                         System.out.println(String.format("Terdapat data dengan masukan titik dengan x yang sama!", xi));
@@ -1304,7 +1323,7 @@ public class Matrix {
                         exponent += 1;
                         j += 1;
                     }
-                    double yi = file_scanner2.nextDouble();
+                    double yi = temp_scan_double[1];
                     temp.data[i][j] = yi;
                 }
                 double x = file_scanner2.nextDouble();
@@ -1340,6 +1359,9 @@ public class Matrix {
                 option_output_to_file(data_to_file, scanner);
             } catch (FileNotFoundException e) {
                 System.out.println("Baca file gagal. File " + file_name + " tidak ditemukan.");
+                return;
+            } catch (NumberFormatException | InputMismatchException e) {
+                System.out.println("Baca file gagal. Terdapat elemen bukan bilangan riil pada file " + file_name + ".");
                 return;
             }
         } else {
