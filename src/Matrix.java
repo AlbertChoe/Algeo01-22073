@@ -898,6 +898,35 @@ public class Matrix {
         }
     }
 
+    public double[][] row_eselon_reduction_silent_return() {
+        this.row_eselon_silent();
+        int i, j, baris, kolom;
+        baris = this.get_row();
+        kolom = this.get_col();
+        // Mengurangkan baris-baris di atas baris ke-i agar elemen pertama pada setiap
+        // baris di atasnya menjadi nol
+        for (i = baris - 1; i >= 0; i--) {
+            int idx = -1;
+            for (j = 0; j < kolom; j++) {
+                if (this.get_elmt(i, j) != 0) {
+                    idx = j;
+                    break;
+                }
+            }
+            if (idx == -1) {
+                continue;
+            }
+
+            for (int k = i - 1; k >= 0; k--) {
+                double pengurang = -this.get_elmt(k, idx);
+                for (j = 0; j < kolom; j++) {
+                    this.set_elmt(k, j, round_x_decimals(this.get_elmt(k, j) + pengurang * this.get_elmt(i, j), 5));
+                }
+            }
+        }
+        return this.data;
+    }
+
     public int cekX(int kolom) {
         if (kolom == 0 || kolom == 2) {
             return 0;
