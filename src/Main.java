@@ -149,7 +149,7 @@ public class Main {
                             SPL.gauss_result(matrix, scanner);
                         } else if (sub_choice == 2) {
                             matrix.eliminasi_gauss_jordan();
-                            SPL.gauss_jordan_result(matrix);
+                            SPL.gauss_jordan_result(matrix, scanner);
                         } else if (sub_choice == 3) {
                             matrix.spl_inverse(scanner);
                         } else {
