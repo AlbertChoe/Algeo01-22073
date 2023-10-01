@@ -312,6 +312,51 @@ public class Matrix {
         option_output_to_file(data_to_file, scanner);
     }
 
+    private static double find_determinant_obe(Matrix m) {
+        int swap = 0;
+        for (int j = 0; j < m.get_col() - 1; j++) {
+            int row_to_swap = -1;
+            if (m.get_elmt(j, j) == 0) {
+                for (int i = j; i < m.get_row(); i++) {
+                    if (m.get_elmt(i, j) != 0) {
+                        row_to_swap = i;
+                        break;
+                    }
+                }
+            }
+
+            if (row_to_swap != -1) {
+                double[] temp = m.data[j];
+                m.data[j] = m.data[row_to_swap];
+                m.data[row_to_swap] = temp;
+                swap += 1;
+            }
+
+            for (int row = j + 1; row < m.get_row(); row++) {
+                if (row != row_to_swap || m.get_elmt(row, j) != 0) {
+                    double x = Math.abs(m.get_elmt(row, j));
+                    double y = Math.abs(m.get_elmt(j, j));
+                    if (y == 0 || x == 0) {
+                        continue;
+                    }
+                    double factor = x / y;
+                    if ((m.get_elmt(row, j) > 0 && m.get_elmt(j, j) > 0)
+                            || (m.get_elmt(row, j) < 0 && m.get_elmt(j, j) < 0)) {
+                        m.el_row_op(row, j, -1 * factor);
+                    } else {
+                        m.el_row_op(row, j, factor);
+                    }
+                }
+            }
+        }
+        double determinant = m.get_elmt(0, 0);
+        for (int i = 1; i < m.get_row(); i++) {
+            determinant *= m.get_elmt(i, i);
+        }
+        determinant *= Math.pow(-1, swap);
+        return determinant;
+    }
+
     private static double find_determinant(Matrix m) {
         if (m.get_row() == 1 && m.get_col() == 1) {
             return m.get_elmt(0, 0);
@@ -381,6 +426,39 @@ public class Matrix {
         return cofactor;
     }
 
+    private Matrix find_cofactor_matrix_obe() {
+        Matrix cofactor = new Matrix(this.get_row(), this.get_col());
+        if (this.get_row() == 1 && this.get_col() == 1) {
+            cofactor.set_elmt(0, 0, this.get_elmt(0, 0));
+            return cofactor;
+        }
+        for (int i = 0; i < this.get_row(); i++) {
+            for (int j = 0; j < this.get_col(); j++) {
+                int length = this.get_row() - 1;
+                Matrix submatrix = new Matrix(length, length);
+                int subi, subj;
+                subi = 0;
+                for (int a = 0; a < length + 1; a++) {
+                    if (a == i) {
+                        continue;
+                    }
+                    subj = 0;
+                    for (int b = 0; b < length + 1; b++) {
+                        if (b == j) {
+                            continue;
+                        }
+                        submatrix.set_elmt(subi, subj, this.get_elmt(a, b));
+                        subj += 1;
+                    }
+                    subi += 1;
+                }
+                double temp = round_x_decimals(Math.pow(-1, i + j) * find_determinant_obe(submatrix), 3);
+                cofactor.set_elmt(i, j, temp);
+            }
+        }
+        return cofactor;
+    }
+
     public void determinant_cofactor_expansion(Scanner scanner) {
         System.out.println();
         System.out.println("Matriks yang dimasukkan");
@@ -407,22 +485,6 @@ public class Matrix {
         option_output_to_file(data_to_file, scanner);
     }
 
-    public boolean is_matrix_upper_triangle() {
-        boolean triangle = true;
-        for (int i = 1; i < this.get_row(); i++) {
-            for (int j = 0; j < i; j++) {
-                if (this.get_elmt(i, j) != 0) {
-                    triangle = false;
-                    break;
-                }
-            }
-            if (triangle == false) {
-                break;
-            }
-        }
-        return triangle;
-    }
-
     private Matrix transpose() {
         Matrix m2 = new Matrix(this.n_col, this.n_row);
         for (int i = 0; i < this.get_row(); i++) {
@@ -447,7 +509,7 @@ public class Matrix {
         }
         System.out.println(String.format("Determinan matriks masukan : %.2f", determinant));
         System.out.println();
-        Matrix cofactor = this.find_cofactor_matrix();
+        Matrix cofactor = this.find_cofactor_matrix_obe();
         Matrix adjoin = cofactor.transpose();
         System.out.println("Adjoin matriks dari matriks masukan");
         adjoin.print_matrix(2);
@@ -470,7 +532,7 @@ public class Matrix {
      */
     public Matrix find_inverse_adj() {
         double determinant = find_determinant(this);
-        Matrix cofactor = this.find_cofactor_matrix();
+        Matrix cofactor = this.find_cofactor_matrix_obe();
         Matrix adjoin = cofactor.transpose();
         double factor = 1 / determinant;
         for (int i = 0; i < adjoin.get_row(); i++) {
@@ -481,7 +543,7 @@ public class Matrix {
         return adjoin;
     }
 
-    public void spl_inverse() {
+    public void spl_inverse(Scanner scanner) {
         System.out.println();
         System.out.println("Matriks Augmented dari masukan");
         this.print_matrix(2);
@@ -518,10 +580,13 @@ public class Matrix {
         Matrix x = multiply_matrix(A, b);
         System.out.println("Matriks x");
         x.print_matrix(2);
-
+        String[] data_to_file = new String[0];
         for (int i = 0; i < x.get_row(); i++) {
-            System.out.println(String.format("x%d : %.2f", i + 1, x.get_elmt(i, 0)));
+            String output_msg = String.format("x%d : %.2f", i + 1, x.get_elmt(i, 0));
+            System.out.println(output_msg);
+            data_to_file = push_arr_string(data_to_file, output_msg);
         }
+        option_output_to_file(data_to_file, scanner);
     }
 
     // Mengecek apakah ada baris yang 0 semuanya
@@ -1155,7 +1220,7 @@ public class Matrix {
                 System.out.println("\nBerikut merupakan titik - titik yang terbaca dari file");
                 for (int i = 0; i < temp.get_row(); i++) {
                     String msg = String.format("(x%d, y%d) : (%.4f, %.4f)", i, i, temp.get_elmt(i, 1),
-                            temp.get_elmt(i, temp.get_row() - 1));
+                            temp.get_elmt(i, temp.get_col() - 1));
                     System.out.println(msg);
                 }
                 double[] solution_a = temp.spl_solution_to_arr();

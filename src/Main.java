@@ -151,7 +151,7 @@ public class Main {
                             matrix.eliminasi_gauss_jordan();
                             SPL.gauss_jordan_result(matrix);
                         } else if (sub_choice == 3) {
-                            matrix.spl_inverse();
+                            matrix.spl_inverse(scanner);
                         } else {
                             matrix.cramer();
                         }
