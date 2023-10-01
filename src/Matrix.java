@@ -898,35 +898,6 @@ public class Matrix {
         }
     }
 
-    public double[][] row_eselon_reduction_silent_return() {
-        this.row_eselon_silent();
-        int i, j, baris, kolom;
-        baris = this.get_row();
-        kolom = this.get_col();
-        // Mengurangkan baris-baris di atas baris ke-i agar elemen pertama pada setiap
-        // baris di atasnya menjadi nol
-        for (i = baris - 1; i >= 0; i--) {
-            int idx = -1;
-            for (j = 0; j < kolom; j++) {
-                if (this.get_elmt(i, j) != 0) {
-                    idx = j;
-                    break;
-                }
-            }
-            if (idx == -1) {
-                continue;
-            }
-
-            for (int k = i - 1; k >= 0; k--) {
-                double pengurang = -this.get_elmt(k, idx);
-                for (j = 0; j < kolom; j++) {
-                    this.set_elmt(k, j, round_x_decimals(this.get_elmt(k, j) + pengurang * this.get_elmt(i, j), 5));
-                }
-            }
-        }
-        return this.data;
-    }
-
     public int cekX(int kolom) {
         if (kolom == 0 || kolom == 2) {
             return 0;
@@ -1499,14 +1470,26 @@ public class Matrix {
         }
         Matrix AT = A.transpose();
         Matrix ATA = multiply_matrix(AT, A);
-        ATA = ATA.find_inverse_obe();
         Matrix ATY = multiply_matrix(AT, Y);
-        Matrix B = multiply_matrix(ATA, ATY);
-        double[] cof_beta = new double[B.get_row()];
-        for (int i = 0; i < B.get_row(); i++) {
-            cof_beta[i] = B.get_elmt(i, 0);
+        Matrix augmented = new Matrix(ATA.get_row(), ATA.get_col() + 1);
+        for (int i = 0; i < ATA.get_row(); i++) {
+            for (int j = 0; j < ATA.get_col(); j++) {
+                augmented.set_elmt(i, j, ATA.get_elmt(i, j));
+            }
         }
-        System.out.println();
+        for (int i = 0; i < augmented.get_row(); i++) {
+            augmented.set_elmt(i, augmented.get_col() - 1, ATY.get_elmt(i, 0));
+        }
+        System.out.println("\nMenggunakan Normal Estimation Equation for Multiple Linear Regression.");
+        System.out.println("Berikut matriks augmented dari persamaan tersebut : ");
+        augmented.print_matrix(3);
+        augmented.row_eselon_reduction_silent();
+        System.out.println("Dengan metode Gauss - Jordan, berikut hasilnya :");
+        augmented.print_matrix(4);
+        double[] cof_beta = new double[augmented.get_row()];
+        for (int i = 0; i < augmented.get_row(); i++) {
+            cof_beta[i] = augmented.get_elmt(i, augmented.get_col() - 1);
+        }
         System.out.println("Persamaan regresi linier berganda yang didapat :");
         String reg = String.format("f(x) = %.4f", cof_beta[0]);
         for (int i = 1; i < cof_beta.length; i++) {
