@@ -155,7 +155,8 @@ public class Matrix {
                 for (int i = 0; i < this.get_row(); i++) {
                     String[] temp = scanner.nextLine().split(" ");
                     if (temp.length != this.get_col()) {
-                        System.out.println(String.format("Data dalam tiap baris hanya boleh sebanyak %d.", this.get_col()));
+                        System.out.println(
+                                String.format("Data dalam tiap baris hanya boleh sebanyak %d.", this.get_col()));
                         System.out.println("Proses memasukkan matriks diulang dari awal!\n");
                         loop = 0;
                         break;
@@ -907,22 +908,6 @@ public class Matrix {
         }
     }
 
-    public int cekX(int kolom) {
-        if (kolom == 0 || kolom == 2) {
-            return 0;
-        } else {
-            return 1;
-        }
-    }
-
-    public int cekY(int kolom) {
-        if (kolom == 0 || kolom == 1) {
-            return 0;
-        } else {
-            return 1;
-        }
-    }
-
     public Matrix generateMatrix() {
         int kolom = 4;
         int turunan = 0;
@@ -933,8 +918,18 @@ public class Matrix {
         Matrix A = new Matrix(16, 16);
         for (int a = 0; a < 16; a++) {
             for (int b = 0; b < 16; b++) {
-                int x = this.cekX(idxkolom);
-                int y = this.cekY(idxkolom);
+                int x;
+                if (kolom == 0 || kolom == 2) {
+                    x = 0;
+                } else {
+                    x = 1;
+                }
+                int y;
+                if (kolom == 0 || kolom == 1) {
+                    y = 0;
+                } else {
+                    y = 1;
+                }
                 int j = pindahY;
                 int i = pindahX;
                 if (turunan == 0) {
@@ -1311,13 +1306,14 @@ public class Matrix {
                     String[] temp_scan = file_scanner2.nextLine().split(" ");
                     if (temp_scan.length != 2) {
                         System.out.println("Baca file gagal.");
-                        System.out.println("Dalam file terdapat baris (selain baris terakhir) yang tidak terdiri dari dua data!");
+                        System.out.println(
+                                "Dalam file terdapat baris (selain baris terakhir) yang tidak terdiri dari dua data!");
                         file_scanner2.close();
                         return;
                     }
                     double[] temp_scan_double = new double[2];
                     for (int t = 0; t < temp_scan.length; t++) {
-                       temp_scan_double[t] = Double.parseDouble(temp_scan[t]);
+                        temp_scan_double[t] = Double.parseDouble(temp_scan[t]);
                     }
                     double xi = temp_scan_double[0];
                     if (is_in_array(mem, xi)) {
@@ -1340,11 +1336,12 @@ public class Matrix {
                 String[] x_line = file_scanner2.nextLine().split(" ");
                 if (x_line.length != 1) {
                     System.out.println("Baca file gagal.");
-                    System.out.println("Baris terakhir hanya boleh terdiri dari satu data yakni data x untuk menginterpolasi suatu y.");
+                    System.out.println(
+                            "Baris terakhir hanya boleh terdiri dari satu data yakni data x untuk menginterpolasi suatu y.");
                     file_scanner2.close();
                     return;
                 }
-                double x = Double.parseDouble(x_line[0]);   
+                double x = Double.parseDouble(x_line[0]);
                 file_scanner2.close();
                 System.out.println("File berhasil terbaca.");
                 System.out.println("\nBerikut merupakan titik - titik yang terbaca dari file");
@@ -1482,7 +1479,8 @@ public class Matrix {
             String output_msg = String.format("y = P(%.4f) = %.4f", x, result);
             System.out.println(output_msg);
             data_to_file = push_arr_string(data_to_file, output_msg);
-            System.out.println("\nApakah anda ingin menginterpolasi suatu y lagi dengan persamaan polinomial tersebut?");
+            System.out
+                    .println("\nApakah anda ingin menginterpolasi suatu y lagi dengan persamaan polinomial tersebut?");
             System.out.println("1. Ya");
             System.out.println("2. Tidak\n");
             int again_option = Main.valid_input_choice(scanner, 1, 2);
