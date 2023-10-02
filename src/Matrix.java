@@ -919,13 +919,13 @@ public class Matrix {
         for (int a = 0; a < 16; a++) {
             for (int b = 0; b < 16; b++) {
                 int x;
-                if (kolom == 0 || kolom == 2) {
+                if (idxkolom == 0 || idxkolom == 2) {
                     x = 0;
                 } else {
                     x = 1;
                 }
                 int y;
-                if (kolom == 0 || kolom == 1) {
+                if (idxkolom == 0 || idxkolom == 1) {
                     y = 0;
                 } else {
                     y = 1;
@@ -988,6 +988,7 @@ public class Matrix {
 
         Matrix hasil = new Matrix(4, 4); // mengenerate matriks 16x16
         hasil = generateMatrix();
+        hasil.print_matrix(2);
         // Matriks 16x16 generated dengan fungsi yang sudah ditentukan
         hasil = hasil.find_inverse_obe();
         // Matriks 16x16 yang sudah digenerate di inverse
