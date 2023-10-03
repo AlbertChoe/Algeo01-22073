@@ -1087,6 +1087,18 @@ public class Matrix {
             try {
                 this.set_new_size(4, 4); // Proses menscan matriks dari file
                 File file = new File("../test/" + file_name);
+                Scanner file_scanner2 = new Scanner(file);
+                for (int i = 0; i < 4; i++) {
+                    String[] temp_scan = file_scanner2.nextLine().split(" ");
+                    if (temp_scan.length != 4) {
+                        System.out.println("Baca file gagal.");
+                        System.out.println(
+                                "Dalam file terdapat baris (selain baris terakhir) yang tidak terdiri dari dua data!");
+                        file_scanner2.close();
+                        return;
+                    }
+                }
+                file_scanner2.close();
                 Scanner file_scanner = new Scanner(file);
                 for (int i = 0; i < 4; i++) {
                     for (int j = 0; j < 4; j++) {
@@ -1099,6 +1111,10 @@ public class Matrix {
 
             } catch (FileNotFoundException e) { // error handling jika file tidak ditemukan
                 System.out.format("Tidak ditemukan file dengan nama %s\n", file_name);
+                return;
+            } catch (InputMismatchException e) {
+                System.out.println("Baca file gagal. Isi file terdapat elemen bukan bilangan riil.");
+                System.out.println("Tiap elemen dalam file hanya boleh bilangan riil!");
                 return;
             }
 
