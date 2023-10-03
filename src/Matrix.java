@@ -105,24 +105,7 @@ public class Matrix {
         }
     }
 
-    /*
-     * Scanner standard untuk semua case (bebas baris dan kolom) bisa untuk apa aja,
-     * Scanner khusus untuk SPL nanti
-     */
     public void read_matrix_scan(Scanner scanner) {
-        int row = valid_int_input(scanner, "Masukkan jumlah baris matriks : ", 0);
-        int col = valid_int_input(scanner, "Masukkan jumlah kolom matriks : ", 0);
-        this.set_new_size(row, col);
-        System.out.println(String.format("Masukkan matriks %dx%d : ", this.get_row(), this.get_col()));
-        for (int i = 0; i < this.get_row(); i++) {
-            for (int j = 0; j < this.get_col(); j++) {
-                this.data[i][j] = scanner.nextDouble();
-            }
-        }
-        scanner.nextLine();
-    }
-
-    public void read_matrix_scan_trial(Scanner scanner) {
         int row = valid_int_input(scanner, "Masukkan jumlah baris matriks : ", 0);
         int col = valid_int_input(scanner, "Masukkan jumlah kolom matriks : ", 0);
         this.set_new_size(row, col);

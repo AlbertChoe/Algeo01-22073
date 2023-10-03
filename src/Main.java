@@ -164,7 +164,7 @@ public class Main {
                         if (spl_input_option == 1) {
                             matrix.read_matrix_spl(scanner);
                         } else {
-                            matrix.read_matrix_scan_trial(scanner);
+                            matrix.read_matrix_scan(scanner);
                         }
                     } else {
                         matrix.read_matrix_from_file(scanner);
