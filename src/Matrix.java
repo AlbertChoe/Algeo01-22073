@@ -122,6 +122,38 @@ public class Matrix {
         scanner.nextLine();
     }
 
+    public void read_matrix_scan_trial(Scanner scanner) {
+        int row = valid_int_input(scanner, "Masukkan jumlah baris matriks : ", 0);
+        int col = valid_int_input(scanner, "Masukkan jumlah kolom matriks : ", 0);
+        this.set_new_size(row, col);
+        while (true) {
+            try {
+                int loop = 0;
+                System.out.println(String.format("Masukkan matriks %dx%d : ", this.get_row(), this.get_col()));
+                    for (int i = 0; i < this.get_row(); i++) {
+                        String[] temp_line = scanner.nextLine().split(" ");
+                        if (temp_line.length != col) {
+                            System.out.println(
+                                String.format("Data dalam tiap baris hanya boleh sebanyak %d.", this.get_col()));
+                            System.out.println("Proses memasukkan matriks diulang dari awal!\n");
+                            loop = 0;
+                            break;
+                        }
+                        loop += 1;
+                        for (int j = 0; j < this.get_col(); j++) {
+                            this.data[i][j] = Double.parseDouble(temp_line[j]);
+                        }
+                    }
+                    if (loop == this.get_row()) {
+                        return;
+                    }
+            } catch (NumberFormatException e) {
+                System.out.println("Masukan matriks tidak boleh selain bilangan riil.");
+                System.out.println("Proses memasukkan matriks diulang dari awal!\n");
+            }
+        }
+    }
+
     // Scanner matriks untuk SPL
     public void read_matrix_spl(Scanner scanner) {
         int row = valid_int_input(scanner, "Masukkan jumlah persamaan  : ", 0);
@@ -142,6 +174,7 @@ public class Matrix {
                 this.data[i][j] = valid_double_input(scanner, msg);
             }
         }
+        System.out.println();
     }
 
     // Scanner matriks untuk matriks persegi

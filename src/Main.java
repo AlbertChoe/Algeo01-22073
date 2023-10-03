@@ -25,6 +25,7 @@ public class Main {
     }
 
     public static void display_menu() {
+        System.out.println("-----------------------------");
         System.out.println("# MENU");
         System.out.println("-----------------------------");
         System.out.println("1. Sistem Persamaaan Linier");
@@ -101,6 +102,22 @@ public class Main {
         System.out.println("--------------------------");
     }
 
+    public static void display_input_options_spl() {
+        System.out.println("*  Opsi Memasukkan Data dari Command Line");
+        System.out.println("---------------------------------------------------");
+        System.out.println("1. Masukan per elemen SPL");
+        System.out.println("2. Masukan dalam bentuk matriks augmented dari SPL");
+        System.out.println("---------------------------------------------------");
+    }
+
+    public static void display_logo() {
+        System.out.println("    ___    __    ________________ ");
+        System.out.println("   /   |  / /   / ____/ ____/ __ \\");
+        System.out.println("  / /| | / /   / / __/ __/ / / / /");
+        System.out.println(" / ___ |/ /___/ /_/ / /___/ /_/ / ");
+        System.out.println("/_/  |_/_____/\\____/_____/\\____/  ");
+    }
+
     public static int valid_input_choice(Scanner scanner, int range_from, int range_to) {
         String err_msg = String.format(">> Tidak valid. Hanya menerima input angka dari %d hingga %d!", range_from,
                 range_to);
@@ -126,6 +143,7 @@ public class Main {
         boolean program_on = true;
         while (program_on == true) {
             clear_terminal();
+            display_logo();
             display_menu();
             int choice = valid_input_choice(scanner, 1, 7);
             clear_terminal();
@@ -139,7 +157,15 @@ public class Main {
                     int input_option = valid_input_choice(scanner, 1, 2);
                     clear_terminal();
                     if (input_option == 1) {
-                        matrix.read_matrix_scan(scanner);
+                        clear_terminal();
+                        display_input_options_spl();
+                        int spl_input_option = valid_input_choice(scanner, 1, 2);
+                        System.out.println();
+                        if (spl_input_option == 1) {
+                            matrix.read_matrix_spl(scanner);
+                        } else {
+                            matrix.read_matrix_scan_trial(scanner);
+                        }
                     } else {
                         matrix.read_matrix_from_file(scanner);
                     }
