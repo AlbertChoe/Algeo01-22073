@@ -988,7 +988,6 @@ public class Matrix {
 
         Matrix hasil = new Matrix(4, 4); // mengenerate matriks 16x16
         hasil = generateMatrix();
-        hasil.print_matrix(2);
         // Matriks 16x16 generated dengan fungsi yang sudah ditentukan
         hasil = hasil.find_inverse_obe();
         // Matriks 16x16 yang sudah digenerate di inverse
@@ -1001,18 +1000,37 @@ public class Matrix {
             }
         }
         Matrix hasilKoef = Matrix.multiply_matrix(hasil, sixteen_row_Matrix); // Menghasilkan matrix koef
-        double hasilJumlah = 0;
         row = 0;
-        for (int i = 0; i < 4; i++) { // Proses perkalian
+        Matrix newHasilKoef = new Matrix(4, 4);
+        for (int i = 0; i < 4; i++) { // memconvert kembali matriks hasilKoef berukuran 16x1 menjadi 4x4
             for (int j = 0; j < 4; j++) {
-                hasilJumlah += Math.pow(a, i) * Math.pow(b, j) * hasilKoef.get_elmt(row, 0);
+                newHasilKoef.set_elmt(j, i, hasilKoef.get_elmt(row, 0));
                 row++;
             }
         }
+        Matrix MatrixX = new Matrix(1, 4);
+        Matrix MatrixY = new Matrix(4, 1);
+        double val = 1;
+        for (int i = 0; i < 1; i++) { // membuat matriks x baru dengan nilai a
+            for (int j = 0; j < 4; j++) {
+                MatrixX.set_elmt(i, j, val);
+                val = val * a;
+            }
+        }
+        val = 1;
+
+        for (int i = 0; i < 4; i++) { // membuat matriks y baru dengan nilai b
+            for (int j = 0; j < 1; j++) {
+                MatrixY.set_elmt(i, j, val);
+                val = val * b;
+            }
+        }
+        // Mengalikan matrixX dengan hasil koef , lalu dikalikan lagi dengan matrixY
+        Matrix hasilMatrixbaru = Matrix.multiply_matrix(Matrix.multiply_matrix(MatrixX, newHasilKoef), MatrixY);
         String output_msg = "";
         String[] data_to_file = new String[0];
-        System.out.format("Hasil f(%.2f ,%.2f) = %.2f\n", a, b, hasilJumlah);
-        output_msg = String.format("Hasil f(%.2f ,%.2f) = %.2f\n", a, b, hasilJumlah);
+        System.out.format("Hasil f(%.2f ,%.2f) = %.2f\n", a, b, hasilMatrixbaru.get_elmt(0, 0));
+        output_msg = String.format("Hasil f(%.2f ,%.2f) = %.2f\n", a, b, hasilMatrixbaru.get_elmt(0, 0));
         int input = -1;
         System.out.println("Apakah ingin mengecek hasil taksiran fungsi lain?");
         System.out.println("1. Ya");
@@ -1027,17 +1045,26 @@ public class Matrix {
             System.out.print("Masukkan b : ");
             b = scanner.nextDouble();
             scanner.nextLine();
-            hasilJumlah = 0;
-            row = 0;
-            for (int i = 0; i < 4; i++) {
+
+            val = 1;
+            for (int i = 0; i < 1; i++) {
                 for (int j = 0; j < 4; j++) {
-                    hasilJumlah += Math.pow(a, i) * Math.pow(b, j) * hasilKoef.get_elmt(row, 0);
-                    row++;
+                    MatrixX.set_elmt(i, j, val);
+                    val = val * a;
                 }
             }
+            val = 1;
+            MatrixX.print_matrix(2);
+            for (int i = 0; i < 4; i++) {
+                for (int j = 0; j < 1; j++) {
+                    MatrixY.set_elmt(i, j, val);
+                    val = val * b;
+                }
+            }
+            hasilMatrixbaru = Matrix.multiply_matrix(Matrix.multiply_matrix(MatrixX, newHasilKoef), MatrixY);
+            System.out.format("Hasil f(%.2f ,%.2f) = %.2f\n", a, b, hasilMatrixbaru.get_elmt(0, 0));
+            output_msg = String.format("Hasil f(%.2f ,%.2f) = %.2f\n", a, b, hasilMatrixbaru.get_elmt(0, 0));
 
-            System.out.format("Hasil f(%.2f ,%.2f) = %.2f\n", a, b, hasilJumlah);
-            output_msg = String.format("Hasil f(%.2f ,%.2f) = %.2f\n", a, b, hasilJumlah);
             data_to_file = Matrix.push_arr_string(data_to_file, output_msg);
             System.out.println("Apakah ingin mengecek hasil taksiran fungsi lain?");
             System.out.println("1. Ya");
@@ -1092,18 +1119,39 @@ public class Matrix {
                                                                                   // melakukan perkalian terhadap
                                                                                   // matirks hasil inverse dan matriks
                                                                                   // 16x1
-            double hasilJumlah = 0;
             row = 0;
-            for (int i = 0; i < 4; i++) { // menghitung hasil jumlah
+            Matrix newHasilKoef = new Matrix(4, 4);
+            for (int i = 0; i < 4; i++) { // memconvert kembali matriks hasilKoef berukuran 16x1 menjadi 4x4
                 for (int j = 0; j < 4; j++) {
-                    hasilJumlah += Math.pow(a, i) * Math.pow(b, j) * hasilKoef.get_elmt(row, 0);
+                    newHasilKoef.set_elmt(j, i, hasilKoef.get_elmt(row, 0));
                     row++;
                 }
             }
+            Matrix MatrixX = new Matrix(1, 4);
+            Matrix MatrixY = new Matrix(4, 1);
+            double val = 1;
+            for (int i = 0; i < 1; i++) { // membuat matriks x baru dengan nilai a
+                for (int j = 0; j < 4; j++) {
+                    MatrixX.set_elmt(i, j, val);
+                    val = val * a;
+                }
+            }
+            val = 1;
+
+            for (int i = 0; i < 4; i++) { // membuat matriks y baru dengan nilai b
+                for (int j = 0; j < 1; j++) {
+                    MatrixY.set_elmt(i, j, val);
+                    val = val * b;
+                }
+            }
+
+            // Mengalikan matrixX dengan hasil koef , lalu dikalikan lagi dengan matrixY
+            Matrix hasilMatrixbaru = Matrix.multiply_matrix(Matrix.multiply_matrix(MatrixX, newHasilKoef), MatrixY);
+
             String output_msg = "";
             String[] data_to_file = new String[0];
-            System.out.format("Hasil f(%.2f ,%.2f) = %.2f\n", a, b, hasilJumlah);
-            output_msg = String.format("Hasil f(%.2f ,%.2f) = %.2f\n", a, b, hasilJumlah);
+            System.out.format("Hasil f(%.2f ,%.2f) = %.2f\n", a, b, hasilMatrixbaru.get_elmt(0, 0));
+            output_msg = String.format("Hasil f(%.2f ,%.2f) = %.2f\n", a, b, hasilMatrixbaru.get_elmt(0, 0));
             data_to_file = Matrix.push_arr_string(data_to_file, output_msg);
             Matrix.option_output_to_file(data_to_file, scanner);
         } else { // Jika bukan file txt
