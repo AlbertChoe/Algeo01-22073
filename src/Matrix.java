@@ -333,7 +333,13 @@ public class Matrix {
         option_output_to_file(data_to_file, scanner);
     }
 
-    private static double find_determinant_obe(Matrix m) {
+    private static double find_determinant_obe(Matrix m0) {
+        Matrix m = new Matrix(m0.get_row(), m0.get_col());
+        for (int i = 0; i < m.get_row(); i++) {
+            for (int j = 0; j < m.get_col(); j++) {
+                m.set_elmt(i, j, m0.get_elmt(i, j));
+            }
+        }
         int swap = 0;
         for (int j = 0; j < m.get_col() - 1; j++) {
             int row_to_swap = -1;
