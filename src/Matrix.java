@@ -854,6 +854,7 @@ public class Matrix {
             for (j = 0; j < kolom; j++) {
                 set_elmt(i, j, round_x_decimals(this.get_elmt(i, j) / value, 7));
             }
+            // round_x_decimals(this.get_elmt(i, j) / value, 7)
             // Mengurangkan baris-baris di bawah baris ke-i agar elemen pertama pada setiap
             // baris di bawahnya menjadi nol
             for (int k = i + 1; k < baris; k++) {
@@ -861,6 +862,7 @@ public class Matrix {
                 for (j = 0; j < kolom; j++) {
                     set_elmt(k, j, round_x_decimals(get_elmt(k, j) + pengurang * this.get_elmt(i, j), 5));
                 }
+                // round_x_decimals(get_elmt(k, j) + pengurang * this.get_elmt(i, j), 5)
             }
         }
         // Mengatur baris rapi kembali
@@ -1283,7 +1285,7 @@ public class Matrix {
             System.out.println("Gunakan cara lain untuk mencari solusi SPL tersebut!");
             return;
         }
-        det1 = find_determinant(a);
+        det1 = find_determinant_obe(a);
         if (det1 == 0) {
             System.out.println("Determinan matriks A = 0, SPL tidak memiliki solusi yang unik.");
             System.out.println("Gunakan cara lain untuk mencari solusi SPL tersebut!");
@@ -1298,7 +1300,7 @@ public class Matrix {
                     a.set_elmt(i, j, this.data[i][j]);
                 }
             }
-            det1 = find_determinant(a);
+            det1 = find_determinant_obe(a);
             System.out.println("Determinan matriks A : " + det1);
 
             for (int i = 0; i < a.n_col; i++) {
@@ -1310,7 +1312,7 @@ public class Matrix {
                 for (int p = 0; p < b.n_row; p++) {
                     temp.set_elmt(p, i, b.data[p][0]);
                 }
-                det2 = find_determinant(temp);
+                det2 = find_determinant_obe(temp);
                 System.out.println("Determinan matriks A" + (i + 1) + " : " + det2);
                 x.set_elmt(i, 0, (det2 / det1));
             }
