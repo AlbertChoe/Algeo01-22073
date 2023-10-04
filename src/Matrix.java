@@ -19,12 +19,14 @@ public class Matrix {
         this.data = new double[0][0];
     }
 
+    //constructor
     public Matrix(int n_row, int n_col) {
         this.n_row = n_row;
         this.n_col = n_col;
         this.data = new double[n_row][n_col];
     }
 
+    //get row
     public int get_row() {
         return this.n_row;
     }
