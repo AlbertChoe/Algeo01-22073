@@ -42,9 +42,6 @@ public class SPL {
             System.out.format(" %.2f ", this.getValue());
         }
         boolean printed = false;
-        // for (int b = 0; b < get_col - 1; b++) {
-        // System.out.format("%.2f ", this.getArray(b));
-        // }
         if (angka != 0) {
             for (int b = 0; b < get_col - 1; b++) {
                 if (Matrix.round_x_decimals(this.getArray(b), 2) != 0
@@ -113,9 +110,6 @@ public class SPL {
             output_msg += String.format(" %.2f", this.getValue());
         }
         boolean printed = false;
-        // for (int b = 0; b < get_col - 1; b++) {
-        // System.out.format("%.2f ", this.getArray(b));
-        // }
 
         if (angka != 0) {
             for (int b = 0; b < get_col - 1; b++) {
@@ -192,7 +186,7 @@ public class SPL {
         int i, j;
         boolean gaAdaSolusi;
         gaAdaSolusi = false;
-        for (i = 0; i < m.get_row(); i++) {
+        for (i = 0; i < m.get_row(); i++) { // Mengecek apakah perasmaan memiliki solusi atau tidak
             if (m.is_baris_i_0(i)) {
                 if (m.get_elmt(i, m.get_col() - 1) != 0) {
                     gaAdaSolusi = true;
@@ -203,8 +197,9 @@ public class SPL {
 
         if (gaAdaSolusi) {
             System.out.println("Tidak ada solusi.");
-            String[] data_to_file = new String[0];
-            data_to_file = Matrix.push_arr_string(data_to_file, "Tidak ada solusi");
+            String[] data_to_file = new String[0]; // penyimpanan data output string sementara
+            data_to_file = Matrix.push_arr_string(data_to_file, "Tidak ada solusi"); // function untuk menyimpan data
+                                                                                     // string jika diperlukan
             Matrix.option_output_to_file(data_to_file, scanner);
         } else {
             System.out.println("Mempunyai banyak solusi");
@@ -269,14 +264,6 @@ public class SPL {
 
                     }
                 }
-                // for (int a = 0; a < m.get_col() - 1; a++) {
-                // System.out.format("%.2f ", arrayOfSpl[a].getValue());
-                // for (int b = 0; b < m.get_col() - 1; b++) {
-                // System.out.format("%.2f ", arrayOfSpl[a].getArray(b));
-                // }
-                // System.out.println("");
-                // }
-                // System.out.println("");
             }
             String[] data_to_file = new String[0];
             for (int a = 0; a < m.get_col() - 1; a++) {
@@ -369,14 +356,6 @@ public class SPL {
 
                     }
                 }
-                // for (int a = 0; a < m.get_col() - 1; a++) {
-                // System.out.format("%.2f ", arrayOfSpl[a].getValue());
-                // for (int b = 0; b < m.get_col() - 1; b++) {
-                // System.out.format("%.2f ", arrayOfSpl[a].getArray(b));
-                // }
-                // System.out.println("");
-                // }
-                // System.out.println("");
             }
             String[] data_to_file = new String[0];
             for (int a = 0; a < m.get_col() - 1; a++) {
