@@ -113,23 +113,23 @@ public class Matrix {
             try {
                 int loop = 0;
                 System.out.println(String.format("Masukkan matriks %dx%d : ", this.get_row(), this.get_col()));
-                    for (int i = 0; i < this.get_row(); i++) {
-                        String[] temp_line = scanner.nextLine().split(" ");
-                        if (temp_line.length != col) {
-                            System.out.println(
+                for (int i = 0; i < this.get_row(); i++) {
+                    String[] temp_line = scanner.nextLine().split(" ");
+                    if (temp_line.length != col) {
+                        System.out.println(
                                 String.format("Data dalam tiap baris hanya boleh sebanyak %d.", this.get_col()));
-                            System.out.println("Proses memasukkan matriks diulang dari awal!\n");
-                            loop = 0;
-                            break;
-                        }
-                        loop += 1;
-                        for (int j = 0; j < this.get_col(); j++) {
-                            this.data[i][j] = Double.parseDouble(temp_line[j]);
-                        }
+                        System.out.println("Proses memasukkan matriks diulang dari awal!\n");
+                        loop = 0;
+                        break;
                     }
-                    if (loop == this.get_row()) {
-                        return;
+                    loop += 1;
+                    for (int j = 0; j < this.get_col(); j++) {
+                        this.data[i][j] = Double.parseDouble(temp_line[j]);
                     }
+                }
+                if (loop == this.get_row()) {
+                    return;
+                }
             } catch (NumberFormatException e) {
                 System.out.println("Masukan matriks tidak boleh selain bilangan riil.");
                 System.out.println("Proses memasukkan matriks diulang dari awal!\n");
@@ -1050,7 +1050,7 @@ public class Matrix {
         // Mengalikan matrixX dengan hasil koef , lalu dikalikan lagi dengan matrixY
         Matrix hasilMatrixbaru = Matrix.multiply_matrix(Matrix.multiply_matrix(MatrixX, newHasilKoef), MatrixY);
         String output_msg = "";
-        String[] data_to_file = new String[0];
+        String[] data_to_file = new String[0];// Menyimpan array of messages untuk di output di file
         System.out.format("Hasil f(%.2f ,%.2f) = %.2f\n", a, b, hasilMatrixbaru.get_elmt(0, 0));
         output_msg = String.format("Hasil f(%.2f ,%.2f) = %.2f\n", a, b, hasilMatrixbaru.get_elmt(0, 0));
         int input = -1;
@@ -1059,7 +1059,8 @@ public class Matrix {
         System.out.println("2. Tidak");
         scanner.nextLine();
         input = Main.valid_input_choice(scanner, 1, 2);
-        data_to_file = Matrix.push_arr_string(data_to_file, output_msg);
+        data_to_file = Matrix.push_arr_string(data_to_file, output_msg); // Mempush message ke dalam array of string
+                                                                         // agar bisa di output ke file jika diperlukan
 
         while (input == 1) { // Looping jika pengguna masih ingin mencari taksiran lain
             System.out.print("Masukkan a : ");
@@ -1187,10 +1188,12 @@ public class Matrix {
             Matrix hasilMatrixbaru = Matrix.multiply_matrix(Matrix.multiply_matrix(MatrixX, newHasilKoef), MatrixY);
 
             String output_msg = "";
-            String[] data_to_file = new String[0];
+            String[] data_to_file = new String[0];// Menyimpan array of messages untuk di output di file
             System.out.format("Hasil f(%.2f ,%.2f) = %.2f\n", a, b, hasilMatrixbaru.get_elmt(0, 0));
             output_msg = String.format("Hasil f(%.2f ,%.2f) = %.2f\n", a, b, hasilMatrixbaru.get_elmt(0, 0));
-            data_to_file = Matrix.push_arr_string(data_to_file, output_msg);
+            data_to_file = Matrix.push_arr_string(data_to_file, output_msg); // Mempush message ke dalam array of string
+                                                                             // agar bisa di output ke file jika
+                                                                             // diperlukan
             Matrix.option_output_to_file(data_to_file, scanner);
         } else { // Jika bukan file txt
             System.out.println("Baca file gagal. File bukan file txt.");
