@@ -852,7 +852,7 @@ public class Matrix {
             double value = this.get_elmt(i, idx);
             // Mengubah elemen-elemen pada baris ke-i agar elemen pertama menjadi 1
             for (j = 0; j < kolom; j++) {
-                set_elmt(i, j, round_x_decimals(this.get_elmt(i, j) / value, 7));
+                set_elmt(i, j, this.get_elmt(i, j) / value);
             }
             // round_x_decimals(this.get_elmt(i, j) / value, 7)
             // Mengurangkan baris-baris di bawah baris ke-i agar elemen pertama pada setiap
@@ -860,7 +860,7 @@ public class Matrix {
             for (int k = i + 1; k < baris; k++) {
                 double pengurang = -this.get_elmt(k, idx);
                 for (j = 0; j < kolom; j++) {
-                    set_elmt(k, j, round_x_decimals(get_elmt(k, j) + pengurang * this.get_elmt(i, j), 5));
+                    set_elmt(k, j, get_elmt(k, j) + pengurang * this.get_elmt(i, j));
                 }
                 // round_x_decimals(get_elmt(k, j) + pengurang * this.get_elmt(i, j), 5)
             }
@@ -890,16 +890,18 @@ public class Matrix {
             double value = this.get_elmt(i, idx);
             // Mengubah elemen-elemen pada baris ke-i agar elemen pertama menjadi 1
             for (j = 0; j < kolom; j++) {
-                set_elmt(i, j, round_x_decimals(this.get_elmt(i, j) / value, 7));
+                set_elmt(i, j, this.get_elmt(i, j) / value);
             }
+            // round_x_decimals(this.get_elmt(i, j) / value, 7)
             // Mengurangkan baris-baris di bawah baris ke-i agar elemen pertama pada setiap
             // baris di bawahnya menjadi nol
             for (int k = i + 1; k < baris; k++) {
                 double pengurang = -this.get_elmt(k, idx);
                 for (j = 0; j < kolom; j++) {
-                    set_elmt(k, j, round_x_decimals(get_elmt(k, j) + pengurang * this.get_elmt(i, j), 5));
+                    set_elmt(k, j, get_elmt(k, j) + pengurang * this.get_elmt(i, j));
                 }
             }
+            // round_x_decimals(get_elmt(k, j) + pengurang * this.get_elmt(i, j), 5)
         }
         this.atur_baris_rapi_silent();
     }
@@ -927,7 +929,7 @@ public class Matrix {
             for (int k = i - 1; k >= 0; k--) { // Pengurangan agar kolom di atas leading one menjadi 0
                 double pengurang = -this.get_elmt(k, idx);
                 for (j = 0; j < kolom; j++) {
-                    this.set_elmt(k, j, round_x_decimals(this.get_elmt(k, j) + pengurang * this.get_elmt(i, j), 7));
+                    this.set_elmt(k, j, this.get_elmt(k, j) + pengurang * this.get_elmt(i, j));
                 }
             }
         }
@@ -956,7 +958,7 @@ public class Matrix {
             for (int k = i - 1; k >= 0; k--) {
                 double pengurang = -this.get_elmt(k, idx);
                 for (j = 0; j < kolom; j++) {
-                    this.set_elmt(k, j, round_x_decimals(this.get_elmt(k, j) + pengurang * this.get_elmt(i, j), 5));
+                    this.set_elmt(k, j, this.get_elmt(k, j) + pengurang * this.get_elmt(i, j));
                 }
             }
         }
