@@ -1,15 +1,15 @@
 # Tugas Besar 1 Aljabar Linier dan Geometri
 
-Proyek ini merupakan implementasi dari matrix
+(Deskripsi singkat program)
 
 ## Struktur Repositori
 
 Repositori ini memiliki struktur berikut:
 
 1. **bin**: Folder ini berisikan file hasil kompilasi proyek, termasuk:
-   - `Main.class`: Berkaitan dengan program utama.
-   - `Matrix.class`: Berkaitan dengan operasi matriks.
-   - `SPL.class`: Berkaitan dengan penyelesaian sistem persamaan linear metode Gauss-Jordan.
+   - `Main.class`: Bytecode Java dari Main.java berkaitan dengan program utama.
+   - `Matrix.class`: Bytecode Java dari Matrix.java berkaitan dengan operasi matriks.
+   - `SPL.class`: Bytecode Java dari SPL.java berkaitan dengan penyelesaian sistem persamaan linear metode Gauss-Jordan.
 
 2. **test**: Folder ini berisikan file-file berikut:
    - File `.txt` untuk data input dan output yang digunakan untuk pengujian.
@@ -23,5 +23,10 @@ Repositori ini memiliki struktur berikut:
 
 ## Petunjuk Penggunaan
 
-1. Pastikan Anda memiliki Java terinstall di sistem Anda.
+1. Pastikan Anda memiliki Java dan Git terinstall di sistem Anda.
 2. Untuk menjalankan program utama, gunakan perintah berikut:
+```shell
+git clone https://github.com/AlbertChoe/Algeo01-22073.git
+cd Algeo01-22073/bin
+java Main
+```
