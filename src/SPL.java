@@ -6,39 +6,47 @@ public class SPL {
     private double[] array;
     private boolean isi;
 
+    // Konstruktor
     public SPL(double value, double[] array) {
         this.value = value;
         this.array = array;
         this.isi = false; // false jika angka adalah bebas , true jika angka adalah 0
     }
 
+    // get Value
     public double getValue() {
         return this.value;
     }
 
+    // get Array
     public double getArray(int i) {
         return this.array[i];
     }
 
+    // set value
     public void setValue(double value) {
         this.value = value;
     }
 
+    // set array
     public void setArray(int idx, double value) {
         this.array[idx] = value;
     }
 
+    // set isi
     public void set_isi() {
         this.isi = true;
     }
 
+    // Untuk mengecek apakah this.isi bernilai true atau false
     public boolean get_isi_noVar() {
         return (this.isi == false);
     }
 
+    // memprint solution dari SPL ke terminal
     public void print_out_solution(int get_col, int a) {
         double angka = Matrix.round_x_decimals(this.getValue(), 2);
-        if (!this.get_isi_noVar() && angka != 0) {
+        if (!this.get_isi_noVar() && angka != 0) { // untuk memprint jika angka dari solusi tersebut hanya angka
             System.out.format(" %.2f ", this.getValue());
         }
         boolean printed = false;
@@ -54,7 +62,7 @@ public class SPL {
                 }
             }
 
-        } else if (angka == 0 && this.get_isi_noVar()) {
+        } else if (angka == 0 && this.get_isi_noVar()) { // untuk memprint variable bebas
             boolean first = true;
             for (int b = 0; b < get_col - 1; b++) {
                 if (Matrix.round_x_decimals(this.getArray(b), 2) != 0 && first) {
@@ -76,7 +84,7 @@ public class SPL {
                 System.out.format(" %c", (char) (a + 65));
             }
 
-        } else if (angka == 0 && !this.get_isi_noVar()) {
+        } else if (angka == 0 && !this.get_isi_noVar()) { // untuk memprint variable bebas
             boolean first = true;
             for (int b = 0; b < get_col - 1; b++) {
                 if (Matrix.round_x_decimals(this.getArray(b), 2) != 0 && first) {
@@ -94,7 +102,7 @@ public class SPL {
                     printed = true;
                 }
             }
-            if (!printed) {
+            if (!printed) { // untuk memprint 0 jika tidak ada angka ataupun variabel
                 System.out.format(" %.2f", 0.00);
             }
 
@@ -102,6 +110,7 @@ public class SPL {
         System.out.println(" ");
     }
 
+    // print out solution ke file
     public String[] print_out_solutionToFile(int get_col, int a, String[] arrayOfString, String output_msg) {
 
         double angka = Matrix.round_x_decimals(this.getValue(), 2);
@@ -182,6 +191,7 @@ public class SPL {
         return arrayOfString;
     }
 
+    // menghasilkan solusi dari gauss
     public static void gauss_result(Matrix m, Scanner scanner) {
         int i, j;
         boolean gaAdaSolusi;
@@ -208,7 +218,7 @@ public class SPL {
                 for (i = 0; i < m.get_col() - 1; i++) {
                     maxParametrik[i] = 0;
                 }
-                arrayOfSpl[j] = new SPL(0, maxParametrik);
+                arrayOfSpl[j] = new SPL(0, maxParametrik); // membuat arrayOfSpl yang berisi SPL
             }
 
             for (i = m.get_row() - 1; i >= 0; i--) {
@@ -220,7 +230,7 @@ public class SPL {
                     }
                 }
 
-                if (idx == -1) {
+                if (idx == -1) { // jika tidak ada leading 1
                     continue;
                 }
 
@@ -239,7 +249,7 @@ public class SPL {
                                 break;
                             }
                         }
-                        if (!allVar0) {
+                        if (!allVar0) { // Proses Pengurangan
 
                             for (int a = 0; a < m.get_col() - 1; a++) {
                                 // kurang var
@@ -264,7 +274,8 @@ public class SPL {
                 }
             }
             String[] data_to_file = new String[0];
-            for (int a = 0; a < m.get_col() - 1; a++) {
+            for (int a = 0; a < m.get_col() - 1; a++) { // looping untuk mengisi semua data dari arrayOfSpl ke dalam
+                                                        // array of string sehingga bisa di output ke file
                 System.out.format("X%d = ", a + 1);
                 String output_msg = String.format("X%d = ", a + 1);
                 arrayOfSpl[a].print_out_solution(m.get_col(), a);
@@ -276,11 +287,12 @@ public class SPL {
 
     }
 
+    // menghitung hasil dari gauss jordan
     public static void gauss_jordan_result(Matrix m, Scanner scanner) {
         int i, j;
         boolean gaAdaSolusi;
         gaAdaSolusi = false;
-        for (i = 0; i < m.get_row(); i++) {
+        for (i = 0; i < m.get_row(); i++) { // mencari jika tidak ada solusi
             if (m.is_baris_i_0(i)) {
                 if (m.get_elmt(i, m.get_col() - 1) != 0) {
                     gaAdaSolusi = true;
@@ -299,7 +311,7 @@ public class SPL {
             System.out.println("Mempunyai banyak solusi");
 
             SPL[] arrayOfSpl = new SPL[m.get_col() - 1];
-            for (j = 0; j < m.get_col() - 1; j++) {
+            for (j = 0; j < m.get_col() - 1; j++) { // membuat arrayOfSpl yang berisi SPL
                 double[] maxParametrik = new double[m.get_col() - 1];
                 for (i = 0; i < m.get_col() - 1; i++) {
                     maxParametrik[i] = 0;
@@ -316,7 +328,7 @@ public class SPL {
                     }
                 }
 
-                if (idx == -1) {
+                if (idx == -1) { // jika tidak ada leading 1
                     continue;
                 }
 
@@ -360,7 +372,8 @@ public class SPL {
                 }
             }
             String[] data_to_file = new String[0];
-            for (int a = 0; a < m.get_col() - 1; a++) {
+            for (int a = 0; a < m.get_col() - 1; a++) { // looping untuk mengisi semua data dari arrayOfSpl ke dalam
+                                                        // array of string sehingga bisa di output ke file
                 System.out.format("X%d = ", a + 1);
                 String output_msg = String.format("X%d = ", a + 1);
                 arrayOfSpl[a].print_out_solution(m.get_col(), a);
