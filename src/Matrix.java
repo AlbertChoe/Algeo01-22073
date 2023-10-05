@@ -209,7 +209,7 @@ public class Matrix {
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 String[] values = line.trim().split(" ");
-                if (col_count == 0) {
+                if (col_count < values.length) {
                     col_count = values.length;
                 }
                 row_count += 1;
@@ -217,7 +217,7 @@ public class Matrix {
             this.set_new_size(row_count, col_count);
             scanner.close();
         } catch (FileNotFoundException e) {
-            System.out.println("Baca file gagal. File " + file_name + " tidak ditemukan.");
+            System.out.println("Baca file gagal. File " + file_name + " tidak ditemukan di folder test!.");
         }
     }
 
@@ -232,18 +232,30 @@ public class Matrix {
                 File file = new File("../test/" + file_name);
                 Scanner file_scanner = new Scanner(file);
                 for (int i = 0; i < this.get_row(); i++) {
+                    String[] temp = file_scanner.nextLine().split(" ");
+                    if (temp.length != this.get_col()) {
+                        System.out.println("Baca file gagal. Isi file tidak dapat dijadikan matrix yang utuh.");
+                        System.out.println("Pastikan dalam file, terdapat data matrix yang valid!");
+                        System.out.println("NOTE : Tiap baris dalam file harus berisi jumlah data yang sama.");
+                        System.out.println("NOTE : Tidak boleh terdapat baris yang kosong (tidak berisi data apapun).");
+                        this.set_new_size(0, 0);
+                        file_scanner.close();
+                        return;
+                    }
                     for (int j = 0; j < this.get_col(); j++) {
-                        this.set_elmt(i, j, file_scanner.nextDouble());
+                        this.set_elmt(i, j, Double.parseDouble(temp[j]));
                     }
                 }
                 file_scanner.close();
                 System.out.println("File berhasil terbaca.");
             } catch (FileNotFoundException e) {
+                this.set_new_size(0, 0);
                 return;
-            } catch (InputMismatchException e) {
+            } catch (NumberFormatException e) {
                 System.out.println("Baca file gagal. Isi file terdapat elemen bukan bilangan riil.");
                 System.out.println("Tiap elemen dalam file hanya boleh bilangan riil!");
                 this.set_new_size(0, 0);
+                return;
             }
         } else {
             System.out.println("Baca file gagal. File bukan file txt.");
