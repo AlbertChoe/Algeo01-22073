@@ -1,15 +1,24 @@
 # Tugas Besar 1 Aljabar Linier dan Geometri
 
-(Deskripsi singkat program)
+Program ini merupakan tugas besar pertama dalam mata kuliah Aljabar Linier dan Geometri. Program ini dirancang untuk menyelesaikan berbagai persoalan aljabar linier dan geometri, antara lain:
+
+1. Penyelesaian Sistem Persamaan Linier dengan metode Gauss, Gauss-Jordan, matriks balikan, dan kaidah Cramer.
+2. Perhitungan determinan suatu matriks dengan metode ekspansi kofaktor dan reduksi baris.
+3. Perhitungan matriks balikan suatu matriks dengan metode matriks adjoin dan transformasi baris elementer.
+4. Perhitungan interpolasi polinom dan taksiran.
+5. Perhitungan interpolasi bicubic spline dan taksiran.
+6. Perhitungan regresi linier berganda dan taksiran.
+
+Input dari pengguna dapat dimasukkan langsung melalui command line atau dari file yang tersimpan di folder "test". Selain itu, pengguna juga dapat mencetak hasil keluaran ke dalam file yang akan disimpan di folder "test".
 
 ## Struktur Repositori
 
 Repositori ini memiliki struktur berikut:
 
-1. **bin**: Folder ini berisikan file hasil kompilasi proyek, termasuk:
-   - `Main.class`: Bytecode Java dari Main.java berkaitan dengan program utama.
-   - `Matrix.class`: Bytecode Java dari Matrix.java berkaitan dengan operasi matriks.
-   - `SPL.class`: Bytecode Java dari SPL.java berkaitan dengan penyelesaian sistem persamaan linear metode Gauss-Jordan.
+1. **bin**: Folder ini berisikan berkas hasil kompilasi proyek, termasuk:
+   - `Main.class`: Bytecode Java dari Main.java yang berkaitan dengan program utama.
+   - `Matrix.class`: Bytecode Java dari Matrix.java yang berkaitan dengan operasi matriks.
+   - `SPL.class`: Bytecode Java dari SPL.java yang berkaitan dengan penyelesaian sistem persamaan linear metode Gauss-Jordan.
 
 2. **test**: Folder ini berisikan file-file berikut:
    - File `.txt` untuk data input dan output yang digunakan untuk pengujian.
@@ -23,10 +32,18 @@ Repositori ini memiliki struktur berikut:
 
 ## Petunjuk Penggunaan
 
-1. Pastikan Anda memiliki Java dan Git terinstall di sistem Anda.
-2. Untuk menjalankan program utama, gunakan perintah berikut:
-```shell
-git clone https://github.com/AlbertChoe/Algeo01-22073.git
-cd Algeo01-22073/bin
-java Main
-```
+Untuk menjalankan program, pastikan Anda memiliki Java dan Git terinstal di sistem Anda, dan ikuti langkah-langkah berikut:
+
+1. Clone repositori ini ke komputer Anda dengan perintah berikut:
+   ```shell
+   git clone https://github.com/AlbertChoe/Algeo01-22073.git
+   ```
+2. Pindah ke direktori "bin" dengan perintah:
+   ```shell
+   cd Algeo01-22073/bin
+   ```
+3. Jalankan program utama dengan perintah berikut:
+   ```shell
+   java Main
+   ```
+## Semoga program ini membantu Anda menyelesaikan berbagai persoalan aljabar linier dan geometri!
