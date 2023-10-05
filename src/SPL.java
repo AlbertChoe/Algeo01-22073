@@ -293,6 +293,10 @@ public class SPL {
 
         if (gaAdaSolusi) {
             System.out.println("Tidak ada solusi.");
+            String[] data_to_file = new String[0]; // penyimpanan data output string sementara
+            data_to_file = Matrix.push_arr_string(data_to_file, "Tidak ada solusi"); // function untuk menyimpan data
+                                                                                     // string jika diperlukan
+            Matrix.option_output_to_file(data_to_file, scanner);
         } else {
             System.out.println("Mempunyai banyak solusi");
 
