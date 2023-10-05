@@ -72,13 +72,6 @@ public class Matrix {
         return !this.is_empty();
     }
 
-    // format float to String with desired precision
-    private static String format_x_precision(double val, int x) {
-        String format_string = String.format("%%.%df", x);
-        String formatted_value = String.format(format_string, val);
-        return formatted_value;
-    }
-
     // get valid integer input (more than range_from(excluded))
     public static int valid_int_input(Scanner scanner, String message, int range_from) {
         String err_msg = String.format(">> Tidak valid. Hanya menerima input bilangan bulat lebih besar dari %d!",
@@ -261,7 +254,7 @@ public class Matrix {
     public void print_matrix(int x_decimal_places) {
         for (int i = 0; i < this.get_row(); i++) {
             for (int j = 0; j < this.get_col(); j++) {
-                String out = format_x_precision(this.get_elmt(i, j), x_decimal_places);
+                String out = String.format("%.2f", round_x_decimals(this.get_elmt(i, j), x_decimal_places));
                 System.out.print(String.format(out + " "));
             }
             System.out.println();
@@ -486,7 +479,7 @@ public class Matrix {
                     }
                     subi += 1;
                 }
-                double temp = round_x_decimals(Math.pow(-1, i + j) * find_determinant(submatrix), 3);
+                double temp = Math.pow(-1, i + j) * find_determinant(submatrix);
                 cofactor.set_elmt(i, j, temp);
             }
         }
@@ -521,7 +514,7 @@ public class Matrix {
                     }
                     subi += 1;
                 }
-                double temp = round_x_decimals(Math.pow(-1, i + j) * find_determinant_obe(submatrix), 3);
+                double temp = Math.pow(-1, i + j) * find_determinant_obe(submatrix);
                 cofactor.set_elmt(i, j, temp);
             }
         }
@@ -1410,7 +1403,7 @@ public class Matrix {
         this.eliminasi_gauss_jordan_silent();
         double[] solution_arr = new double[this.get_row()];
         for (int i = 0; i < this.get_row(); i++) {
-            solution_arr[i] = this.get_elmt(i, this.get_col()-1);
+            solution_arr[i] = this.get_elmt(i, this.get_col() - 1);
         }
         return solution_arr;
     }
