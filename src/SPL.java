@@ -202,8 +202,6 @@ public class SPL {
                                                                                      // string jika diperlukan
             Matrix.option_output_to_file(data_to_file, scanner);
         } else {
-            System.out.println("Mempunyai banyak solusi");
-
             SPL[] arrayOfSpl = new SPL[m.get_col() - 1];
             for (j = 0; j < m.get_col() - 1; j++) {
                 double[] maxParametrik = new double[m.get_col() - 1];
