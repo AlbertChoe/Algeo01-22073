@@ -1405,21 +1405,10 @@ public class Matrix {
     // Untuk interpolasi polinom. Mencari solusi spl menggunakan metode matriks
     // balikan (return array of double)
     private double[] spl_solution_to_arr() {
-        Matrix b = new Matrix(this.get_row(), 1);
-        Matrix A = new Matrix(this.get_row(), this.get_col() - 1);
+        this.eliminasi_gauss_jordan_silent();
+        double[] solution_arr = new double[this.get_row()];
         for (int i = 0; i < this.get_row(); i++) {
-            for (int j = 0; j < this.get_col() - 1; j++) {
-                A.set_elmt(i, j, this.get_elmt(i, j));
-            }
-        }
-        for (int i = 0; i < this.get_row(); i++) {
-            b.set_elmt(i, 0, this.get_elmt(i, this.get_col() - 1));
-        }
-        A = A.find_inverse_obe();
-        Matrix x = multiply_matrix(A, b);
-        double[] solution_arr = new double[x.get_row()];
-        for (int i = 0; i < x.get_row(); i++) {
-            solution_arr[i] = x.get_elmt(i, 0);
+            solution_arr[i] = this.get_elmt(i, this.get_col()-1);
         }
         return solution_arr;
     }
