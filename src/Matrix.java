@@ -19,41 +19,41 @@ public class Matrix {
         this.data = new double[0][0];
     }
 
-    //constructor
+    // constructor
     public Matrix(int n_row, int n_col) {
         this.n_row = n_row;
         this.n_col = n_col;
         this.data = new double[n_row][n_col];
     }
 
-    //get row
+    // get row
     public int get_row() {
         return this.n_row;
     }
 
-    //get col
+    // get col
     public int get_col() {
         return this.n_col;
     }
 
-    //get matrix
+    // get matrix
     public double[][] get_data() {
         return this.data;
     }
 
-    //get element
+    // get element
     public double get_elmt(int row, int col) {
         return this.data[row][col];
     }
 
-    //set new matrix size
+    // set new matrix size
     public void set_new_size(int new_n_row, int new_n_col) {
         this.n_row = new_n_row;
         this.n_col = new_n_col;
         this.data = new double[new_n_row][new_n_col];
     }
 
-    //set element in matrix
+    // set element in matrix
     public void set_elmt(int row, int col, double value) {
         if (row >= 0 && row < this.get_row() && col >= 0 && col < this.get_col()) {
             this.data[row][col] = value;
@@ -62,25 +62,24 @@ public class Matrix {
         }
     }
 
-    //check if matrix is empty
+    // check if matrix is empty
     public boolean is_empty() {
         return (this.n_row == 0) && (this.n_col == 0);
     }
 
-    //check if matrix is not empty
+    // check if matrix is not empty
     public boolean is_not_empty() {
         return !this.is_empty();
     }
 
-
-    //format float to String with desired precision
+    // format float to String with desired precision
     private static String format_x_precision(double val, int x) {
         String format_string = String.format("%%.%df", x);
         String formatted_value = String.format(format_string, val);
         return formatted_value;
     }
 
-    //get valid integer input (more than range_from(excluded))
+    // get valid integer input (more than range_from(excluded))
     public static int valid_int_input(Scanner scanner, String message, int range_from) {
         String err_msg = String.format(">> Tidak valid. Hanya menerima input bilangan bulat lebih besar dari %d!",
                 range_from);
@@ -101,7 +100,7 @@ public class Matrix {
         }
     }
 
-    //get valid double input (for error handling)
+    // get valid double input (for error handling)
     public static double valid_double_input(Scanner scanner, String message) {
         String err_msg = ">> Tidak valid. Hanya menerima input suatu bilangan riil";
 
@@ -118,7 +117,7 @@ public class Matrix {
         }
     }
 
-    //read matrix from command line
+    // read matrix from command line
     public void read_matrix_scan(Scanner scanner) {
         int row = valid_int_input(scanner, "Masukkan jumlah baris matriks : ", 0);
         int col = valid_int_input(scanner, "Masukkan jumlah kolom matriks : ", 0);
@@ -151,7 +150,7 @@ public class Matrix {
         }
     }
 
-    //read matrix for SPL only
+    // read matrix for SPL only
     public void read_matrix_spl(Scanner scanner) {
         int row = valid_int_input(scanner, "Masukkan jumlah persamaan  : ", 0);
         int col = valid_int_input(scanner, "Masukkan jumlah variabel x : ", 0);
@@ -174,7 +173,7 @@ public class Matrix {
         System.out.println();
     }
 
-    //read square matrix from command line
+    // read square matrix from command line
     public void read_square_matrix_scan(Scanner scanner, int min_dimension) {
         int dimension = valid_int_input(scanner, "Masukkan dimensi matriks persegi : ", min_dimension - 1);
         this.set_new_size(dimension, dimension);
@@ -206,7 +205,7 @@ public class Matrix {
         }
     }
 
-    //determine matrix size from file
+    // determine matrix size from file
     private void determine_matrix_size_from_file(String file_name) {
         try {
             File file = new File("../test/" + file_name);
@@ -229,7 +228,7 @@ public class Matrix {
         }
     }
 
-    //read matrix from file
+    // read matrix from file
     public void read_matrix_from_file(Scanner scanner) {
         System.out.print("Masukkan nama file beserta extension (.txt) : ");
         String file_name = scanner.nextLine().strip();
@@ -258,7 +257,7 @@ public class Matrix {
         }
     }
 
-    //display matrix with x precision
+    // display matrix with x precision
     public void print_matrix(int x_decimal_places) {
         for (int i = 0; i < this.get_row(); i++) {
             for (int j = 0; j < this.get_col(); j++) {
@@ -270,7 +269,7 @@ public class Matrix {
         System.out.println();
     }
 
-    //row operation
+    // row operation
     private void el_row_op(int row_operated, int row_operator, double factor) {
         for (int j = 0; j < this.get_col(); j++) {
             this.data[row_operated][j] += factor * this.get_elmt(row_operator, j);
@@ -278,7 +277,7 @@ public class Matrix {
         }
     };
 
-    //round double to desired decimals
+    // round double to desired decimals
     public static double round_x_decimals(double val, int x) {
         val *= Math.pow(10, x);
         val = Math.round(val);
@@ -286,7 +285,8 @@ public class Matrix {
         return val;
     }
 
-    //find determinant with row reduction method for Main (show process in terminal, doesnt return anything)
+    // find determinant with row reduction method for Main (show process in
+    // terminal, doesnt return anything)
     public void determinant_row_reduction(Scanner scanner) {
         System.out.println();
         System.out.println("Matriks yang dimasukkan");
@@ -368,8 +368,8 @@ public class Matrix {
         data_to_file = push_arr_string(data_to_file, String.format("%.2f", determinant));
         option_output_to_file(data_to_file, scanner);
     }
-    
-    //return determinant using row reduction method
+
+    // return determinant using row reduction method
     private static double find_determinant_obe(Matrix m0) {
         Matrix m = new Matrix(m0.get_row(), m0.get_col());
         for (int i = 0; i < m.get_row(); i++) {
@@ -421,7 +421,7 @@ public class Matrix {
         return determinant;
     }
 
-    //return determinant with cofactor expansion method
+    // return determinant with cofactor expansion method
     private static double find_determinant(Matrix m) {
         if (m.get_row() == 1 && m.get_col() == 1) {
             return m.get_elmt(0, 0);
@@ -458,7 +458,8 @@ public class Matrix {
         }
     };
 
-    //return cofactor matrix using cofactor expansion method when searching for determinant
+    // return cofactor matrix using cofactor expansion method when searching for
+    // determinant
     private Matrix find_cofactor_matrix() {
         Matrix cofactor = new Matrix(this.get_row(), this.get_col());
         if (this.get_row() == 1 && this.get_col() == 1) {
@@ -492,7 +493,8 @@ public class Matrix {
         return cofactor;
     }
 
-    //return cofactor matrix using row reduction method when searching for determinant
+    // return cofactor matrix using row reduction method when searching for
+    // determinant
     private Matrix find_cofactor_matrix_obe() {
         Matrix cofactor = new Matrix(this.get_row(), this.get_col());
         if (this.get_row() == 1 && this.get_col() == 1) {
@@ -526,7 +528,7 @@ public class Matrix {
         return cofactor;
     }
 
-    //find determinant with cofactor expansion for Main (show process in terminal)
+    // find determinant with cofactor expansion for Main (show process in terminal)
     public void determinant_cofactor_expansion(Scanner scanner) {
         System.out.println();
         System.out.println("Matriks yang dimasukkan");
@@ -560,7 +562,7 @@ public class Matrix {
         option_output_to_file(data_to_file, scanner);
     }
 
-    //return transpose matrix
+    // return transpose matrix
     private Matrix transpose() {
         Matrix m2 = new Matrix(this.n_col, this.n_row);
         for (int i = 0; i < this.get_row(); i++) {
@@ -571,7 +573,7 @@ public class Matrix {
         return m2;
     }
 
-    //find inverse using adjoint for Main (show process in terminal)
+    // find inverse using adjoint for Main (show process in terminal)
     public void inverse_adjoint(Scanner scanner) {
         System.out.println();
         System.out.println("Matriks yang dimasukkan");
@@ -627,7 +629,7 @@ public class Matrix {
         return adjoin;
     }
 
-    //mencari solusi SPL menggunakan metode matriks balikan untuk Main
+    // mencari solusi SPL menggunakan metode matriks balikan untuk Main
     public void spl_inverse(Scanner scanner) {
         System.out.println();
         System.out.println("Matriks Augmented dari masukan");
@@ -852,6 +854,7 @@ public class Matrix {
             for (j = 0; j < kolom; j++) {
                 set_elmt(i, j, round_x_decimals(this.get_elmt(i, j) / value, 7));
             }
+            // round_x_decimals(this.get_elmt(i, j) / value, 7)
             // Mengurangkan baris-baris di bawah baris ke-i agar elemen pertama pada setiap
             // baris di bawahnya menjadi nol
             for (int k = i + 1; k < baris; k++) {
@@ -859,6 +862,7 @@ public class Matrix {
                 for (j = 0; j < kolom; j++) {
                     set_elmt(k, j, round_x_decimals(get_elmt(k, j) + pengurang * this.get_elmt(i, j), 5));
                 }
+                // round_x_decimals(get_elmt(k, j) + pengurang * this.get_elmt(i, j), 5)
             }
         }
         // Mengatur baris rapi kembali
@@ -958,7 +962,7 @@ public class Matrix {
         }
     }
 
-    //meng-generate matrix 16x16 untuk bicubic
+    // meng-generate matrix 16x16 untuk bicubic
     public Matrix generateMatrix() {
         int kolom = 4;
         int turunan = 0;
@@ -1021,20 +1025,43 @@ public class Matrix {
         return A;
     }
 
+    // Khusus read matrix bicubic from terminal
+    public void read_matrix_scan_bicubic(Scanner scanner) {
+        this.set_new_size(4, 4);
+        while (true) {
+            try {
+                int loop = 0;
+                System.out.println(String.format("Masukkan matriks %dx%d : ", this.get_row(), this.get_col()));
+                for (int i = 0; i < this.get_row(); i++) {
+                    String[] temp_line = scanner.nextLine().split(" ");
+                    if (temp_line.length != 4) {
+                        System.out.println(
+                                String.format("Data dalam tiap baris hanya boleh sebanyak %d.", this.get_col()));
+                        System.out.println("Proses memasukkan matriks diulang dari awal!\n");
+                        loop = 0;
+                        break;
+                    }
+                    loop += 1;
+                    for (int j = 0; j < this.get_col(); j++) {
+                        this.data[i][j] = Double.parseDouble(temp_line[j]);
+                    }
+                }
+                if (loop == this.get_row()) {
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Masukan matriks tidak boleh selain bilangan riil.");
+                System.out.println("Proses memasukkan matriks diulang dari awal!\n");
+            }
+        }
+    }
+
     // Fungsi untuk mencari dan menghitung bicubic spline interpolation dengan input
     // dari terminal
     public void read_matrix_bicubic(Scanner scanner) {
-        this.set_new_size(4, 4);
-        System.out.println("Masukkan matriks 4x4 : ");
-        for (int i = 0; i < 4; i++) { // input matriks dari terminal
-            for (int j = 0; j < 4; j++) {
-                this.data[i][j] = scanner.nextDouble();
-            }
-        }
-        System.out.print("Masukkan a : "); // masukkan a
-        double a = scanner.nextDouble();
-        System.out.print("Masukkan b : "); // masukkan a
-        double b = scanner.nextDouble();
+        this.read_matrix_scan_bicubic(scanner);
+        double a = valid_double_input(scanner, "Masukkan a : ");// masukkan a
+        double b = valid_double_input(scanner, "Masukkan b : "); // masukan b
         System.out.println(" ");
 
         Matrix hasil = new Matrix(4, 4); // mengenerate matriks 16x16
@@ -1086,17 +1113,14 @@ public class Matrix {
         System.out.println("Apakah ingin mengecek hasil taksiran fungsi lain?");
         System.out.println("1. Ya");
         System.out.println("2. Tidak");
-        scanner.nextLine();
+        System.out.println("");
         input = Main.valid_input_choice(scanner, 1, 2);
         data_to_file = Matrix.push_arr_string(data_to_file, output_msg); // Mempush message ke dalam array of string
                                                                          // agar bisa di output ke file jika diperlukan
 
         while (input == 1) { // Looping jika pengguna masih ingin mencari taksiran lain
-            System.out.print("Masukkan a : ");
-            a = scanner.nextDouble();
-            System.out.print("Masukkan b : ");
-            b = scanner.nextDouble();
-            scanner.nextLine();
+            a = valid_double_input(scanner, "Masukkan a : ");// masukkan a
+            b = valid_double_input(scanner, "Masukkan b : "); // masukan b
 
             val = 1;
             for (int i = 0; i < 1; i++) {
@@ -1218,8 +1242,8 @@ public class Matrix {
 
             String output_msg = "";
             String[] data_to_file = new String[0];// Menyimpan array of messages untuk di output di file
-            System.out.format("Hasil f(%.2f ,%.2f) = %.2f\n", a, b, hasilMatrixbaru.get_elmt(0, 0));
-            output_msg = String.format("Hasil f(%.2f ,%.2f) = %.2f\n", a, b, hasilMatrixbaru.get_elmt(0, 0));
+            System.out.format("Hasil f(%.2f, %.2f) = %.2f\n", a, b, hasilMatrixbaru.get_elmt(0, 0));
+            output_msg = String.format("Hasil f(%.2f, %.2f) = %.2f\n", a, b, hasilMatrixbaru.get_elmt(0, 0));
             data_to_file = Matrix.push_arr_string(data_to_file, output_msg); // Mempush message ke dalam array of string
                                                                              // agar bisa di output ke file jika
                                                                              // diperlukan
@@ -1261,7 +1285,7 @@ public class Matrix {
             System.out.println("Gunakan cara lain untuk mencari solusi SPL tersebut!");
             return;
         }
-        det1 = find_determinant(a);
+        det1 = find_determinant_obe(a);
         if (det1 == 0) {
             System.out.println("Determinan matriks A = 0, SPL tidak memiliki solusi yang unik.");
             System.out.println("Gunakan cara lain untuk mencari solusi SPL tersebut!");
@@ -1276,7 +1300,7 @@ public class Matrix {
                     a.set_elmt(i, j, this.data[i][j]);
                 }
             }
-            det1 = find_determinant(a);
+            det1 = find_determinant_obe(a);
             System.out.println("Determinan matriks A : " + det1);
 
             for (int i = 0; i < a.n_col; i++) {
@@ -1288,7 +1312,7 @@ public class Matrix {
                 for (int p = 0; p < b.n_row; p++) {
                     temp.set_elmt(p, i, b.data[p][0]);
                 }
-                det2 = find_determinant(temp);
+                det2 = find_determinant_obe(temp);
                 System.out.println("Determinan matriks A" + (i + 1) + " : " + det2);
                 x.set_elmt(i, 0, (det2 / det1));
             }
@@ -1378,7 +1402,8 @@ public class Matrix {
         return hasil;
     }
 
-    // Untuk interpolasi polinom. Mencari solusi spl menggunakan metode matriks balikan (return array of double)
+    // Untuk interpolasi polinom. Mencari solusi spl menggunakan metode matriks
+    // balikan (return array of double)
     private double[] spl_solution_to_arr() {
         Matrix b = new Matrix(this.get_row(), 1);
         Matrix A = new Matrix(this.get_row(), this.get_col() - 1);
@@ -1399,7 +1424,7 @@ public class Matrix {
         return solution_arr;
     }
 
-    //Mencari interpolasi polinom dengan input dari file
+    // Mencari interpolasi polinom dengan input dari file
     public static void polynomial_interpolation_file(Scanner scanner) {
         System.out.print("Masukkan nama file beserta extension (.txt) : ");
         String file_name = scanner.nextLine().strip();
@@ -1505,7 +1530,7 @@ public class Matrix {
         }
     }
 
-    //check if a double is in array
+    // check if a double is in array
     private static boolean is_in_array(double[] arr, double x) {
         for (int i = 0; i < arr.length; i++) {
             if (arr[i] == x) {
@@ -1515,7 +1540,7 @@ public class Matrix {
         return false;
     }
 
-    //push double to array of double (return array of double)
+    // push double to array of double (return array of double)
     private static double[] push_arr_double(double[] original_arr, double value) {
         int array_length = original_arr.length;
         double[] new_arr = new double[array_length + 1];
@@ -1526,7 +1551,7 @@ public class Matrix {
         return new_arr;
     }
 
-    //push string to array of string (return array of string)
+    // push string to array of string (return array of string)
     public static String[] push_arr_string(String[] original_arr, String value) {
         int array_length = original_arr.length;
         String[] new_arr = new String[array_length + 1];
@@ -1537,7 +1562,7 @@ public class Matrix {
         return new_arr;
     }
 
-    //Mencari interpolasi polinom dari input command line
+    // Mencari interpolasi polinom dari input command line
     public static void polynomial_interpolation_scan(Scanner scanner) {
         int n = valid_int_input(scanner, "Masukkan berapa banyak titik yang akan digunakan untuk interpolasi : ", 1);
         System.out.println("Masukkan data tiap titik!\n");
@@ -1615,7 +1640,7 @@ public class Matrix {
         }
     }
 
-    //read points for multiple linear regression
+    // read points for multiple linear regression
     public void read_points_reg(Scanner scanner) {
         int n = valid_int_input(scanner, "Masukkan jumlah peubah x : ", 0);
         int m = valid_int_input(scanner, "Masukkan jumlah sampel : ", 0);
@@ -1635,7 +1660,7 @@ public class Matrix {
         }
     }
 
-    //mencari regresi linier berganda
+    // mencari regresi linier berganda
     public void multiple_linear_regression(Scanner scanner) {
         Matrix points = this;
         Matrix A = new Matrix(points.get_row(), points.get_col());
@@ -1727,7 +1752,7 @@ public class Matrix {
         }
     }
 
-    //parse Matrix to Array of String
+    // parse Matrix to Array of String
     public String[] to_string_arr() {
         String[] lists = new String[0];
         for (int i = 0; i < this.get_row(); i++) {
@@ -1740,7 +1765,7 @@ public class Matrix {
         return lists;
     }
 
-    //ask user output to file option
+    // ask user output to file option
     public static void option_output_to_file(String[] data, Scanner scanner) {
         display_output_option();
         int option = Main.valid_input_choice(scanner, 1, 2);
@@ -1749,14 +1774,14 @@ public class Matrix {
         }
     }
 
-    //display output to file option
+    // display output to file option
     public static void display_output_option() {
         System.out.println("\nApakah anda ingin menyimpan luaran ke dalam file?");
         System.out.println("1. Ya");
         System.out.println("2. Tidak\n");
     }
 
-    //check if file name for output to file is valid
+    // check if file name for output to file is valid
     public static String valid_file_name(Scanner scanner) {
         String file_name;
         while (true) {
@@ -1777,7 +1802,7 @@ public class Matrix {
 
     }
 
-    //write output to file
+    // write output to file
     public static void print_to_file(String[] data, Scanner scanner) {
         String file_name = valid_file_name(scanner);
         String file_path = "../test/" + file_name + ".txt";
