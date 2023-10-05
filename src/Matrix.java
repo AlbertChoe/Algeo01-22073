@@ -1242,8 +1242,8 @@ public class Matrix {
 
             String output_msg = "";
             String[] data_to_file = new String[0];// Menyimpan array of messages untuk di output di file
-            System.out.format("Hasil f(%.2f ,%.2f) = %.2f\n", a, b, hasilMatrixbaru.get_elmt(0, 0));
-            output_msg = String.format("Hasil f(%.2f ,%.2f) = %.2f\n", a, b, hasilMatrixbaru.get_elmt(0, 0));
+            System.out.format("Hasil f(%.2f, %.2f) = %.2f\n", a, b, hasilMatrixbaru.get_elmt(0, 0));
+            output_msg = String.format("Hasil f(%.2f, %.2f) = %.2f\n", a, b, hasilMatrixbaru.get_elmt(0, 0));
             data_to_file = Matrix.push_arr_string(data_to_file, output_msg); // Mempush message ke dalam array of string
                                                                              // agar bisa di output ke file jika
                                                                              // diperlukan
