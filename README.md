@@ -54,7 +54,7 @@ Berikut adalah kontributor yang telah berpartisipasi dalam pengerjaan program in
 
 1. Juan Alfred Widjaya / 13522073 (https://github.com/juanaw6)
 2. Albert Choe / 13522081 (https://github.com/AlbertChoe)
-3. Ivan Hendrawan Tan /13522111 (https://github.com/Bodleh)
+3. Ivan Hendrawan Tan / 13522111 (https://github.com/Bodleh)
 
 ### Asisten Pemandu Pengerjaan
 
